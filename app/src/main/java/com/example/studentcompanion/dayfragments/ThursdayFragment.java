@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.example.studentcompanion.LongClickListener;
 import com.example.studentcompanion.adapters.AttendanceAdapter;
 import com.example.studentcompanion.ClickListener;
 import com.example.studentcompanion.R;
@@ -36,6 +37,71 @@ public class ThursdayFragment extends Fragment {
     private SharedPreferences sp;
     Gson gson;
     ClickListener clickListener;
+    LongClickListener longClickListener;
+    public void deleteConfirmation(int index)
+    {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.delete_confirmation);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Button yes,no;
+        TextView textView;
+        textView=dialog.findViewById(R.id.deleteText);
+        textView.setText("Do you really want to delete this class from your timetable?");
+        yes=dialog.findViewById(R.id.yes_att);
+        no=dialog.findViewById(R.id.no_att);
+        Gson gson=new Gson();
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                classes.remove(index);
+                times.remove(index);
+                displaylist.remove(index);
+                attendanceAdapter.notifyDataSetChanged();
+                String json=gson.toJson(classes);
+                String json1=gson.toJson(times);
+                SharedPreferences.Editor editor=sp.edit();
+                editor.putString("thursdayClasses",json);
+                editor.putString("thursdayTimes",json1);
+                editor.apply();
+                dialog.dismiss();
+            }
+        });
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
+    public void editdeletedialog(int index)
+    {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.edit_delete_dialog);
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Button edit,delete;
+        edit=dialog.findViewById(R.id.editAtt);
+        delete=dialog.findViewById(R.id.deleteAtt);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteConfirmation(index);
+                dialog.dismiss();
+            }
+        });
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editClassDialog((int)(times.get(index)/60),(int)(times.get(index)%60),classes.get(index),index);
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
     public void editClassDialog(int h,int m,String name,int index)
     {
         final Dialog dialog = new Dialog(getContext());
@@ -186,10 +252,15 @@ public class ThursdayFragment extends Fragment {
         clickListener = new ClickListener() {
             @Override
             public void click(int index){
-                editClassDialog((int)(times.get(index)/60),(int)(times.get(index)%60),classes.get(index),index);
             }
         };
-        attendanceAdapter=new AttendanceAdapter(displaylist,getContext(),clickListener);
+        longClickListener=new LongClickListener() {
+            @Override
+            public void longclick(int index) {
+                editdeletedialog(index);
+            }
+        };
+        attendanceAdapter=new AttendanceAdapter(displaylist,getContext(),clickListener,longClickListener);
         recyclerView.setAdapter(attendanceAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         new_class.setOnClickListener(new View.OnClickListener() {

@@ -10,6 +10,8 @@ import com.example.studentcompanion.adapters.TabPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import java.util.Calendar;
+
 public class TimetableActivity extends AppCompatActivity {
 
     @Override
@@ -24,28 +26,32 @@ public class TimetableActivity extends AppCompatActivity {
         new TabLayoutMediator(tabLayout, viewPager,
                 (tab, position) -> {
                     switch (position) {
-                        case 0:
+                        case 1:
                             tab.setText("Mon");
                             break;
-                        case 1:
+                        case 2:
                             tab.setText("Tue");
                             break;
-                        case 2:
+                        case 3:
                             tab.setText("Wed");
                             break;
-                        case 3:
+                        case 4:
                             tab.setText("Thu");
                             break;
-                        case 4:
+                        case 5:
                             tab.setText("Fri");
                             break;
-                        case 5:
+                        case 6:
                             tab.setText("Sat");
                             break;
-                        case 6:
+                        case 0:
                             tab.setText("Sun");
                             break;
                     }
                 }).attach();
+        Calendar calendar = Calendar.getInstance();
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+        int initialTab = dayOfWeek - 1;
+        viewPager.setCurrentItem(initialTab);
     }
 }

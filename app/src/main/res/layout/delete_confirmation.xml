@@ -7,7 +7,7 @@
     android:background="#ffaaaa">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/deleteText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -33,7 +33,7 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/deleteText" />
 
     <Button
         android:id="@+id/yes_att"
@@ -48,5 +48,5 @@
         android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/deleteText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

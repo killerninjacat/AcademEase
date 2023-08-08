@@ -21,11 +21,12 @@ public class AttendanceAdapter extends RecyclerView.Adapter<attendanceViewHolder
     Context context;
     ClickListener clickListener;
     LongClickListener longClickListener;
-    public AttendanceAdapter(List<notesData> list, Context context,ClickListener clickListener)
+    public AttendanceAdapter(List<notesData> list, Context context,ClickListener clickListener,LongClickListener longClickListener)
     {
         this.list=list;
         this.context=context;
         this.clickListener=clickListener;
+        this.longClickListener=longClickListener;
     }
 
     @Override

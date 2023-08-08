@@ -45,7 +45,7 @@ public class NotesActivity extends AppCompatActivity {
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         Button yes,no;
         TextView textView;
-        textView=(TextView) findViewById(R.id.textView);
+        textView=dialog.findViewById(R.id.deleteText);
         textView.setText("Do you really want to delete this note?");
         yes=dialog.findViewById(R.id.yes_att);
         no=dialog.findViewById(R.id.no_att);

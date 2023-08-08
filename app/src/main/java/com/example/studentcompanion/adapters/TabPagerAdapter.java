@@ -21,19 +21,19 @@ public class TabPagerAdapter extends FragmentStateAdapter {
     @Override
     public Fragment createFragment(int position) {
         switch (position) {
-            case 0:
-                return new MondayFragment();
             case 1:
-                return new TuesdayFragment();
+                return new MondayFragment();
             case 2:
-                return new WednesdayFragment();
+                return new TuesdayFragment();
             case 3:
-                return new ThursdayFragment();
+                return new WednesdayFragment();
             case 4:
-                return new FridayFragment();
+                return new ThursdayFragment();
             case 5:
-                return new SaturdayFragment();
+                return new FridayFragment();
             case 6:
+                return new SaturdayFragment();
+            case 0:
                 return new SundayFragment();
             default:
                 return null;
