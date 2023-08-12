@@ -24,6 +24,7 @@ import com.example.studentcompanion.R;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class CalendarActivity extends AppCompatActivity {
@@ -275,7 +276,12 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
                 String selectedDate=formatDate(year, month, dayOfMonth);
+                Calendar cal=Calendar.getInstance();
+                cal.set(year,month,dayOfMonth);
+                Calendar cal1=Calendar.getInstance();
+                if(cal.compareTo(cal1)<=0)
                 setAttendance(selectedDate);
+                else Toast.makeText(CalendarActivity.this, "Please select a date before or on the current date.", Toast.LENGTH_SHORT).show();
             }
         });
     }
