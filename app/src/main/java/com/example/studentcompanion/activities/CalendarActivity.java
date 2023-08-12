@@ -37,7 +37,7 @@ public class CalendarActivity extends AppCompatActivity {
     Gson gson;
     List<AttendanceData> attendanceDataList;
     private SharedPreferences sp;
-    TextView current_percentage,totalbox,presentbox,absentbox,subname1;
+    TextView current_percentage,totalbox,presentbox,absentbox,subname1,target;
     public void deleteConfirmation()
     {
         final Dialog dialog = new Dialog(CalendarActivity.this);
@@ -192,12 +192,16 @@ public class CalendarActivity extends AppCompatActivity {
                 }
                 if(c==0) {
                     float f2 = attendedClasses;
-                    current_percentage.setText(" " + Math.round(f2 * 100 / totalclasses) + "% ");
+                    double d1= (double) Math.round((f2 * 100 / totalclasses) * 100) / 100;
+                    current_percentage.setText(" " + d1 + "% ");
                     totalbox.setText("Total Classes: " + totalclasses);
                     presentbox.setText("Attended: " + attendedClasses);
                     absentbox.setText("Absent: " + (totalclasses - attendedClasses));
                     attendanceDataList = dbHandler.readData();
                     exists = 0;
+                    if((int)Math.ceil((0.75*totalclasses-attendedClasses)/0.25)>0)
+                        target.setText("Attend the next "+(int)Math.ceil((0.75*totalclasses-attendedClasses)/0.25)+" classes to achieve your target attendance.");
+                    else target.setText("You have achieved your target attendance! Keep up the good job!");
                     dialog.dismiss();
                 }
             }
@@ -219,6 +223,7 @@ public class CalendarActivity extends AppCompatActivity {
         presentbox=(TextView) findViewById(R.id.attendedclasses);
         absentbox=(TextView) findViewById(R.id.absentclasses);
         subname1=(TextView) findViewById(R.id.subname1);
+        target=(TextView) findViewById(R.id.target);
         at_settings=(Button) findViewById(R.id.attendance_settings);
         subname1.setText(" "+getIntent().getStringExtra("sub")+" ");
         attendanceDataList=new ArrayList<>();
@@ -255,7 +260,11 @@ public class CalendarActivity extends AppCompatActivity {
         presentbox.setText("Attended: "+attendedClasses);
         absentbox.setText("Absent: "+(totalclasses-attendedClasses));
         float f1=attendedClasses;
-        current_percentage.setText(" "+Math.round(f1*100/totalclasses)+"% ");
+        double d1= (double) Math.round((f1 * 100 / totalclasses) * 100) / 100;
+        current_percentage.setText(" " + d1 + "% ");
+        if((int)Math.ceil((0.75*totalclasses-attendedClasses)/0.25)>0)
+        target.setText("Attend the next "+(int)Math.ceil((0.75*totalclasses-attendedClasses)/0.25)+" classes to achieve your target attendance.");
+        else target.setText("You have achieved your target attendance! Keep up the good job!");
         at_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

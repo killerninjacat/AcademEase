@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.example.studentcompanion.R;
 import com.example.studentcompanion.adapters.TabPagerAdapter;
@@ -52,6 +53,7 @@ public class TimetableActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         int initialTab = dayOfWeek - 1;
+        Log.d("hour",Calendar.HOUR_OF_DAY+"");
         viewPager.setCurrentItem(initialTab);
     }
 }

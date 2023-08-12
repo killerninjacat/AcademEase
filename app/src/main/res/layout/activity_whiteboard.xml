@@ -9,6 +9,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <Button
+            android:id="@+id/save_img"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="right"
+            android:background="@drawable/save" />
     </FrameLayout>
     <LinearLayout
         android:id="@+id/buttons_layout"
@@ -23,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/paint_options"
-            android:fontFamily="@font/prompt"
+            android:fontFamily="@font/prompt_semibold"
             android:text=" Stroke Width "
             android:textColor="#331166" />
 
@@ -33,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/paint_options"
-            android:fontFamily="@font/prompt"
+            android:fontFamily="@font/prompt_semibold"
             android:text=" Paint Color "
             android:textColor="#331166" />
 
@@ -42,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/paint_options"
-            android:fontFamily="@font/prompt"
+            android:fontFamily="@font/prompt_semibold"
             android:text="Clear"
             android:textColor="#331166" />
     </LinearLayout>

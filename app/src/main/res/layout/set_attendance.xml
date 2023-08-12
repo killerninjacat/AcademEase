@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#aaffaa">
+    android:background="#226644">
 
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/prompt_semibold"
             android:text="Present"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="30dp" />
 
         <RadioButton
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/prompt_semibold"
             android:text="Absent"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="30dp" />
     </RadioGroup>
 
@@ -38,11 +38,11 @@
         android:id="@+id/save_attendance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="50dp"
         android:background="@drawable/dark_green_rounded"
         android:fontFamily="@font/russo_one"
         android:text="Save"
-        android:textColor="#aaffaa"
+        android:textColor="#226644"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

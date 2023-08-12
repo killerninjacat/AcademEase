@@ -12,7 +12,7 @@
         android:layout_centerInParent="true"
         android:contentDescription="@string/appwidget_text"
         android:fontFamily="@font/russo_one"
-        android:text="@string/appwidget_text"
+        android:text="Next Class"
         android:textSize="24sp"
         android:textStyle="bold" />
 </RelativeLayout>

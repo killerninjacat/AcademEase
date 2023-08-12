@@ -3,9 +3,15 @@ package com.example.studentcompanion.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Dialog;
+import android.content.ContentValues;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -15,9 +21,38 @@ import android.widget.Toast;
 
 import com.example.studentcompanion.R;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class WhiteboardActivity extends AppCompatActivity {
-    private Button btnStrokeWidth,btnPaintColor,btnClearCanvas;
+    private Button btnStrokeWidth,btnPaintColor,btnClearCanvas,save_img;
     CanvasActivity canvasActivity;
+
+    private void saveCanvasImage() {
+        FrameLayout drawingContainer = findViewById(R.id.drawing_container);
+        Bitmap bitmap = Bitmap.createBitmap(drawingContainer.getWidth(), drawingContainer.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        drawingContainer.draw(canvas);
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.DISPLAY_NAME, "canvas_image.png");
+        values.put(MediaStore.Images.Media.MIME_TYPE, "image/png");
+        Uri imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        try {
+            OutputStream outputStream = getContentResolver().openOutputStream(imageUri);
+            if (outputStream != null) {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                outputStream.close();
+                Toast.makeText(this, "Image saved to gallery", Toast.LENGTH_LONG).show();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+
     public void strokedialog()
     {
         Button inc, dec, reset;
@@ -114,6 +149,7 @@ public class WhiteboardActivity extends AppCompatActivity {
         btnStrokeWidth = findViewById(R.id.btn_stroke_width);
         btnPaintColor = findViewById(R.id.btn_paint_color);
         btnClearCanvas = findViewById(R.id.btn_clear_canvas);
+        save_img=(Button) findViewById(R.id.save_img);
         btnStrokeWidth.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,6 +168,12 @@ public class WhiteboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 canvasActivity.clearCanvas();
+            }
+        });
+        save_img.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveCanvasImage();
             }
         });
     }

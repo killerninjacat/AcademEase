@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.os.Build;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.content.ContextCompat;
@@ -47,6 +49,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 if(times==null)
                     times=new ArrayList<>();
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
+                Log.d("hour","hour: "+hour);
                 min=0;
                 for(int i=0;i<times.size();i++)
                 {
@@ -120,7 +123,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                     times=new ArrayList<>();
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
                 min=0;
-                for(int i=0;i<times.size();i++)
+                for(int i=times.size()-1;i>=0;i--)
                 {
                     if(times.get(i)/60-hour>=0) {
                         min = i;
@@ -218,13 +221,6 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, UpcomingClassesWidget.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        long updateInterval = AlarmManager.INTERVAL_HOUR;
-        alarmManager.setRepeating(AlarmManager.RTC, System.currentTimeMillis(), updateInterval, pendingIntent);
     }
 
     @Override

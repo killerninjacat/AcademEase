@@ -11,11 +11,11 @@
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:background="#223366"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_percentage" />
+        app:layout_constraintTop_toBottomOf="@+id/target" />
 
     <TextView
         android:id="@+id/totalclasses"
@@ -60,7 +60,6 @@
         android:id="@+id/current_percentage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:fontFamily="@font/bangers"
         android:text="Percentage"
         android:textColor="@color/black"
@@ -102,5 +101,19 @@
         android:backgroundTint="#223366"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/target"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/russo_one"
+        android:text="Target"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/current_percentage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
