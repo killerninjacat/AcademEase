@@ -14,8 +14,6 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
     private static final String TABLE_NAME = "attendance";
     private static final String ID_COL = "id";
-
-    // below variable is for our course name column
     private static final String NAME_COL = "Course";
     private static final String DATE_COL = "Date";
     private static final String ATTENDED = "Attended";
