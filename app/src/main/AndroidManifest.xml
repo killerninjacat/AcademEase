@@ -31,15 +31,19 @@
 
         <activity
             android:name=".activities.CalendarActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".activities.AttendanceActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".activities.TimetableActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".activities.NotesActivity"
+            android:screenOrientation="nosensor"
             android:exported="false" />
         <activity
             android:name=".activities.WhiteboardActivity"
@@ -47,6 +51,7 @@
             android:exported="false" />
         <activity
             android:name=".activities.MainActivity"
+            android:screenOrientation="nosensor"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

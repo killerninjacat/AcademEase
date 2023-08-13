@@ -25,8 +25,6 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.upcoming_classes_widget);
         int textColor = ContextCompat.getColor(context, R.color.black);
         views.setTextColor(R.id.appwidget_text, textColor);
@@ -51,7 +49,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
                 Log.d("hour","hour: "+hour);
                 min=0;
-                for(int i=0;i<times.size();i++)
+                for(int i=times.size()-1;i>=0;i--)
                 {
                     if(times.get(i)/60-hour>=0) {
                         min = i;
@@ -75,7 +73,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                     times=new ArrayList<>();
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
                 min=0;
-                for(int i=0;i<times.size();i++)
+                for(int i=times.size()-1;i>=0;i--)
                 {
                     if(times.get(i)/60-hour>=0) {
                         min = i;
@@ -147,7 +145,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                     times=new ArrayList<>();
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
                 min=0;
-                for(int i=0;i<times.size();i++)
+                for(int i=times.size()-1;i>=0;i--)
                 {
                     if(times.get(i)/60-hour>=0) {
                         min = i;
@@ -171,7 +169,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                     times=new ArrayList<>();
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
                 min=0;
-                for(int i=0;i<times.size();i++)
+                for(int i=times.size()-1;i>=0;i--)
                 {
                     if(times.get(i)/60-hour>=0) {
                         min = i;

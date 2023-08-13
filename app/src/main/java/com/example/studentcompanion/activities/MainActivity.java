@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 name=namebox.getText().toString();
+                name=name.trim();
                 if(name.isEmpty())
                     Toast.makeText(MainActivity.this,"Enter a name.",Toast.LENGTH_SHORT).show();
                 else {
@@ -121,6 +122,13 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(MainActivity.this, WhiteboardActivity.class);
                 startActivity(i);
+            }
+        });
+        welcome.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                enterName();
+                return true;
             }
         });
     }

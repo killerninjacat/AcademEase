@@ -31,9 +31,11 @@ public class CalendarActivity extends AppCompatActivity {
     private DBHandler dbHandler;
     String currentSubject;
     private int attendedClasses,totalclasses;
-    int exists,c;
+    int exists,c,current_index;
     Button at_settings,home;
     List<String> subjectsList;
+    List<Double>targetsList;
+    int targetValue;
     String att;
     Gson gson;
     List<AttendanceData> attendanceDataList;
@@ -58,10 +60,13 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbHandler.deleteSubject(currentSubject);
-                subjectsList.remove(currentSubject);
+                subjectsList.remove(current_index);
+                targetsList.remove(current_index);
                 String json=gson.toJson(subjectsList);
                 SharedPreferences.Editor editor=sp.edit();
                 editor.putString("subjects",json);
+                String json1=gson.toJson(targetsList);
+                editor.putString("targets",json1);
                 editor.apply();
                 startActivity(new Intent(CalendarActivity.this,AttendanceActivity.class));
                 dialog.dismiss();
@@ -77,7 +82,7 @@ public class CalendarActivity extends AppCompatActivity {
     }
     public void edit_attendance_dialog()
     {
-        EditText subject_name;
+        EditText subject_name,target_box;
         Button save;
         TextView title;
         final Dialog dialog = new Dialog(CalendarActivity.this);
@@ -86,22 +91,35 @@ public class CalendarActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.new_attendance);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         subject_name=dialog.findViewById(R.id.new_subject_box);
+        target_box=dialog.findViewById(R.id.target_box);
         title=dialog.findViewById(R.id.newAtt);
-        title.setText("Edit Course Name");
+        title.setText("Edit Course Details");
         subject_name.setText(currentSubject);
+        target_box.setText(targetsList.get(current_index)+"");
         save=dialog.findViewById(R.id.save_new_subject);
         Gson gson=new Gson();
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                subjectsList.set(subjectsList.indexOf(currentSubject),subject_name.getText().toString());
-                dbHandler.updateName(subject_name.getText().toString(),currentSubject);
-                String json=gson.toJson(subjectsList);
-                SharedPreferences.Editor editor=sp.edit();
-                editor.putString("subjects",json);
-                editor.apply();
-                subname1.setText(" "+subject_name.getText().toString()+" ");
-                dialog.dismiss();
+                if (subjectsList.contains(subject_name.getText().toString()))
+                    Toast.makeText(CalendarActivity.this, "Subject \"" + subject_name.getText().toString() + "\" already exists!", Toast.LENGTH_SHORT).show();
+                else {
+                    subjectsList.set(current_index, subject_name.getText().toString());
+                    targetsList.set(current_index, Double.parseDouble(target_box.getText().toString()));
+                    dbHandler.updateName(subject_name.getText().toString(), currentSubject);
+                    String json = gson.toJson(subjectsList);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("subjects", json);
+                    String json1 = gson.toJson(targetsList);
+                    editor.putString("targets", json1);
+                    editor.apply();
+                    subname1.setText(" " + subject_name.getText().toString() + " ");
+                    if ((int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) > 0)
+                        target.setText("Attend the next " + (int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) + " classes to achieve " + targetValue + "! attendance.");
+                    else
+                        target.setText("You have achieved your target of " + targetValue + "! Keep up the good job!");
+                    dialog.dismiss();
+                }
             }
         });
         dialog.show();
@@ -116,6 +134,11 @@ public class CalendarActivity extends AppCompatActivity {
         Button edit,delete;
         edit=dialog.findViewById(R.id.editAtt);
         delete=dialog.findViewById(R.id.deleteAtt);
+        subjectsList=new ArrayList<>();
+        String json2=sp.getString("subjects",null);
+        subjectsList=gson.fromJson(json2, ArrayList.class);
+        if(subjectsList==null)
+            subjectsList=new ArrayList<>();
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -200,9 +223,9 @@ public class CalendarActivity extends AppCompatActivity {
                     absentbox.setText("Absent: " + (totalclasses - attendedClasses));
                     attendanceDataList = dbHandler.readData();
                     exists = 0;
-                    if((int)Math.ceil((0.75*totalclasses-attendedClasses)/0.25)>0)
-                        target.setText("Attend the next "+(int)Math.ceil((0.75*totalclasses-attendedClasses)/0.25)+" classes to achieve your target attendance.");
-                    else target.setText("You have achieved your target attendance! Keep up the good job!");
+                    if((int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)>0)
+                        target.setText("Attend the next "+(int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)+" classes to achieve "+targetValue+"% attendance.");
+                    else target.setText("You have achieved your target of "+targetValue+"%! Keep up the good job!");
                     dialog.dismiss();
                 }
             }
@@ -218,6 +241,8 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        sp = getSharedPreferences("com.example.studentcompanion", 0);
+        gson=new Gson();
         CalendarView calendar=findViewById(R.id.calendarView);
         current_percentage=(TextView) findViewById(R.id.current_percentage);
         totalbox=(TextView) findViewById(R.id.totalclasses);
@@ -227,8 +252,13 @@ public class CalendarActivity extends AppCompatActivity {
         target=(TextView) findViewById(R.id.target);
         at_settings=(Button) findViewById(R.id.attendance_settings);
         subname1.setText(" "+getIntent().getStringExtra("sub")+" ");
+        targetValue=(int)getIntent().getDoubleExtra("target_percentage",0.0);
         attendanceDataList=new ArrayList<>();
-        sp = getSharedPreferences("com.example.studentcompanion", 0);
+        targetsList=new ArrayList<>();
+        String json3=sp.getString("targets",null);
+        targetsList=gson.fromJson(json3, ArrayList.class);
+        if(targetsList==null)
+            targetsList=new ArrayList<>();
         attendedClasses=0;
         totalclasses=0;
         home=(Button) findViewById(R.id.home_c);
@@ -240,6 +270,7 @@ public class CalendarActivity extends AppCompatActivity {
         });
         gson=new Gson();
         currentSubject=getIntent().getStringExtra("sub");
+        current_index=getIntent().getIntExtra("sub_index",0);
         dbHandler=new DBHandler(CalendarActivity.this);
         attendanceDataList=dbHandler.readData();
         for(int i=0;i<attendanceDataList.size();i++)
@@ -257,15 +288,16 @@ public class CalendarActivity extends AppCompatActivity {
                 attendedClasses++;
 
         }
+        Log.d("targetslist","targetslist"+targetsList);
         totalbox.setText("Total Classes: "+totalclasses);
         presentbox.setText("Attended: "+attendedClasses);
         absentbox.setText("Absent: "+(totalclasses-attendedClasses));
         float f1=attendedClasses;
         double d1= (double) Math.round((f1 * 100 / totalclasses) * 100) / 100;
         current_percentage.setText(" " + d1 + "% ");
-        if((int)Math.ceil((0.75*totalclasses-attendedClasses)/0.25)>0)
-        target.setText("Attend the next "+(int)Math.ceil((0.75*totalclasses-attendedClasses)/0.25)+" classes to achieve your target attendance.");
-        else target.setText("You have achieved your target attendance! Keep up the good job!");
+        if((int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)>0)
+            target.setText("Attend the next "+(int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)+" classes to achieve "+targetValue+"% attendance.");
+        else target.setText("You have achieved your target of "+targetValue+"%! Keep up the good job!");
         at_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
