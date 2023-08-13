@@ -101,11 +101,12 @@ public class CalendarActivity extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (subjectsList.contains(subject_name.getText().toString()))
+                if (subjectsList.contains(subject_name.getText().toString())&&!(subject_name.getText().toString().equals(currentSubject)))
                     Toast.makeText(CalendarActivity.this, "Subject \"" + subject_name.getText().toString() + "\" already exists!", Toast.LENGTH_SHORT).show();
                 else {
                     subjectsList.set(current_index, subject_name.getText().toString());
                     targetsList.set(current_index, Double.parseDouble(target_box.getText().toString()));
+                    targetValue=(int)Double.parseDouble(target_box.getText().toString());
                     dbHandler.updateName(subject_name.getText().toString(), currentSubject);
                     String json = gson.toJson(subjectsList);
                     SharedPreferences.Editor editor = sp.edit();
@@ -115,9 +116,9 @@ public class CalendarActivity extends AppCompatActivity {
                     editor.apply();
                     subname1.setText(" " + subject_name.getText().toString() + " ");
                     if ((int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) > 0)
-                        target.setText("Attend the next " + (int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) + " classes to achieve " + targetValue + "! attendance.");
+                        target.setText("Attend the next " + (int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) + " classes to achieve " + targetValue + "% attendance.");
                     else
-                        target.setText("You have achieved your target of " + targetValue + "! Keep up the good job!");
+                        target.setText("You have achieved your target of " + targetValue + "%! Keep up the good job!");
                     dialog.dismiss();
                 }
             }
@@ -297,7 +298,8 @@ public class CalendarActivity extends AppCompatActivity {
         current_percentage.setText(" " + d1 + "% ");
         if((int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)>0)
             target.setText("Attend the next "+(int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)+" classes to achieve "+targetValue+"% attendance.");
-        else target.setText("You have achieved your target of "+targetValue+"%! Keep up the good job!");
+        else if(totalclasses!=0)target.setText("You have achieved your target of "+targetValue+"%! Keep up the good job!");
+        else target.setText("Attend the next 1 class to achieve " +targetValue+"% attendance.");
         at_settings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
