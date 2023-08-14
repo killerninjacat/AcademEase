@@ -247,7 +247,7 @@ public class MondayFragment extends Fragment {
         for(int k=0;k<classes.size();k++) {
             int hour=(int)(times.get(k)/60);
             int minutes=(int)(times.get(k)%60);
-            displaylist.add(new notesData(classes.get(k), ""+hour+" : "+minutes));
+            displaylist.add(new notesData(classes.get(k), ""+hour+":"+minutes));
         }
         clickListener = new ClickListener() {
             @Override
