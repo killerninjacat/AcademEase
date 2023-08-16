@@ -23,6 +23,8 @@ import com.example.studentcompanion.DBHandler;
 import com.example.studentcompanion.R;
 import com.google.gson.Gson;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -107,6 +109,7 @@ public class CalendarActivity extends AppCompatActivity {
                     subjectsList.set(current_index, subject_name.getText().toString());
                     targetsList.set(current_index, Double.parseDouble(target_box.getText().toString()));
                     targetValue=(int)Double.parseDouble(target_box.getText().toString());
+                    currentSubject=subject_name.getText().toString();
                     dbHandler.updateName(subject_name.getText().toString(), currentSubject);
                     String json = gson.toJson(subjectsList);
                     SharedPreferences.Editor editor = sp.edit();
@@ -159,7 +162,8 @@ public class CalendarActivity extends AppCompatActivity {
     public void setAttendance(String date)
     {
         RadioButton present,absent;
-        Button save;
+        TextView date_display;
+        Button save,del;
         exists=0;
         c=0;
         att="";
@@ -169,6 +173,9 @@ public class CalendarActivity extends AppCompatActivity {
         dialog.setContentView(R.layout.set_attendance);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         present=dialog.findViewById(R.id.presentButton);
+        date_display=dialog.findViewById(R.id.date_display);
+        del=dialog.findViewById(R.id.del_day);
+        date_display.setText(date);
         absent=dialog.findViewById(R.id.absentButton);
         save=dialog.findViewById(R.id.save_attendance);
         for(int k=0;k<attendanceDataList.size();k++)
@@ -229,6 +236,33 @@ public class CalendarActivity extends AppCompatActivity {
                     else target.setText("You have achieved your target of "+targetValue+"%! Keep up the good job!");
                     dialog.dismiss();
                 }
+            }
+        });
+        del.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHandler.deleteAttendance(currentSubject,date);
+                if(exists==1)
+                {
+                    Toast.makeText(CalendarActivity.this,"Deleted!",Toast.LENGTH_SHORT).show();
+                    if(present.isChecked())
+                        attendedClasses--;
+                    totalclasses--;
+                    float f2 = attendedClasses;
+                    double d1= (double) Math.round((f2 * 100 / totalclasses) * 100) / 100;
+                    current_percentage.setText(" " + d1 + "% ");
+                    totalbox.setText("Total Classes: " + totalclasses);
+                    presentbox.setText("Attended: " + attendedClasses);
+                    absentbox.setText("Absent: " + (totalclasses - attendedClasses));
+                    attendanceDataList = dbHandler.readData();
+                    if((int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)>0)
+                        target.setText("Attend the next "+(int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)+" classes to achieve "+targetValue+"% attendance.");
+                    else target.setText("You have achieved your target of "+targetValue+"%! Keep up the good job!");
+                    exists=0;
+                    present.setChecked(false);
+                    absent.setChecked(false);
+                }
+                else Toast.makeText(CalendarActivity.this,"Entry does not exist!",Toast.LENGTH_SHORT).show();
             }
         });
         dialog.show();

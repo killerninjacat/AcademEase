@@ -10,13 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="30dp"
         android:layout_weight="1"
-        android:background="#223366"
+        android:background="@drawable/blue_rounded"
         android:fontFamily="@font/prompt"
         android:textAlignment="center"
         android:textColor="@color/white"
-        android:textSize="28sp" />
+        android:textSize="32sp" />
 
 
 </LinearLayout>

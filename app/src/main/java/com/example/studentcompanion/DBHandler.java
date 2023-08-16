@@ -17,6 +17,13 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String NAME_COL = "Course";
     private static final String DATE_COL = "Date";
     private static final String ATTENDED = "Attended";
+    public void deleteAttendance(String courseName, String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String whereClause = NAME_COL + "=? AND " + DATE_COL + "=?";
+        String[] whereArgs = {courseName, date};
+        db.delete(TABLE_NAME, whereClause, whereArgs);
+        db.close();
+    }
     public void deleteSubject(String subjectName)
     {
         SQLiteDatabase db = this.getWritableDatabase();
