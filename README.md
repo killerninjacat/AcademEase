@@ -19,6 +19,8 @@ The Student Companion App is a versatile Android application designed to help st
 2. Open the project in Android Studio.
 3. Build and run the app on your Android device or emulator.
 
+Or alternatively, download the apk file [here](https://github.com/killerninjacat/StudentCompanion/releases/download/v1.0.0/student_companion.apk) and install it on your Android device.
+
 ## Usage
 1. Launch the app and create your timetable.
 2. Add courses and mark your attendance.
