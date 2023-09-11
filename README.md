@@ -11,10 +11,11 @@ The Student Companion App is a versatile Android application designed to help st
 - **Upcoming Class Widget:** A widget on your home screen displays your upcoming class schedule at a glance.
 
 ## Screenshots
-
-![Home page](https://raw.githubusercontent.com/killerninjacat/StudentCompanion/master/Screenshots/Screenshot_20230911-135421.png)
-
-![Timetable](Screenshot_20230911-135436.png)
+![Home page](Screenshots/Screenshot_20230911-135421.png)
+![Timetable](Screenshots/Screenshot_20230911-135436.png)
+![Attendance](Screenshots/Screenshot_20230911-135502.png)
+![Notes](Screenshots/Screenshot_20230911-140209.png)
+![Whiteboard](Screenshots/Screenshot_20230911-135923.png)
 
 ## Installation
 1. Clone this repository.
