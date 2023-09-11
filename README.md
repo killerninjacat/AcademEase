@@ -12,7 +12,7 @@ The Student Companion App is a versatile Android application designed to help st
 
 ## Screenshots
 
-![Home page](Screenshot_20230911-135421.png)
+![Home page](https://raw.githubusercontent.com/killerninjacat/StudentCompanion/master/Screenshots/Screenshot_20230911-135421.png)
 
 ![Timetable](Screenshot_20230911-135436.png)
 
