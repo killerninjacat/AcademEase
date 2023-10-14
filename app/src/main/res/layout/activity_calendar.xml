@@ -7,25 +7,29 @@
     tools:context=".activities.CalendarActivity"
     android:background="#88eeff">
 
-    <CalendarView
+    <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:headerColor="#000000"
+        app:pagesColor="#223366"
+        app:highlightedDaysLabelsColor="#ff0000"
         android:layout_marginTop="10dp"
-        android:background="#223366"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/target" />
+        app:typeface="@font/prompt"
+        app:layout_constraintTop_toBottomOf="@id/target"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:todayLabelColor="#ffffff" />
 
     <TextView
         android:id="@+id/totalclasses"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/russo_one"
         android:text="Total classes"
         android:textColor="#223366"
-        android:textSize="22dp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
@@ -38,7 +42,7 @@
         android:fontFamily="@font/russo_one"
         android:text="Attended"
         android:textColor="#223366"
-        android:textSize="22dp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/totalclasses" />
@@ -51,7 +55,7 @@
         android:fontFamily="@font/russo_one"
         android:text="Absent"
         android:textColor="#223366"
-        android:textSize="22dp"
+        android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/attendedclasses" />
