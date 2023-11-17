@@ -51,126 +51,6 @@ public class CalendarActivity extends AppCompatActivity {
     List<AttendanceData> attendanceDataList;
     private SharedPreferences sp;
     TextView current_percentage,totalbox,presentbox,absentbox,subname1,target;
-    public void deleteConfirmation()
-    {
-        final Dialog dialog = new Dialog(CalendarActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.delete_confirmation);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button yes,no;
-        subjectsList=new ArrayList<>();
-        String json2=sp.getString("subjects",null);
-        subjectsList=gson.fromJson(json2, ArrayList.class);
-        if(subjectsList==null)
-            subjectsList=new ArrayList<>();
-        yes=dialog.findViewById(R.id.yes_att);
-        no=dialog.findViewById(R.id.no_att);
-        yes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dbHandler.deleteSubject(currentSubject);
-                subjectsList.remove(current_index);
-                targetsList.remove(current_index);
-                String json=gson.toJson(subjectsList);
-                SharedPreferences.Editor editor=sp.edit();
-                editor.putString("subjects",json);
-                String json1=gson.toJson(targetsList);
-                editor.putString("targets",json1);
-                editor.apply();
-                startActivity(new Intent(CalendarActivity.this,AttendanceActivity.class));
-                dialog.dismiss();
-            }
-        });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-    public void edit_attendance_dialog()
-    {
-        EditText subject_name,target_box;
-        Button save;
-        TextView title;
-        final Dialog dialog = new Dialog(CalendarActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.new_attendance);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        subject_name=dialog.findViewById(R.id.new_subject_box);
-        target_box=dialog.findViewById(R.id.target_box);
-        title=dialog.findViewById(R.id.newAtt);
-        title.setText("Edit Course Details");
-        subject_name.setText(currentSubject);
-        target_box.setText(targetsList.get(current_index)+"");
-        save=dialog.findViewById(R.id.save_new_subject);
-        Gson gson=new Gson();
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (subjectsList.contains(subject_name.getText().toString())&&!(subject_name.getText().toString().equals(currentSubject)))
-                    Toast.makeText(CalendarActivity.this, "Subject \"" + subject_name.getText().toString() + "\" already exists!", Toast.LENGTH_SHORT).show();
-                else {
-                    subjectsList.set(current_index, subject_name.getText().toString());
-                    targetsList.set(current_index, Double.parseDouble(target_box.getText().toString()));
-                    targetValue=(int)Double.parseDouble(target_box.getText().toString());
-                    currentSubject=subject_name.getText().toString();
-                    dbHandler.updateName(subject_name.getText().toString(), currentSubject);
-                    String json = gson.toJson(subjectsList);
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("subjects", json);
-                    String json1 = gson.toJson(targetsList);
-                    editor.putString("targets", json1);
-                    editor.apply();
-                    subname1.setText(" " + subject_name.getText().toString() + " ");
-                    if ((int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) > 0) {
-                        target.setText("Attend the next " + (int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) + " classes to achieve " + targetValue + "% attendance.");
-                        target.setTextColor(Color.parseColor("#cc0000"));
-                    }
-                    else {
-                        target.setTextColor(Color.parseColor("#226622"));
-                        target.setText("You have achieved your target of " + targetValue + "%! Keep up the good job!");
-                    }
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.show();
-    }
-    public void editdeletedialog()
-    {
-        final Dialog dialog = new Dialog(CalendarActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.edit_delete_dialog);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button edit,delete;
-        edit=dialog.findViewById(R.id.editAtt);
-        delete=dialog.findViewById(R.id.deleteAtt);
-        subjectsList=new ArrayList<>();
-        String json2=sp.getString("subjects",null);
-        subjectsList=gson.fromJson(json2, ArrayList.class);
-        if(subjectsList==null)
-            subjectsList=new ArrayList<>();
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteConfirmation();
-                dialog.dismiss();
-            }
-        });
-        edit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                edit_attendance_dialog();
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
     public void setAttendance(String date)
     {
         RadioButton present,absent;
@@ -338,7 +218,6 @@ public class CalendarActivity extends AppCompatActivity {
         highlightedDays = new ArrayList<>();
         for(int i=0;i<attendanceDataList.size();i++)
         {
-            Log.d("total classes","total classes: "+attendanceDataList.size());
             if(!attendanceDataList.get(i).getName().equals(currentSubject)) {
                 attendanceDataList.remove(i);
                 i--;
@@ -369,12 +248,6 @@ public class CalendarActivity extends AppCompatActivity {
             target.setText("You have achieved your target of " + targetValue + "%! Keep up the good job!");
         }
         else target.setText("Attend the next 1 class to achieve " +targetValue+"% attendance.");
-        at_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                editdeletedialog();
-            }
-        });
         calendar.setOnDayClickListener(new OnDayClickListener() {
             @Override
             public void onDayClick(@NonNull EventDay eventDay) {

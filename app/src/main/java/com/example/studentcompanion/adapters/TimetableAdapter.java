@@ -16,12 +16,12 @@ import com.example.studentcompanion.adapters.notesData;
 import java.util.Collections;
 import java.util.List;
 
-public class AttendanceAdapter extends RecyclerView.Adapter<attendanceViewHolder> {
+public class TimetableAdapter extends RecyclerView.Adapter<attendanceViewHolder> {
     List<notesData> list= Collections.emptyList();
     Context context;
     ClickListener clickListener;
     LongClickListener longClickListener;
-    public AttendanceAdapter(List<notesData> list, Context context,ClickListener clickListener,LongClickListener longClickListener)
+    public TimetableAdapter(List<notesData> list, Context context,ClickListener clickListener,LongClickListener longClickListener)
     {
         this.list=list;
         this.context=context;
@@ -34,7 +34,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<attendanceViewHolder
     {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View photoView = inflater.inflate(R.layout.eachsubject, parent, false);
+        View photoView = inflater.inflate(R.layout.attendance_card, parent, false);
         attendanceViewHolder viewHolder = new attendanceViewHolder(photoView);
         return viewHolder;
     }
