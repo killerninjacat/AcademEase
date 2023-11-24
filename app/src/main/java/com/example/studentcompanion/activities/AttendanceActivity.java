@@ -1,25 +1,20 @@
 package com.example.studentcompanion.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.studentcompanion.AttendanceData;
 import com.example.studentcompanion.ClickListener;
@@ -42,6 +37,7 @@ public class AttendanceActivity extends AppCompatActivity{
     List<AttendanceData> attendanceDataList, attendanceDataList1;
     List<String> subjectsList;
     List<notesData> displaylist;
+    List<Double> percentagesList;
     AttendanceAdapter attendanceAdapter;
     ClickListener clickListener;
     LongClickListener longClickListener;
@@ -71,11 +67,13 @@ public class AttendanceActivity extends AppCompatActivity{
                 if (subjectsList.contains(subject_name.getText().toString())&&!(subject_name.getText().toString().equals(subjectsList.get(index))))
                     Toast.makeText(AttendanceActivity.this, "Subject \"" + subject_name.getText().toString() + "\" already exists!", Toast.LENGTH_SHORT).show();
                 else {
+                    dbHandler.updateName(subject_name.getText().toString(), subjectsList.get(index));
                     subjectsList.set(index, subject_name.getText().toString());
                     targetsList.set(index, Double.parseDouble(target_box.getText().toString()));
                     targetsList.set(index,Double.parseDouble(target_box.getText().toString()));
                     subjectsList.set(index,subject_name.getText().toString());
-                    dbHandler.updateName(subject_name.getText().toString(), subjectsList.get(index));
+                    displaylist.set(index,new notesData(subject_name.getText().toString(),percentagesList.get(index)+""));
+                    attendanceAdapter.notifyDataSetChanged();
                     String json = gson.toJson(subjectsList);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("subjects", json);
@@ -188,7 +186,7 @@ public class AttendanceActivity extends AppCompatActivity{
                     else {
                         subjectsList.add(subject_name.getText().toString());
                         targetsList.add(d);
-                        displaylist.add(new notesData(subject_name.getText().toString(), d+""));
+                        displaylist.add(new notesData(subject_name.getText().toString(), "0.0"));
                         attendanceAdapter.notifyDataSetChanged();
                         String json = gson.toJson(subjectsList);
                         String json1 = gson.toJson(targetsList);
@@ -216,6 +214,7 @@ public class AttendanceActivity extends AppCompatActivity{
         targetsList=new ArrayList<>();
         attendanceDataList=new ArrayList<>();
         attendanceDataList1=new ArrayList<>();
+        percentagesList=new ArrayList<>();
         displaylist=new ArrayList<>();
         gson=new Gson();
         sp = getSharedPreferences("com.example.studentcompanion", 0);
@@ -226,6 +225,10 @@ public class AttendanceActivity extends AppCompatActivity{
         home=(Button) findViewById(R.id.home_a);
         dbHandler=new DBHandler(AttendanceActivity.this);
         attendanceDataList=dbHandler.readData();
+        if(subjectsList==null)
+            subjectsList=new ArrayList<>();
+        if(targetsList==null)
+            targetsList=new ArrayList<>();
         for(int i=0;i<subjectsList.size();i++) {
             attendanceDataList1=new ArrayList<>();
             for (int j = 0; j < attendanceDataList.size(); j++) {
@@ -240,7 +243,9 @@ public class AttendanceActivity extends AppCompatActivity{
                 if(attendanceDataList1.get(k).getAttended().equals("true"))
                     ac++;
             }
-            double percentage=((double)ac/tc)*100;
+            float ac1=ac;
+            double percentage=(double) Math.round((ac1 * 100 / tc) * 100) / 100;
+            percentagesList.add(percentage);
             displaylist.add(new notesData(subjectsList.get(i),String.valueOf(percentage)));
         }
         home.setOnClickListener(new View.OnClickListener() {
@@ -249,10 +254,6 @@ public class AttendanceActivity extends AppCompatActivity{
                 startActivity(new Intent(AttendanceActivity.this,MainActivity.class));
             }
         });
-        if(subjectsList==null)
-            subjectsList=new ArrayList<>();
-        if(targetsList==null)
-            targetsList=new ArrayList<>();
         subject_view =(RecyclerView) findViewById(R.id.attendance_recycler_view);
          new_subject=(Button) findViewById(R.id.new_subject);
         new_subject.setOnClickListener(new View.OnClickListener() {
@@ -280,5 +281,10 @@ public class AttendanceActivity extends AppCompatActivity{
         attendanceAdapter=new AttendanceAdapter(displaylist,this,clickListener,longClickListener);
         subject_view.setAdapter(attendanceAdapter);
         subject_view.setLayoutManager(new LinearLayoutManager(this));
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(AttendanceActivity.this,MainActivity.class));
     }
 }

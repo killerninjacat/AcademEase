@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#5533bb">
+    android:background="#220033">
 
     <TextView
         android:id="@+id/titleindialog"
@@ -41,6 +41,7 @@
             android:textColor="@color/white"
             android:textSize="20dp" />
     </ScrollView>
+
     <Button
         android:id="@+id/close1"
         android:layout_width="48dp"
@@ -50,7 +51,7 @@
         android:background="@color/white"
         android:fontFamily="@font/russo_one"
         android:text="X"
-        android:textColor="#5533bb"
+        android:textColor="#220033"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

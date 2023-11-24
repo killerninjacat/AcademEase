@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.studentcompanion.R;
@@ -55,27 +56,30 @@ public class WhiteboardActivity extends AppCompatActivity {
 
     public void strokedialog()
     {
+        TextView sw;
         Button inc, dec, reset;
         final Dialog dialog = new Dialog(WhiteboardActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.stroke_selection);
-        dialog.getWindow().setLayout(500, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(650, ViewGroup.LayoutParams.WRAP_CONTENT);
         inc=dialog.findViewById(R.id.add);
         dec=dialog.findViewById(R.id.subtract);
+        sw=dialog.findViewById(R.id.sw);
         reset=dialog.findViewById(R.id.reset_stroke);
+        sw.setText("StrokeWidth: "+canvasActivity.getStrokeWidth());
         inc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 canvasActivity.modifyStrokeWidth(2);
-                Toast.makeText(WhiteboardActivity.this,"StrokeWidth: "+canvasActivity.getStrokeWidth(),Toast.LENGTH_SHORT).show();
+                sw.setText("StrokeWidth: "+canvasActivity.getStrokeWidth());
             }
         });
         dec.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 canvasActivity.modifyStrokeWidth(-2);
-                Toast.makeText(WhiteboardActivity.this,"StrokeWidth: "+canvasActivity.getStrokeWidth(),Toast.LENGTH_SHORT).show();
+                sw.setText("StrokeWidth: "+canvasActivity.getStrokeWidth());
             }
         });
         reset.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +87,7 @@ public class WhiteboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 canvasActivity.setStrokeWidth(6);
                 Toast.makeText(WhiteboardActivity.this,"StrokeWidth has been reset.",Toast.LENGTH_SHORT).show();
+                sw.setText("StrokeWidth: "+canvasActivity.getStrokeWidth());
             }
         });
         dialog.show();

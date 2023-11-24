@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentcompanion.ClickListener;
 import com.example.studentcompanion.LongClickListener;
 import com.example.studentcompanion.R;
-import com.example.studentcompanion.adapters.attendanceViewHolder;
-import com.example.studentcompanion.adapters.notesData;
 
 import java.util.Collections;
 import java.util.List;

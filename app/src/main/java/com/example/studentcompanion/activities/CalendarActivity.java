@@ -1,8 +1,5 @@
 package com.example.studentcompanion.activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.applandeo.materialcalendarview.CalendarDay;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.applandeo.materialcalendarview.CalendarView;
 import com.applandeo.materialcalendarview.EventDay;
 import com.applandeo.materialcalendarview.listeners.OnDayClickListener;
@@ -25,8 +24,6 @@ import com.example.studentcompanion.AttendanceData;
 import com.example.studentcompanion.DBHandler;
 import com.example.studentcompanion.R;
 import com.google.gson.Gson;
-
-import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,9 +37,9 @@ public class CalendarActivity extends AppCompatActivity {
     String currentSubject;
     private int attendedClasses,totalclasses;
     List<Calendar> highlightedDays;
+    List<String> attendedDates, allDates, absentDates;
     int exists,c,current_index;
-    Button at_settings,home;
-    List<String> subjectsList;
+    Button home;
     CalendarView calendar;
     List<Double>targetsList;
     int targetValue;
@@ -79,7 +76,6 @@ public class CalendarActivity extends AppCompatActivity {
                     present.setChecked(true);
                 else if (attendanceDataList.get(k).getAttended().equals("false"))
                     absent.setChecked(true);
-                Log.d("date","date: "+attendanceDataList.get(k).getAttended());
             }
         }
         save.setOnClickListener(new View.OnClickListener() {
@@ -90,13 +86,19 @@ public class CalendarActivity extends AppCompatActivity {
                 {
                     if(present.isChecked()) {
                         dbHandler.updateAttended(currentSubject, date, "true");
-                        if(att.equals("false"))
-                         attendedClasses++;
+                        if(att.equals("false")) {
+                            attendedClasses++;
+                            attendedDates.add(date);
+                            absentDates.remove(date);
+                        }
                     }
                     else if(absent.isChecked()) {
                         dbHandler.updateAttended(currentSubject, date, "false");
-                        if(att.equals("true"))
+                        if(att.equals("true")) {
                             attendedClasses--;
+                            absentDates.add(date);
+                            attendedDates.remove(date);
+                        }
                         Calendar highlightedDate = convertStringToCalendar(date);
                         highlightedDays.add(highlightedDate);
                     }
@@ -106,12 +108,16 @@ public class CalendarActivity extends AppCompatActivity {
                         dbHandler.addNewCourse(currentSubject, date, "true");
                         attendedClasses++;
                         totalclasses++;
+                        allDates.add(date);
+                        attendedDates.add(date);
                     }
                     else if (absent.isChecked()) {
                         dbHandler.addNewCourse(currentSubject, date, "false");
                         totalclasses++;
                         Calendar highlightedDate = convertStringToCalendar(date);
                         highlightedDays.add(highlightedDate);
+                        allDates.add(date);
+                        absentDates.add(date);
                     }
                     else {
                         Toast.makeText(CalendarActivity.this, "Were you present or absent?", Toast.LENGTH_SHORT).show();
@@ -131,7 +137,7 @@ public class CalendarActivity extends AppCompatActivity {
                         target.setTextColor(Color.parseColor("#cc0000"));
                         target.setText("Attend the next " + (int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) + " classes to achieve " + targetValue + "% attendance.");
                     }
-                        else {
+                    else {
                         target.setTextColor(Color.parseColor("#226622"));
                         target.setText("You have achieved your target of " + targetValue + "%! Keep up the good job!");
                     }
@@ -168,6 +174,10 @@ public class CalendarActivity extends AppCompatActivity {
                     exists=0;
                     present.setChecked(false);
                     absent.setChecked(false);
+                    allDates.remove(date);
+                    if(attendedDates.contains(date))
+                        attendedDates.remove(date);
+                    else absentDates.remove(date);
                 }
                 else Toast.makeText(CalendarActivity.this,"Entry does not exist!",Toast.LENGTH_SHORT).show();
             }
@@ -192,11 +202,13 @@ public class CalendarActivity extends AppCompatActivity {
         absentbox=(TextView) findViewById(R.id.absentclasses);
         subname1=(TextView) findViewById(R.id.subname1);
         target=(TextView) findViewById(R.id.target);
-        at_settings=(Button) findViewById(R.id.attendance_settings);
         subname1.setText(" "+getIntent().getStringExtra("sub")+" ");
         targetValue=(int)getIntent().getDoubleExtra("target_percentage",0.0);
         attendanceDataList=new ArrayList<>();
         targetsList=new ArrayList<>();
+        allDates = new ArrayList<>();
+        absentDates = new ArrayList<>();
+        attendedDates = new ArrayList<>();
         String json3=sp.getString("targets",null);
         targetsList=gson.fromJson(json3, ArrayList.class);
         if(targetsList==null)
@@ -226,11 +238,15 @@ public class CalendarActivity extends AppCompatActivity {
         for(int j=0;j<attendanceDataList.size();j++)
         {
             totalclasses++;
-            if(attendanceDataList.get(j).getAttended().equals("true"))
+            allDates.add(attendanceDataList.get(j).getDate());
+            if(attendanceDataList.get(j).getAttended().equals("true")) {
                 attendedClasses++;
+                attendedDates.add(attendanceDataList.get(j).getDate());
+            }
             else {
                 Calendar highlightedDate = convertStringToCalendar(attendanceDataList.get(j).getDate());
                 highlightedDays.add(highlightedDate);
+                absentDates.add(attendanceDataList.get(j).getDate());
             }
         }
         calendar.setHighlightedDays(highlightedDays);
@@ -238,6 +254,27 @@ public class CalendarActivity extends AppCompatActivity {
         totalbox.setText("Total Classes: "+totalclasses);
         presentbox.setText("Attended: "+attendedClasses);
         absentbox.setText("Absent: "+(totalclasses-attendedClasses));
+        totalbox.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(CalendarActivity.this,allDates.size()+"",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        presentbox.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(CalendarActivity.this,attendedDates.size()+"",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
+        absentbox.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                Toast.makeText(CalendarActivity.this,absentDates.size()+"",Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
         float f1=attendedClasses;
         double d1= (double) Math.round((f1 * 100 / totalclasses) * 100) / 100;
         current_percentage.setText(" " + d1 + "% ");
@@ -270,5 +307,10 @@ public class CalendarActivity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(CalendarActivity.this,AttendanceActivity.class));
     }
 }
