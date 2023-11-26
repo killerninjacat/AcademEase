@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="30dp"
         android:fontFamily="@font/moontank"
-        android:text="My Notes"
+        android:text="MY NOTES"
         android:textColor="@color/white"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"

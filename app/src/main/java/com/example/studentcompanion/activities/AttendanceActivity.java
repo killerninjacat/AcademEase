@@ -252,6 +252,7 @@ public class AttendanceActivity extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(AttendanceActivity.this,MainActivity.class));
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
         subject_view =(RecyclerView) findViewById(R.id.attendance_recycler_view);
@@ -270,6 +271,7 @@ public class AttendanceActivity extends AppCompatActivity{
                 i.putExtra("target_percentage",targetsList.get(index));
                 i.putExtra("sub_index",index);
                 startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         };
         longClickListener=new LongClickListener() {
@@ -286,5 +288,6 @@ public class AttendanceActivity extends AppCompatActivity{
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(AttendanceActivity.this,MainActivity.class));
+        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
     }
 }

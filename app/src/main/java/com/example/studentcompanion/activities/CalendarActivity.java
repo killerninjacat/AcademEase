@@ -261,6 +261,7 @@ public class CalendarActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(CalendarActivity.this,MainActivity.class));
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
         gson=new Gson();
@@ -295,25 +296,22 @@ public class CalendarActivity extends AppCompatActivity {
         totalbox.setText("Total Classes: "+totalclasses);
         presentbox.setText("Attended: "+attendedClasses);
         absentbox.setText("Absent: "+(totalclasses-attendedClasses));
-        totalbox.setOnLongClickListener(new View.OnLongClickListener() {
+        totalbox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 showDates(allDates,0);
-                return true;
             }
         });
-        presentbox.setOnLongClickListener(new View.OnLongClickListener() {
+        presentbox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 showDates(attendedDates,1);
-                return true;
             }
         });
-        absentbox.setOnLongClickListener(new View.OnLongClickListener() {
+        absentbox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View v) {
                 showDates(absentDates,2);
-                return true;
             }
         });
         float f1=attendedClasses;
@@ -353,5 +351,6 @@ public class CalendarActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(CalendarActivity.this,AttendanceActivity.class));
+        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
     }
 }

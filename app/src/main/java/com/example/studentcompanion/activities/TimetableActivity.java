@@ -3,6 +3,7 @@ package com.example.studentcompanion.activities;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -55,5 +56,11 @@ public class TimetableActivity extends AppCompatActivity {
         int initialTab = dayOfWeek - 1;
         Log.d("hour",Calendar.HOUR_OF_DAY+"");
         viewPager.setCurrentItem(initialTab);
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(TimetableActivity.this,MainActivity.class));
+        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
     }
 }

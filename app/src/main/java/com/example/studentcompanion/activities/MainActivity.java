@@ -19,15 +19,50 @@ import android.widget.Toast;
 import com.example.studentcompanion.R;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
+
+import nl.dionsegijn.konfetti.core.Angle;
+import nl.dionsegijn.konfetti.core.PartyFactory;
+import nl.dionsegijn.konfetti.core.Position;
+import nl.dionsegijn.konfetti.core.Spread;
+import nl.dionsegijn.konfetti.core.emitter.Emitter;
+import nl.dionsegijn.konfetti.core.emitter.EmitterConfig;
+import nl.dionsegijn.konfetti.core.models.Shape;
+import nl.dionsegijn.konfetti.core.models.Size;
+import nl.dionsegijn.konfetti.xml.KonfettiView;
 
 public class MainActivity extends AppCompatActivity {
     Button timetable,attendance, notes, wb, gh;
     int fresh;
+    private KonfettiView konfettiView;
     String name,name1;
     TextView welcome;
     private SharedPreferences sp;
     SharedPreferences.Editor editor;
     LocalDateTime current;
+    public void explode() {
+        EmitterConfig emitterConfig = new Emitter(100L, TimeUnit.MILLISECONDS).max(100);
+        konfettiView.start(
+                new PartyFactory(emitterConfig)
+                        .spread(360)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(0f, 30f)
+                        .position(new Position.Relative(0.5, 0.3))
+                        .build()
+        );
+        EmitterConfig emitterConfig1 = new Emitter(100L, TimeUnit.MILLISECONDS).max(50);
+        konfettiView.start(
+                new PartyFactory(emitterConfig1)
+                        .spread(360)
+                        .shapes(Arrays.asList(Shape.Square.INSTANCE, Shape.Circle.INSTANCE))
+                        .colors(Arrays.asList(0xfce18a, 0xff726d, 0xf4306d, 0xb48def))
+                        .setSpeedBetween(0f, 30f)
+                        .position(new Position.Relative(0.5, 0.3))
+                        .build()
+        );
+    }
     public void enterName()
     {
         EditText namebox;
@@ -74,8 +109,17 @@ public class MainActivity extends AppCompatActivity {
         timetable=(Button) findViewById(R.id.button);
         attendance=(Button) findViewById(R.id.button2);
         notes=(Button) findViewById(R.id.button3);
+        konfettiView = (KonfettiView) findViewById(R.id.konfettiView);
         wb=(Button) findViewById(R.id.button4);
         gh=(Button) findViewById(R.id.gh_link);
+        TextView madeWith = (TextView) findViewById(R.id.madeWith);
+        madeWith.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                explode();
+                return true;
+            }
+        });
         gh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent1);
             }
         });
+
         welcome=(TextView) findViewById(R.id.welcome);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             current=LocalDateTime.now();
@@ -111,6 +156,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(MainActivity.this, TimetableActivity.class);
                 startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
         attendance.setOnClickListener(new View.OnClickListener() {
@@ -118,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(MainActivity.this, AttendanceActivity.class);
                 startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
         notes.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +172,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(MainActivity.this, NotesActivity.class);
                 startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
         wb.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i=new Intent(MainActivity.this, WhiteboardActivity.class);
                 startActivity(i);
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
         welcome.setOnLongClickListener(new View.OnLongClickListener() {

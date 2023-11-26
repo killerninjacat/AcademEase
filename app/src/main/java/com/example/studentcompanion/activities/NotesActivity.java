@@ -258,6 +258,7 @@ public class NotesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(NotesActivity.this,MainActivity.class));
+                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
        notesAdapter =new NotesAdapter(displaylist,getApplication(),clickListener,longClickListener);
@@ -269,5 +270,11 @@ public class NotesActivity extends AppCompatActivity {
                 newNote();
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(NotesActivity.this,MainActivity.class));
+        overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
     }
 }
