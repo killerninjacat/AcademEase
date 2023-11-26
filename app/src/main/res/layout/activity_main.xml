@@ -81,6 +81,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <Button
+        android:visibility="invisible"
         android:id="@+id/gh_link"
         android:layout_width="50dp"
         android:layout_height="50dp"

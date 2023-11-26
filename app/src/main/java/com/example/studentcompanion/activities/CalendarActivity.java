@@ -9,7 +9,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +30,9 @@ import com.google.gson.Gson;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -48,6 +52,43 @@ public class CalendarActivity extends AppCompatActivity {
     List<AttendanceData> attendanceDataList;
     private SharedPreferences sp;
     TextView current_percentage,totalbox,presentbox,absentbox,subname1,target;
+    public void showDates(List<String> dates1, int id)
+    {
+        List<String> temp = new ArrayList<>(dates1);
+        for(int i=0;i<temp.size();i++)
+        {
+            String[] parts = temp.get(i).split("-");
+            String day = parts[0];
+            String month = parts[1];
+            String year = parts[2];
+            temp.set(i,year+"-"+month+"-"+day);
+        }
+        Collections.sort(temp);
+        for(int i=0;i<temp.size();i++)
+        {
+            String[] parts = temp.get(i).split("-");
+            String day = parts[2];
+            String month = parts[1];
+            String year = parts[0];
+            temp.set(i,day+"-"+month+"-"+year);
+        }
+        final Dialog dialog = new Dialog(CalendarActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.dates_view);
+        dialog.getWindow().setLayout(750, 750);
+        ListView listView=dialog.findViewById(R.id.listView);
+        TextView textView = dialog.findViewById(R.id.textView);
+        if(id==0)
+            textView.setText(" ALL DATES ");
+        else if(id==1)
+            textView.setText(" ATTENDED DATES ");
+        else if(id==2)
+            textView.setText(" ABSENT DATES ");
+        ArrayAdapter<String> arrayAdapter=new ArrayAdapter<String>(CalendarActivity.this,R.layout.each_date,R.id.eachdate1,temp);
+        listView.setAdapter(arrayAdapter);
+        dialog.show();
+    }
     public void setAttendance(String date)
     {
         RadioButton present,absent;
@@ -257,21 +298,21 @@ public class CalendarActivity extends AppCompatActivity {
         totalbox.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(CalendarActivity.this,allDates.size()+"",Toast.LENGTH_SHORT).show();
+                showDates(allDates,0);
                 return true;
             }
         });
         presentbox.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(CalendarActivity.this,attendedDates.size()+"",Toast.LENGTH_SHORT).show();
+                showDates(attendedDates,1);
                 return true;
             }
         });
         absentbox.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Toast.makeText(CalendarActivity.this,absentDates.size()+"",Toast.LENGTH_SHORT).show();
+                showDates(absentDates,2);
                 return true;
             }
         });
