@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,10 +33,21 @@ public class DBHandler extends SQLiteOpenHelper {
     }
     public void updateName(String newName,String oldName)
     {
+        Log.d("UpdateName", "Old Name: " + oldName);
+        Log.d("UpdateName", "New Name: " + newName);
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NAME_COL,newName);
-        db.update(TABLE_NAME,values,NAME_COL+"=?", new String[]{oldName});
+        String whereClause = NAME_COL + "=?";
+        String[] whereArgs = {oldName};
+        db.update(TABLE_NAME,values,whereClause,whereArgs);
+        int rowsUpdated = db.update(TABLE_NAME, values, NAME_COL + "=?", new String[]{oldName});
+        if (rowsUpdated == 0) {
+            Log.e("UpdateName", "Update failed. No rows were updated.");
+        }
+        else {
+            Log.e("UpdateName", "Update successful. Rows updated: " + rowsUpdated);
+        }
         db.close();
     }
     public void updateAttended(String subjectName, String date, String newAttended)

@@ -2,20 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
-
+    android:background="#0f5859">
 
     <TextView
-        android:id="@+id/each_subject_box"
-        android:layout_width="500dp"
+        android:id="@+id/eachdate1"
+        android:layout_width="750dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
-        android:layout_marginBottom="15dp"
         android:layout_weight="1"
-        android:background="@drawable/blue_rounded"
+        android:fontFamily="@font/iron"
         android:textAlignment="center"
-        android:textColor="@color/black"
-        android:textSize="27dp" />
-
+        android:textColor="@color/white"
+        android:textSize="21sp" />
 
 </LinearLayout>

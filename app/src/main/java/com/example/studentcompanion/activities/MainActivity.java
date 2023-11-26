@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -20,7 +21,7 @@ import com.example.studentcompanion.R;
 import java.time.LocalDateTime;
 
 public class MainActivity extends AppCompatActivity {
-    Button timetable,attendance, notes, wb;
+    Button timetable,attendance, notes, wb, gh;
     int fresh;
     String name,name1;
     TextView welcome;
@@ -74,6 +75,15 @@ public class MainActivity extends AppCompatActivity {
         attendance=(Button) findViewById(R.id.button2);
         notes=(Button) findViewById(R.id.button3);
         wb=(Button) findViewById(R.id.button4);
+        gh=(Button) findViewById(R.id.gh_link);
+        gh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("https://github.com/killerninjacat/StudentCompanion");
+                Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent1);
+            }
+        });
         welcome=(TextView) findViewById(R.id.welcome);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             current=LocalDateTime.now();
@@ -131,5 +141,8 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
     }
 }

@@ -21,6 +21,7 @@ import com.example.studentcompanion.LongClickListener;
 import com.example.studentcompanion.adapters.AttendanceAdapter;
 import com.example.studentcompanion.ClickListener;
 import com.example.studentcompanion.R;
+import com.example.studentcompanion.adapters.TimetableAdapter;
 import com.example.studentcompanion.adapters.notesData;
 import com.google.gson.Gson;
 
@@ -32,7 +33,7 @@ public class ThursdayFragment extends Fragment {
     List<String> classes;
     List<Double> times;
     Button new_class;
-    AttendanceAdapter attendanceAdapter;
+    TimetableAdapter timetableAdapter;
     RecyclerView recyclerView;
     private SharedPreferences sp;
     Gson gson;
@@ -58,7 +59,7 @@ public class ThursdayFragment extends Fragment {
                 classes.remove(index);
                 times.remove(index);
                 displaylist.remove(index);
-                attendanceAdapter.notifyDataSetChanged();
+                timetableAdapter.notifyDataSetChanged();
                 String json=gson.toJson(classes);
                 String json1=gson.toJson(times);
                 SharedPreferences.Editor editor=sp.edit();
@@ -149,7 +150,7 @@ public class ThursdayFragment extends Fragment {
                     int minutes=(int)(times.get(k)%60);
                     displaylist.add(new notesData(classes.get(k), ""+hour+":"+minutes));
                 }
-                attendanceAdapter.notifyDataSetChanged();
+                timetableAdapter.notifyDataSetChanged();
                 String json=gson.toJson(classes);
                 String json1=gson.toJson(times);
                 editor.putString("thursdayClasses",json);
@@ -199,7 +200,7 @@ public class ThursdayFragment extends Fragment {
                     int minutes=(int)(times.get(k)%60);
                     displaylist.add(new notesData(classes.get(k), ""+hour+":"+minutes));
                 }
-                attendanceAdapter.notifyDataSetChanged();
+                timetableAdapter.notifyDataSetChanged();
                 String json=gson.toJson(classes);
                 String json1=gson.toJson(times);
                 editor.putString("thursdayClasses",json);
@@ -260,8 +261,8 @@ public class ThursdayFragment extends Fragment {
                 editdeletedialog(index);
             }
         };
-        attendanceAdapter=new AttendanceAdapter(displaylist,getContext(),clickListener,longClickListener);
-        recyclerView.setAdapter(attendanceAdapter);
+        timetableAdapter =new TimetableAdapter(displaylist,getContext(),clickListener,longClickListener);
+        recyclerView.setAdapter(timetableAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         new_class.setOnClickListener(new View.OnClickListener() {
             @Override
