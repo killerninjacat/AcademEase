@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -94,8 +95,9 @@ public class MainActivity extends AppCompatActivity {
                             welcome.setText("GOOD AFTERNOON, "+name+"!");
                         else if(current.getHour()>15&&current.getHour()<=20)
                             welcome.setText("GOOD EVENING, "+name+"!");
-                        else if(current.getHour()>20&&current.getHour()<=23) welcome.setText("GOOD NIGHT, "+name1+"!");
+                        else if(current.getHour()>20&&current.getHour()<=23) welcome.setText("GOOD NIGHT, "+name+"!");
                         else welcome.setText("SLEEP WELL! DON'T STAY UP TOO LATE, "+name+"!");
+                        Log.d("name",name);
                     }
                     editor.putInt("newUser",fresh);
                     editor.apply();
@@ -152,23 +154,27 @@ public class MainActivity extends AppCompatActivity {
             current=LocalDateTime.now();
         }
         sp = getSharedPreferences("com.example.studentcompanion", 0);
-        name1=sp.getString("username","User");
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            if(current.getHour()>=5&&current.getHour()<=11)
-                welcome.setText("GOOD MORNING, "+name1+"!");
-            else if(current.getHour()>=11&&current.getHour()<=15)
-                welcome.setText("GOOD AFTERNOON, "+name1+"!");
-            else if(current.getHour()>15&&current.getHour()<=20)
-                welcome.setText("GOOD EVENING, "+name1+"!");
-            else if(current.getHour()>20&&current.getHour()<=23) welcome.setText("GOOD NIGHT, "+name1+"!");
-            else welcome.setText("SLEEP WELL! DON'T STAY UP TOO LATE, "+name1+"!");
-        }
-        editor = sp.edit();
         fresh=sp.getInt("newUser",0);
         if(fresh==0)
         {
             enterName();
         }
+        else {
+            name1 = sp.getString("username", "User");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                if (current.getHour() >= 5 && current.getHour() <= 11)
+                    welcome.setText("GOOD MORNING, " + name1 + "!");
+                else if (current.getHour() >= 11 && current.getHour() <= 15)
+                    welcome.setText("GOOD AFTERNOON, " + name1 + "!");
+                else if (current.getHour() > 15 && current.getHour() <= 20)
+                    welcome.setText("GOOD EVENING, " + name1 + "!");
+                else if (current.getHour() > 20 && current.getHour() <= 23)
+                    welcome.setText("GOOD NIGHT, " + name1 + "!");
+                else welcome.setText("SLEEP WELL! DON'T STAY UP TOO LATE, " + name1 + "!");
+                Log.d("name1", name1);
+            }
+        }
+        editor = sp.edit();
         timetable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
