@@ -101,7 +101,7 @@ public class CalendarActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.set_attendance);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setLayout(750, ViewGroup.LayoutParams.WRAP_CONTENT);
         present=dialog.findViewById(R.id.presentButton);
         date_display=dialog.findViewById(R.id.date_display);
         del=dialog.findViewById(R.id.del_day);
@@ -131,6 +131,8 @@ public class CalendarActivity extends AppCompatActivity {
                             attendedClasses++;
                             attendedDates.add(date);
                             absentDates.remove(date);
+                            Calendar highlightedDate = convertStringToCalendar(date);
+                            highlightedDays.remove(highlightedDate);
                         }
                     }
                     else if(absent.isChecked()) {
@@ -218,7 +220,12 @@ public class CalendarActivity extends AppCompatActivity {
                     allDates.remove(date);
                     if(attendedDates.contains(date))
                         attendedDates.remove(date);
-                    else absentDates.remove(date);
+                    else {
+                        absentDates.remove(date);
+                        Calendar highlightedDate1 = convertStringToCalendar(date);
+                        highlightedDays.remove(highlightedDate1);
+                        calendar.setHighlightedDays(highlightedDays);
+                    }
                 }
                 else Toast.makeText(CalendarActivity.this,"Entry does not exist!",Toast.LENGTH_SHORT).show();
             }

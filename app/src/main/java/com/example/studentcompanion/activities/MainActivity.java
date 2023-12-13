@@ -19,7 +19,9 @@ import android.widget.Toast;
 import com.example.studentcompanion.R;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import nl.dionsegijn.konfetti.core.Angle;
@@ -36,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     Button timetable,attendance, notes, wb, gh;
     int fresh;
     private KonfettiView konfettiView;
+    List<String> tips;
     String name,name1;
     TextView welcome;
     private SharedPreferences sp;
@@ -113,10 +116,25 @@ public class MainActivity extends AppCompatActivity {
         wb=(Button) findViewById(R.id.button4);
         gh=(Button) findViewById(R.id.gh_link);
         TextView madeWith = (TextView) findViewById(R.id.madeWith);
+        tips = new ArrayList<>();
+        tips.add("Report bugs and share your thoughts at nithin27balan@gmail.com.");
+        tips.add("Long press the welcome message to edit your name.");
+        tips.add("Feel free to share the app with your friends!");
+        tips.add("Have you tried out the widget yet?");
+        tips.add("Tap the number of classes in the calendar page to view your dates.");
+        tips.add("Most list items and text items are long-clickable.");
+        tips.add("Heads up! Uninstalling erases all your local data.");
+        tips.add("Coming soon: Feature to organize PDFs within the app.");
+        tips.add("Tip: You can save your doodle by clicking on the save icon.");
+        tips.add("Long press a subject in the attendance page to edit.");
+        tips.add("Fork the project on GitHub to contribute!");
+        tips.add("Long press a subject in the timetable page to edit.");
+        tips.add("Long press a note in the notes page to edit the content.");
         madeWith.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 explode();
+                Toast.makeText(MainActivity.this,tips.get((int)(Math.random()*tips.size())),Toast.LENGTH_SHORT).show();
                 return true;
             }
         });

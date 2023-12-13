@@ -65,7 +65,7 @@
         android:id="@+id/del_day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/red1_rounded"
         android:fontFamily="@font/russo_one"
         android:text="DELETE"
