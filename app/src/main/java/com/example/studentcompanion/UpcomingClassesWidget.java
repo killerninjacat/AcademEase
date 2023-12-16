@@ -35,149 +35,208 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
         List<String> classes=new ArrayList<>();
         List<Double> times=new ArrayList<>();
         int hour,min=0,f=0;
+        int currentMinute;
         Gson gson=new Gson();
 
-        switch (day)
-        {
+        switch (day) {
             case Calendar.SUNDAY:
-                classes=gson.fromJson(sp1.getString("sundayClasses",null),ArrayList.class);
-                times=gson.fromJson(sp1.getString("sundayTimes",null),ArrayList.class);
-                if(classes==null)
-                    classes=new ArrayList<>();
-                if(times==null)
-                    times=new ArrayList<>();
-                hour=calendar.get(Calendar.HOUR_OF_DAY);
-                Log.d("hour","hour: "+hour);
-                min=0;
-                for(int i=times.size()-1;i>=0;i--)
-                {
-                    if(times.get(i)/60-hour>=0) {
-                        min = i;
-                        f=1;
+                classes = gson.fromJson(sp1.getString("sundayClasses", null), ArrayList.class);
+                times = gson.fromJson(sp1.getString("sundayTimes", null), ArrayList.class);
+                if (classes == null)
+                    classes = new ArrayList<>();
+                if (times == null)
+                    times = new ArrayList<>();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                currentMinute = calendar.get(Calendar.MINUTE);
+                min = 0;
+                for (int i = times.size() - 1; i >= 0; i--) {
+                    if (times.get(i) / 60 - hour >= 0) {
+                        if (times.get(i) % 60 - currentMinute >= 0) {
+                            min = i;
+                            f = 1;
+                        }
                     }
                 }
-                if(f==0)
-                    views.setTextViewText(R.id.appwidget_text,"No more classes today!");
+                if (f == 0)
+                {
+                    views.setTextViewText(R.id.appwidget_text, "No more classes today!");
+                    Intent intent = new Intent(context, UpcomingClassesWidget.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.cancel(pendingIntent);
+                    }
+                }
                 else {
-                    int h=(int)(times.get(min)/60);
-                    int m=(int)(times.get(min)%60);
-                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h+ ":" + m);
+                    int h = (int) (times.get(min) / 60);
+                    int m = (int) (times.get(min) % 60);
+                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h + ":" + m);
                 }
                 break;
             case Calendar.MONDAY:
-                classes=gson.fromJson(sp1.getString("mondayClasses",null),ArrayList.class);
-                times=gson.fromJson(sp1.getString("mondayTimes",null),ArrayList.class);
-                if(classes==null)
-                    classes=new ArrayList<>();
-                if(times==null)
-                    times=new ArrayList<>();
-                hour=calendar.get(Calendar.HOUR_OF_DAY);
-                min=0;
-                for(int i=times.size()-1;i>=0;i--)
-                {
-                    if(times.get(i)/60-hour>=0) {
-                        min = i;
-                        f=1;
+                classes = gson.fromJson(sp1.getString("mondayClasses", null), ArrayList.class);
+                times = gson.fromJson(sp1.getString("mondayTimes", null), ArrayList.class);
+                if (classes == null)
+                    classes = new ArrayList<>();
+                if (times == null)
+                    times = new ArrayList<>();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                currentMinute = calendar.get(Calendar.MINUTE);
+                min = 0;
+                for (int i = times.size() - 1; i >= 0; i--) {
+                    if (times.get(i) / 60 - hour >= 0) {
+                        if (times.get(i) % 60 - currentMinute >= 0) {
+                            min = i;
+                            f = 1;
+                        }
                     }
                 }
-                if(f==0)
-                    views.setTextViewText(R.id.appwidget_text,"No more classes today!");
+                if (f == 0)
+                {
+                    views.setTextViewText(R.id.appwidget_text, "No more classes today!");
+                    Intent intent = new Intent(context, UpcomingClassesWidget.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.cancel(pendingIntent);
+                    }
+                }
                 else {
-                    int h=(int)(times.get(min)/60);
-                    int m=(int)(times.get(min)%60);
-                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h+ ":" + m);
+                    int h = (int) (times.get(min) / 60);
+                    int m = (int) (times.get(min) % 60);
+                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h + ":" + m);
                 }
                 break;
             case Calendar.TUESDAY:
-                classes=gson.fromJson(sp1.getString("tuesdayClasses",null),ArrayList.class);
-                times=gson.fromJson(sp1.getString("tuesdayTimes",null),ArrayList.class);
-                if(classes==null)
-                    classes=new ArrayList<>();
-                if(times==null)
-                    times=new ArrayList<>();
-                hour=calendar.get(Calendar.HOUR_OF_DAY);
-                min=0;
-                for(int i=times.size()-1;i>=0;i--)
-                {
-                    if(times.get(i)/60-hour>=0) {
+                classes = gson.fromJson(sp1.getString("tuesdayClasses", null), ArrayList.class);
+                times = gson.fromJson(sp1.getString("tuesdayTimes", null), ArrayList.class);
+                if (classes == null)
+                    classes = new ArrayList<>();
+                if (times == null)
+                    times = new ArrayList<>();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                currentMinute = calendar.get(Calendar.MINUTE);
+                min = 0;
+                for (int i = times.size() - 1; i >= 0; i--) {
+                    if (times.get(i) / 60 - hour >= 0) {
+                        if (times.get(i) % 60 - currentMinute >= 0) {
                             min = i;
-                            f=1;
+                            f = 1;
+                        }
                     }
                 }
-                if(f==0)
-                    views.setTextViewText(R.id.appwidget_text,"No more classes today!");
+                if (f == 0)
+                {
+                    views.setTextViewText(R.id.appwidget_text, "No more classes today!");
+                    Intent intent = new Intent(context, UpcomingClassesWidget.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.cancel(pendingIntent);
+                    }
+                }
                 else {
-                    int h=(int)(times.get(min)/60);
-                    int m=(int)(times.get(min)%60);
-                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h+ ":" + m);
+                    int h = (int) (times.get(min) / 60);
+                    int m = (int) (times.get(min) % 60);
+                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h + ":" + m);
                 }
                 break;
             case Calendar.WEDNESDAY:
-                classes=gson.fromJson(sp1.getString("wednesdayClasses",null),ArrayList.class);
-                times=gson.fromJson(sp1.getString("wednesdayTimes",null),ArrayList.class);
-                if(classes==null)
-                    classes=new ArrayList<>();
-                if(times==null)
-                    times=new ArrayList<>();
-                hour=calendar.get(Calendar.HOUR_OF_DAY);
-                min=0;
-                for(int i=times.size()-1;i>=0;i--)
-                {
-                    if(times.get(i)/60-hour>=0) {
-                        min = i;
-                        f=1;
+                classes = gson.fromJson(sp1.getString("wednesdayClasses", null), ArrayList.class);
+                times = gson.fromJson(sp1.getString("wednesdayTimes", null), ArrayList.class);
+                if (classes == null)
+                    classes = new ArrayList<>();
+                if (times == null)
+                    times = new ArrayList<>();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                currentMinute = calendar.get(Calendar.MINUTE);
+                min = 0;
+                for (int i = times.size() - 1; i >= 0; i--) {
+                    if (times.get(i) / 60 - hour >= 0) {
+                        if (times.get(i) % 60 - currentMinute >= 0) {
+                            min = i;
+                            f = 1;
+                        }
                     }
                 }
-                if(f==0)
-                    views.setTextViewText(R.id.appwidget_text,"No more classes today!");
+                if (f == 0)
+                {
+                    views.setTextViewText(R.id.appwidget_text, "No more classes today!");
+                    Intent intent = new Intent(context, UpcomingClassesWidget.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.cancel(pendingIntent);
+                    }
+                }
                 else {
-                    int h=(int)(times.get(min)/60);
-                    int m=(int)(times.get(min)%60);
-                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h+ ":" + m);
+                    int h = (int) (times.get(min) / 60);
+                    int m = (int) (times.get(min) % 60);
+                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h + ":" + m);
                 }
                 break;
             case Calendar.THURSDAY:
-                classes=gson.fromJson(sp1.getString("thursdayClasses",null),ArrayList.class);
-                times=gson.fromJson(sp1.getString("thursdayTimes",null),ArrayList.class);
-                if(classes==null)
-                    classes=new ArrayList<>();
-                if(times==null)
-                    times=new ArrayList<>();
-                hour=calendar.get(Calendar.HOUR_OF_DAY);
-                min=0;
-                for(int i=times.size()-1;i>=0;i--)
-                {
-                    if(times.get(i)/60-hour>=0) {
-                        min = i;
-                        f=1;
+                classes = gson.fromJson(sp1.getString("thursdayClasses", null), ArrayList.class);
+                times = gson.fromJson(sp1.getString("thursdayTimes", null), ArrayList.class);
+                if (classes == null)
+                    classes = new ArrayList<>();
+                if (times == null)
+                    times = new ArrayList<>();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                currentMinute = calendar.get(Calendar.MINUTE);
+                min = 0;
+                for (int i = times.size() - 1; i >= 0; i--) {
+                    if (times.get(i) / 60 - hour >= 0) {
+                        if (times.get(i) % 60 - currentMinute >= 0) {
+                            min = i;
+                            f = 1;
+                        }
                     }
                 }
-                if(f==0)
-                    views.setTextViewText(R.id.appwidget_text,"No more classes today!");
+                if (f == 0)
+                {
+                    views.setTextViewText(R.id.appwidget_text, "No more classes today!");
+                    Intent intent = new Intent(context, UpcomingClassesWidget.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.cancel(pendingIntent);
+                    }
+                }
                 else {
-                    int h=(int)(times.get(min)/60);
-                    int m=(int)(times.get(min)%60);
-                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h+ ":" + m);
+                    int h = (int) (times.get(min) / 60);
+                    int m = (int) (times.get(min) % 60);
+                    views.setTextViewText(R.id.appwidget_text, classes.get(min) + " at " + h + ":" + m);
                 }
                 break;
             case Calendar.FRIDAY:
-                classes=gson.fromJson(sp1.getString("fridayClasses",null),ArrayList.class);
-                times=gson.fromJson(sp1.getString("fridayTimes",null),ArrayList.class);
-                if(classes==null)
-                    classes=new ArrayList<>();
-                if(times==null)
-                    times=new ArrayList<>();
-                hour=calendar.get(Calendar.HOUR_OF_DAY);
-                min=0;
-                for(int i=times.size()-1;i>=0;i--)
-                {
-                    if(times.get(i)/60-hour>=0) {
-                        min = i;
-                        f=1;
+                classes = gson.fromJson(sp1.getString("fridayClasses", null), ArrayList.class);
+                times = gson.fromJson(sp1.getString("fridayTimes", null), ArrayList.class);
+                if (classes == null)
+                    classes = new ArrayList<>();
+                if (times == null)
+                    times = new ArrayList<>();
+                hour = calendar.get(Calendar.HOUR_OF_DAY);
+                currentMinute = calendar.get(Calendar.MINUTE);
+                min = 0;
+                for (int i = times.size() - 1; i >= 0; i--) {
+                    if (times.get(i) / 60 - hour >= 0) {
+                        if (times.get(i) % 60 - currentMinute >= 0) {
+                            min = i;
+                            f = 1;
+                        }
                     }
                 }
-                if(f==0)
-                    views.setTextViewText(R.id.appwidget_text,"No more classes today!");
+                if (f == 0)
+                {
+                    views.setTextViewText(R.id.appwidget_text, "No more classes today!");
+                    Intent intent = new Intent(context, UpcomingClassesWidget.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.cancel(pendingIntent);
+                    }
+                }
                 else {
                     int h=(int)(times.get(min)/60);
                     int m=(int)(times.get(min)%60);
@@ -192,16 +251,27 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 if(times==null)
                     times=new ArrayList<>();
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
+                currentMinute=calendar.get(Calendar.MINUTE);
                 min=0;
                 for(int i=times.size()-1;i>=0;i--)
                 {
                     if(times.get(i)/60-hour>=0) {
-                        min = i;
-                        f=1;
+                        if(times.get(i)%60-currentMinute>=0) {
+                            min = i;
+                            f = 1;
+                        }
                     }
                 }
-                if(f==0)
-                    views.setTextViewText(R.id.appwidget_text,"No more classes today!");
+                if (f == 0)
+                {
+                    views.setTextViewText(R.id.appwidget_text, "No more classes today!");
+                    Intent intent = new Intent(context, UpcomingClassesWidget.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                    if (alarmManager != null) {
+                        alarmManager.cancel(pendingIntent);
+                    }
+                }
                 else {
                     int h=(int)(times.get(min)/60);
                     int m=(int)(times.get(min)%60);
@@ -218,6 +288,14 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
+        }
+        Intent intent = new Intent(context, UpcomingClassesWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager != null) {
+            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 900000, pendingIntent);
         }
     }
 
