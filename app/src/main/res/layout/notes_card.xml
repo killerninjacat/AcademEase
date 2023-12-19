@@ -11,10 +11,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
         android:layout_marginTop="10dp"
-        android:fontFamily="@font/prompt_semibold"
+        android:fontFamily="@font/iron"
+        android:textStyle="bold"
         android:text="Title"
         android:textColor="#eeccff"
-        android:textSize="24dp"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,12 +25,12 @@
         android:layout_height="35dp"
         android:layout_marginStart="50dp"
         android:layout_marginTop="20dp"
-        android:fontFamily="@font/prompt"
+        android:fontFamily="@font/iron"
         android:scrollbars="vertical"
         android:text="Description"
         android:textAlignment="viewStart"
         android:textColor="#eeccff"
-        android:textSize="20dp"
+        android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note_title" />
 

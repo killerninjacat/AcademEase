@@ -6,7 +6,7 @@ The Student Companion App is a versatile Android application designed to help st
 ## Features
 - **Timetable Creation:** Create and manage daily timetables to keep track of your classes and other activities.
 - **Attendance Tracker:** Easily mark and monitor your attendance for each course, and view the dates you were present and absent.
-- **Note-taking:** Take notes during classes, and keep all your study materials organized within the app.
+- **Note-taking:** Jot down important information and save it for later reference.
 - **Virtual Whiteboard:** Utilize a digital whiteboard for brainstorming, diagrams, and sketching.
 - **Upcoming Class Widget:** A widget on your home screen displays your upcoming class schedule at a glance.
 
@@ -27,11 +27,13 @@ Or alternatively, if you want to build from source,
 3. Build and run the app on your Android device or emulator.
 
 ## Usage
-1. Launch the app and create your timetable.
-2. Add courses and mark your attendance.
-3. Use the note-taking feature to jot down important information.
-4. Access the virtual whiteboard for creative work.
-5. Add the upcoming class widget to your home screen for quick reference.
+1. Launch the app and create your timetable for each day.
+2. Add courses, set your target attendance for each course and mark your attendance.
+3. View your attendance statistics and the dates you were present and absent by clicking the labels below the calendar.
+4. Use the note-taking feature to jot down important information.
+5. Access the virtual whiteboard for creative work.
+6. Add the upcoming class widget to your home screen for quick reference.
+7. Tip: The timetable list and attendance list are long-clickable. Long-click on an item to edit or delete it.
 
 ## Contact
 If you have any questions or suggestions, please contact me at [nithin27balan@gmail.com](mailto:nithin27balan@gmail.com).
