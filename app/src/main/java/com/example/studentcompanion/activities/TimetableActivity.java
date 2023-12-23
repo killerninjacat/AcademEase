@@ -6,6 +6,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.studentcompanion.R;
 import com.example.studentcompanion.adapters.TabPagerAdapter;
@@ -22,7 +26,6 @@ public class TimetableActivity extends AppCompatActivity {
         setContentView(R.layout.activity_timetable);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
-
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(this);
         viewPager.setAdapter(tabPagerAdapter);
         new TabLayoutMediator(tabLayout, viewPager,
@@ -54,7 +57,6 @@ public class TimetableActivity extends AppCompatActivity {
         Calendar calendar = Calendar.getInstance();
         int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
         int initialTab = dayOfWeek - 1;
-        Log.d("hour",Calendar.HOUR_OF_DAY+"");
         viewPager.setCurrentItem(initialTab);
     }
     @Override

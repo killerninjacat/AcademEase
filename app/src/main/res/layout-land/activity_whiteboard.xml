@@ -10,11 +10,11 @@
         android:layout_height="match_parent">
         <Button
             android:id="@+id/save_img"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_gravity="right"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="end"
             android:background="@drawable/save" />
 
     </FrameLayout>

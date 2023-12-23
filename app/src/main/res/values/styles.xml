@@ -2,7 +2,7 @@
 <resources>
 
     <style name="CustomTabText" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">14dp</item>
         <item name="fontFamily">@font/russo_one</item>
     </style>
 

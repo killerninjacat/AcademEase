@@ -1,6 +1,7 @@
 package com.example.studentcompanion.dayfragments;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -16,8 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.studentcompanion.LongClickListener;
+import com.example.studentcompanion.activities.MainActivity;
 import com.example.studentcompanion.adapters.AttendanceAdapter;
 import com.example.studentcompanion.ClickListener;
 import com.example.studentcompanion.R;
@@ -32,7 +35,7 @@ public class TuesdayFragment extends Fragment {
     List<notesData> displaylist;
     List<String> classes;
     List<Double> times;
-    Button new_class;
+    Button new_class,home;
     TimetableAdapter timetableAdapter;
     RecyclerView recyclerView;
     private SharedPreferences sp;
@@ -126,37 +129,41 @@ public class TuesdayFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                classes.remove(index);
-                times.remove(index);
-                classes.add(newsubjectbox.getText().toString());
-                int timeInMinutes=timePicker.getHour()*60+timePicker.getMinute();
-                times.add(Double.parseDouble(timeInMinutes+""));
-                for(int i=0;i<classes.size();i++) {
-                    int min=i;
-                    for (int j = i + 1; j < classes.size(); j++)
-                        if (times.get(j) < times.get(min)) {
-                            min=j;
-                        }
-                    Double temp = times.get(i);
-                    String tm = classes.get(i);
-                    times.set(i, times.get(min));
-                    classes.set(i, classes.get(min));
-                    times.set(min, temp);
-                    classes.set(min, tm);
+                if (newsubjectbox.getText().toString().equals(""))
+                    Toast.makeText(getContext(), "Please enter a subject name", Toast.LENGTH_SHORT).show();
+                else {
+                    classes.remove(index);
+                    times.remove(index);
+                    classes.add(newsubjectbox.getText().toString());
+                    int timeInMinutes = timePicker.getHour() * 60 + timePicker.getMinute();
+                    times.add(Double.parseDouble(timeInMinutes + ""));
+                    for (int i = 0; i < classes.size(); i++) {
+                        int min = i;
+                        for (int j = i + 1; j < classes.size(); j++)
+                            if (times.get(j) < times.get(min)) {
+                                min = j;
+                            }
+                        Double temp = times.get(i);
+                        String tm = classes.get(i);
+                        times.set(i, times.get(min));
+                        classes.set(i, classes.get(min));
+                        times.set(min, temp);
+                        classes.set(min, tm);
+                    }
+                    displaylist.clear();
+                    for (int k = 0; k < classes.size(); k++) {
+                        int hour = (int) (times.get(k) / 60);
+                        int minutes = (int) (times.get(k) % 60);
+                        displaylist.add(new notesData(classes.get(k), "" + hour + ":" + minutes));
+                    }
+                    timetableAdapter.notifyDataSetChanged();
+                    String json = gson.toJson(classes);
+                    String json1 = gson.toJson(times);
+                    editor.putString("tuesdayClasses", json);
+                    editor.putString("tuesdayTimes", json1);
+                    editor.apply();
+                    dialog.dismiss();
                 }
-                displaylist.clear();
-                for(int k=0;k<classes.size();k++) {
-                    int hour=(int)(times.get(k)/60);
-                    int minutes=(int)(times.get(k)%60);
-                    displaylist.add(new notesData(classes.get(k), ""+hour+":"+minutes));
-                }
-                timetableAdapter.notifyDataSetChanged();
-                String json=gson.toJson(classes);
-                String json1=gson.toJson(times);
-                editor.putString("tuesdayClasses",json);
-                editor.putString("tuesdayTimes",json1);
-                editor.apply();
-                dialog.dismiss();
             }
         });
         dialog.show();
@@ -178,35 +185,39 @@ public class TuesdayFragment extends Fragment {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                classes.add(newsubjectbox.getText().toString());
-                int timeInMinutes=timePicker.getHour()*60+timePicker.getMinute();
-                times.add(Double.parseDouble(timeInMinutes+""));
-                for(int i=0;i<classes.size();i++) {
-                    int min=i;
-                    for (int j = i + 1; j < classes.size(); j++)
-                        if (times.get(j) < times.get(min)) {
-                            min=j;
-                        }
-                    Double temp = times.get(i);
-                    String tm = classes.get(i);
-                    times.set(i, times.get(min));
-                    classes.set(i, classes.get(min));
-                    times.set(min, temp);
-                    classes.set(min, tm);
+                if (newsubjectbox.getText().toString().equals(""))
+                    Toast.makeText(getContext(), "Please enter a subject name", Toast.LENGTH_SHORT).show();
+                else {
+                    classes.add(newsubjectbox.getText().toString());
+                    int timeInMinutes = timePicker.getHour() * 60 + timePicker.getMinute();
+                    times.add(Double.parseDouble(timeInMinutes + ""));
+                    for (int i = 0; i < classes.size(); i++) {
+                        int min = i;
+                        for (int j = i + 1; j < classes.size(); j++)
+                            if (times.get(j) < times.get(min)) {
+                                min = j;
+                            }
+                        Double temp = times.get(i);
+                        String tm = classes.get(i);
+                        times.set(i, times.get(min));
+                        classes.set(i, classes.get(min));
+                        times.set(min, temp);
+                        classes.set(min, tm);
+                    }
+                    displaylist.clear();
+                    for (int k = 0; k < classes.size(); k++) {
+                        int hour = (int) (times.get(k) / 60);
+                        int minutes = (int) (times.get(k) % 60);
+                        displaylist.add(new notesData(classes.get(k), "" + hour + ":" + minutes));
+                    }
+                    timetableAdapter.notifyDataSetChanged();
+                    String json = gson.toJson(classes);
+                    String json1 = gson.toJson(times);
+                    editor.putString("tuesdayClasses", json);
+                    editor.putString("tuesdayTimes", json1);
+                    editor.apply();
+                    dialog.dismiss();
                 }
-                displaylist.clear();
-                for(int k=0;k<classes.size();k++) {
-                    int hour=(int)(times.get(k)/60);
-                    int minutes=(int)(times.get(k)%60);
-                    displaylist.add(new notesData(classes.get(k), ""+hour+":"+minutes));
-                }
-                timetableAdapter.notifyDataSetChanged();
-                String json=gson.toJson(classes);
-                String json1=gson.toJson(times);
-                editor.putString("tuesdayClasses",json);
-                editor.putString("tuesdayTimes",json1);
-                editor.apply();
-                dialog.dismiss();
             }
         });
         dialog.show();
@@ -224,6 +235,7 @@ public class TuesdayFragment extends Fragment {
         times=new ArrayList<>();
         recyclerView=view.findViewById(R.id.tue_view);
         new_class=view.findViewById(R.id.new_subject_tuesday);
+        home=view.findViewById(R.id.home_tt);
         gson=new Gson();
         sp = getContext().getSharedPreferences("com.example.studentcompanion", 0);
         classes=gson.fromJson(sp.getString("tuesdayClasses",null),ArrayList.class);
@@ -268,6 +280,13 @@ public class TuesdayFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 newClassDialog();
+            }
+        });
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), MainActivity.class));
+                requireActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
             }
         });
 

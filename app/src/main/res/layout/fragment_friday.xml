@@ -29,6 +29,17 @@
         android:textSize="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+    <Button
+        android:id="@+id/home_tt"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginBottom="40dp"
+        android:backgroundTint="#ffaa88"
+        android:background="@drawable/home"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fri_view"
