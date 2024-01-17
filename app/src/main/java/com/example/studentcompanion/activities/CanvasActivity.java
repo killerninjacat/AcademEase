@@ -24,8 +24,11 @@ public class CanvasActivity extends View {
     }
     public void modifyStrokeWidth(int v)
     {
-        strokeWidth+=v;
-        paint1.setStrokeWidth(strokeWidth);
+        if(strokeWidth+v>0)
+        {
+            strokeWidth+=v;
+            paint1.setStrokeWidth(strokeWidth);
+        }
     }
     public int getStrokeWidth()
     {
