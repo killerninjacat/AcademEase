@@ -15,6 +15,7 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.studentcompanion.ClickListener;
 import com.example.studentcompanion.LongClickListener;
@@ -25,6 +26,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NotesActivity extends AppCompatActivity {
     Button new_note,home;
@@ -152,25 +154,30 @@ public class NotesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 t=titlebox.getText().toString();
                 d=contentbox.getText().toString();
-                titles.remove(index);
-                descriptions.remove(index);
-                titles.add(t);
-                descriptions.add(d);
-                for (notesData note : displaylist) {
-                    if (note.getTitle().equals(title) && note.getDescription().equals(description)) {
-                        displaylist.remove(note);
-                        break;
-                    }
+                if(t.equals("") && d.equals("")) {
+                    Toast.makeText(NotesActivity.this,"Add a title or description!",Toast.LENGTH_SHORT).show();
                 }
-                displaylist.add(new notesData(t,d));
-                notesAdapter.notifyDataSetChanged();
-                String json=gson.toJson(titles);
-                String json1=gson.toJson(descriptions);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("titles",json);
-                editor.putString("descriptions",json1);
-                editor.apply();
-                dialog.dismiss();
+                else {
+                    titles.remove(index);
+                    descriptions.remove(index);
+                    titles.add(t);
+                    descriptions.add(d);
+                    for (notesData note : displaylist) {
+                        if (note.getTitle().equals(title) && note.getDescription().equals(description)) {
+                            displaylist.remove(note);
+                            break;
+                        }
+                    }
+                    displaylist.add(new notesData(t,d));
+                    notesAdapter.notifyDataSetChanged();
+                    String json=gson.toJson(titles);
+                    String json1=gson.toJson(descriptions);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("titles",json);
+                    editor.putString("descriptions",json1);
+                    editor.apply();
+                    dialog.dismiss();
+                }
             }
         });
         dialog.show();
@@ -200,17 +207,22 @@ public class NotesActivity extends AppCompatActivity {
             public void onClick(View v) {
                 t=titlebox.getText().toString();
                 d=contentbox.getText().toString();
-                titles.add(t);
-                descriptions.add(d);
-                displaylist.add(new notesData(t,d));
-                notesAdapter.notifyDataSetChanged();
-                String json=gson.toJson(titles);
-                String json1=gson.toJson(descriptions);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("titles",json);
-                editor.putString("descriptions",json1);
-                editor.apply();
-                dialog.dismiss();
+                if(t.equals("") && d.equals("")) {
+                    Toast.makeText(NotesActivity.this,"Add a title or description!",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    titles.add(t);
+                    descriptions.add(d);
+                    displaylist.add(new notesData(t,d));
+                    notesAdapter.notifyDataSetChanged();
+                    String json=gson.toJson(titles);
+                    String json1=gson.toJson(descriptions);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("titles",json);
+                    editor.putString("descriptions",json1);
+                    editor.apply();
+                    dialog.dismiss();
+                }
             }
         });
         dialog.show();

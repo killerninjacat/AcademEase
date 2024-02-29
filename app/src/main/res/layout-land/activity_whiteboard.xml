@@ -33,7 +33,7 @@
             android:background="@drawable/paint_options"
             android:fontFamily="@font/prompt_semibold"
             android:text=" Stroke Width "
-            android:textColor="#331166" />
+            android:textColor="@color/material_dynamic_primary10" />
 
         <Button
             android:id="@+id/btn_paint_color"
@@ -43,7 +43,7 @@
             android:background="@drawable/paint_options"
             android:fontFamily="@font/prompt_semibold"
             android:text=" Paint Color "
-            android:textColor="#331166" />
+            android:textColor="@color/material_dynamic_primary10" />
 
         <Button
             android:id="@+id/btn_clear_canvas"
@@ -52,7 +52,7 @@
             android:background="@drawable/paint_options"
             android:fontFamily="@font/prompt_semibold"
             android:text="Clear"
-            android:textColor="#331166" />
+            android:textColor="@color/material_dynamic_primary10" />
     </LinearLayout>
 
 

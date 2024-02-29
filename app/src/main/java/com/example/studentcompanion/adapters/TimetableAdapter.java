@@ -10,8 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.studentcompanion.ClickListener;
 import com.example.studentcompanion.LongClickListener;
 import com.example.studentcompanion.R;
-import com.example.studentcompanion.adapters.attendanceViewHolder;
-import com.example.studentcompanion.adapters.notesData;
 
 import java.util.Collections;
 import java.util.List;
@@ -34,7 +32,7 @@ public class TimetableAdapter extends RecyclerView.Adapter<attendanceViewHolder>
     {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View photoView = inflater.inflate(R.layout.attendance_card, parent, false);
+        View photoView = inflater.inflate(R.layout.rv_card, parent, false);
         attendanceViewHolder viewHolder = new attendanceViewHolder(photoView);
         return viewHolder;
     }

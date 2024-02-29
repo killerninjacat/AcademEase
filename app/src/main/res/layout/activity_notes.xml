@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.NotesActivity"
-    android:background="#331166">
+    android:background="@color/material_dynamic_primary10">
 
 
     <TextView
@@ -16,7 +16,7 @@
         android:layout_marginTop="40dp"
         android:fontFamily="@font/moontank"
         android:text="MY NOTES"
-        android:textColor="@color/white"
+        android:textColor="@color/material_dynamic_tertiary95"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="10dp"
         android:nestedScrollingEnabled="false"
@@ -46,8 +46,8 @@
         android:text="+"
         android:fontFamily="@font/russo_one"
         android:textSize="40dp"
-        android:textColor="#331166"
-        android:background="@drawable/purple_rounded"
+        android:textColor="@color/material_dynamic_primary10"
+        android:background="@drawable/new_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -58,7 +58,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/home"
-        android:backgroundTint="#ccaaff"
+        android:backgroundTint="@color/material_dynamic_secondary80"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

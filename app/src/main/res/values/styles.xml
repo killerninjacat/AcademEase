@@ -12,7 +12,7 @@
     </style>
 
     <style name="Widget.StudentCompanion.AppWidget.InnerView" parent="android:Widget">
-        <item name="android:background">@drawable/red_rounded</item>
+        <item name="android:background">@drawable/new_button</item>
         <item name="android:textColor">@color/black</item>
     </style>
 

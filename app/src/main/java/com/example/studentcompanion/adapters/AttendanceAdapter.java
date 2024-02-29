@@ -32,7 +32,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<attendanceViewHolder
     {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
-        View photoView = inflater.inflate(R.layout.eachsubject, parent, false);
+        View photoView = inflater.inflate(R.layout.rv_card, parent, false);
         attendanceViewHolder viewHolder = new attendanceViewHolder(photoView);
         return viewHolder;
     }
