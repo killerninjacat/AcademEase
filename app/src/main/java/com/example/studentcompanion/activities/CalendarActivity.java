@@ -177,11 +177,11 @@ public class CalendarActivity extends AppCompatActivity {
                     attendanceDataList = dbHandler.readData();
                     exists = 0;
                     if((int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)>0) {
-                        target.setTextColor(Color.parseColor("#cc0000"));
+                        target.setTextColor(Color.parseColor("#dd0000"));
                         target.setText("Attend the next " + (int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) + " classes to achieve " + targetValue + "% attendance.");
                     }
                     else {
-                        target.setTextColor(Color.parseColor("#226622"));
+                        target.setTextColor(Color.parseColor("#77dd77"));
                         target.setText("You have achieved your target of " + targetValue + "%! Keep up the good job!");
                     }
                     dialog.dismiss();
@@ -207,11 +207,11 @@ public class CalendarActivity extends AppCompatActivity {
                     absentbox.setText("Absent: " + (totalclasses - attendedClasses));
                     attendanceDataList = dbHandler.readData();
                     if((int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)>0) {
-                        target.setTextColor(Color.parseColor("#cc0000"));
+                        target.setTextColor(Color.parseColor("#dd0000"));
                         target.setText("Attend the next " + (int) Math.ceil((targetsList.get(current_index) / 100 * totalclasses - attendedClasses) / 0.25) + " classes to achieve " + targetValue + "% attendance.");
                     }
                     else {
-                        target.setTextColor(Color.parseColor("#226622"));
+                        target.setTextColor(Color.parseColor("#77dd77"));
                         target.setText("You have achieved your target of " + targetValue + "%! Keep up the good job!");
                     }
                     exists=0;
@@ -327,7 +327,7 @@ public class CalendarActivity extends AppCompatActivity {
         if((int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)>0)
             target.setText("Attend the next "+(int)Math.ceil((targetsList.get(current_index)/100*totalclasses-attendedClasses)/0.25)+" classes to achieve "+targetValue+"% attendance.");
         else if(totalclasses!=0) {
-            target.setTextColor(Color.parseColor("#226622"));
+            target.setTextColor(Color.parseColor("#77dd77"));
             target.setText("You have achieved your target of " + targetValue + "%! Keep up the good job!");
         }
         else target.setText("Attend the next 1 class to achieve " +targetValue+"% attendance.");

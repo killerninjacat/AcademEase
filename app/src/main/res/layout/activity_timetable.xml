@@ -12,8 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="@color/material_dynamic_secondary90"
-        app:tabTextColor="@color/material_dynamic_tertiary50"
+        android:background="@color/material_dynamic_primary80"
+        app:tabTextColor="@color/material_dynamic_secondary50"
         app:tabTextAppearance="@style/CustomTabText"
         app:tabSelectedTextColor="@color/material_dynamic_tertiary10"
         app:tabIndicatorColor="@color/material_dynamic_secondary20"/>

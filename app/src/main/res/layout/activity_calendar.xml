@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activities.CalendarActivity"
-    android:background="#88eeff">
+    android:background="@color/material_dynamic_primary10">
 
     <com.applandeo.materialcalendarview.CalendarView
         android:id="@+id/calendarView"
@@ -14,15 +14,15 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
-        app:daysLabelsColor="#ffffff"
-        app:headerColor="#000000"
+        app:daysLabelsColor="@color/material_dynamic_primary10"
+        app:headerColor="@color/material_dynamic_tertiary10"
         app:selectionLabelColor="#ff00ff"
         app:highlightedDaysLabelsColor="#ff0000"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/target"
-        app:pagesColor="#223366"
-        app:todayLabelColor="#ffff00"
+        app:pagesColor="@color/material_dynamic_secondary90"
+        app:todayLabelColor="#0000ff"
         app:typeface="@font/prompt" />
 
     <TextView
@@ -32,7 +32,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/moontank"
         android:text="TOTAL CLASSES"
-        android:textColor="#223366"
+        android:textColor="@color/material_dynamic_primary95"
         android:textAllCaps="true"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +47,7 @@
         android:fontFamily="@font/moontank"
         android:text="ATTENDED"
         android:textAllCaps="true"
-        android:textColor="#223366"
+        android:textColor="@color/material_dynamic_primary95"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -61,7 +61,7 @@
         android:fontFamily="@font/moontank"
         android:text="ABSENT"
         android:textAllCaps="true"
-        android:textColor="#223366"
+        android:textColor="@color/material_dynamic_primary95"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,7 +74,7 @@
         android:layout_marginTop="-10dp"
         android:fontFamily="@font/iron"
         android:text="69%"
-        android:textColor="@color/black"
+        android:textColor="@color/material_dynamic_tertiary80"
         android:textSize="50sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -87,7 +87,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/iron"
         android:text="TextView"
-        android:textColor="@color/black"
+        android:textColor="@color/material_dynamic_tertiary95"
         android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +101,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/home"
-        android:backgroundTint="#223366"
+        android:backgroundTint="@color/material_dynamic_secondary80"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
