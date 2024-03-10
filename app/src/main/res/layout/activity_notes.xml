@@ -20,7 +20,7 @@
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -35,6 +35,18 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/new_scan"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginBottom="15dp"
+        android:clickable="true"
+        android:background="@drawable/scanner"
+        android:backgroundTint="@color/material_dynamic_secondary80"
+        app:layout_constraintBottom_toTopOf="@id/new_note"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <Button
         android:id="@+id/new_note"
