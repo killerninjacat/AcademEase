@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.NotesActivity"
+    tools:context="com.nithinbalan.academease.activities.NotesActivity"
     android:background="@color/material_dynamic_primary10">
 
 

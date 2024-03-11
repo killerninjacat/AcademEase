@@ -2,22 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/student"
+        android:icon="@mipmap/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/student_round"
+        android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.StudentCompanion"
+        android:theme="@style/Theme.AcademEase"
         tools:targetApi="31">
 
         <receiver
-            android:name=".UpcomingClassesWidget"
+            android:name="com.nithinbalan.academease.UpcomingClassesWidget"
             android:exported="false"
             android:label="View the next class.">
             <intent-filter>
@@ -30,27 +31,27 @@
         </receiver>
 
         <activity
-            android:name=".activities.CalendarActivity"
+            android:name="com.nithinbalan.academease.activities.CalendarActivity"
             android:exported="false"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".activities.AttendanceActivity"
+            android:name="com.nithinbalan.academease.activities.AttendanceActivity"
             android:exported="false"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".activities.TimetableActivity"
+            android:name="com.nithinbalan.academease.activities.TimetableActivity"
             android:exported="false"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".activities.NotesActivity"
+            android:name="com.nithinbalan.academease.activities.NotesActivity"
             android:exported="false"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".activities.WhiteboardActivity"
+            android:name="com.nithinbalan.academease.activities.WhiteboardActivity"
             android:configChanges="orientation|screenSize"
             android:exported="false" />
         <activity
-            android:name=".activities.MainActivity"
+            android:name="com.nithinbalan.academease.activities.MainActivity"
             android:exported="true"
             android:screenOrientation="nosensor">
         <intent-filter>

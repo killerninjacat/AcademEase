@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.CalendarActivity"
+    tools:context="com.nithinbalan.academease.activities.CalendarActivity"
     android:background="@color/material_dynamic_primary10">
 
     <com.applandeo.materialcalendarview.CalendarView
@@ -15,7 +15,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginRight="10dp"
         app:daysLabelsColor="@color/material_dynamic_primary10"
-        app:headerColor="@color/material_dynamic_tertiary10"
+        app:headerColor="@color/material_dynamic_tertiary20"
         app:selectionLabelColor="#ff00ff"
         app:highlightedDaysLabelsColor="#ff0000"
         app:layout_constraintLeft_toLeftOf="parent"

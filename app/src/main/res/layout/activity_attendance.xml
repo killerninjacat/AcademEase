@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.AttendanceActivity"
+    tools:context="com.nithinbalan.academease.activities.AttendanceActivity"
     android:background="@color/material_dynamic_primary10">
 
     <Button

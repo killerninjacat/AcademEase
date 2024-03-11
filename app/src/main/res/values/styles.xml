@@ -6,12 +6,12 @@
         <item name="fontFamily">@font/russo_one</item>
     </style>
 
-    <style name="Widget.StudentCompanion.AppWidget.Container" parent="android:Widget">
+    <style name="Widget.AcademEase.AppWidget.Container" parent="android:Widget">
         <item name="android:id">@android:id/background</item>
         <item name="android:background">?android:attr/colorBackground</item>
     </style>
 
-    <style name="Widget.StudentCompanion.AppWidget.InnerView" parent="android:Widget">
+    <style name="Widget.AcademEase.AppWidget.InnerView" parent="android:Widget">
         <item name="android:background">@drawable/new_button</item>
         <item name="android:textColor">@color/black</item>
     </style>
