@@ -1,13 +1,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.StudentCompanion" parent="Theme.AppCompat.NoActionBar">
+    <style name="Base.Theme.AcademEase" parent="Theme.AppCompat.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.StudentCompanion" parent="Base.Theme.StudentCompanion" />
+    <style name="Theme.AcademEase" parent="Base.Theme.AcademEase" />
 
-    <style name="Theme.StudentCompanion.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
+    <style name="Theme.AcademEase.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
         <!-- Radius of the outer bound of widgets to make the rounded corners -->
         <item name="appWidgetRadius">16dp</item>
         <!--
@@ -17,7 +17,7 @@
         <item name="appWidgetInnerRadius">8dp</item>
     </style>
 
-    <style name="Theme.StudentCompanion.AppWidgetContainer" parent="Theme.StudentCompanion.AppWidgetContainerParent">
+    <style name="Theme.AcademEase.AppWidgetContainer" parent="Theme.AcademEase.AppWidgetContainerParent">
         <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
         <item name="appWidgetPadding">16dp</item>
     </style>

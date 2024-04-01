@@ -1,7 +1,7 @@
-# Student Companion App
+# AcademEase App
 
 ## Overview
-The Student Companion App is a versatile Android application designed to help students manage their daily schedules, attendance, notes, and stay organized with a virtual whiteboard. It also provides a handy widget to display upcoming classes, ensuring students never miss an important session.
+The AcademEase App is a versatile Android application designed to help students manage their daily schedules, attendance, notes, and stay organized with a virtual whiteboard. It also provides a handy widget to display upcoming classes, ensuring students never miss an important session.
 
 ## Features
 - **Timetable Creation:** Create and manage daily timetables to keep track of your classes and other activities.

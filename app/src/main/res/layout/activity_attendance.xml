@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.AttendanceActivity"
-    android:background="#88eeff">
+    tools:context="com.nithinbalan.academease.activities.AttendanceActivity"
+    android:background="@color/material_dynamic_primary10">
 
     <Button
         android:id="@+id/new_subject"
@@ -17,8 +17,8 @@
         android:text="+"
         android:fontFamily="@font/russo_one"
         android:textSize="40dp"
-        android:textColor="#88eeff"
-        android:background="@drawable/blue_rounded"
+        android:textColor="@color/material_dynamic_primary10"
+        android:background="@drawable/new_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -29,7 +29,7 @@
         android:layout_marginTop="40dp"
         android:fontFamily="@font/moontank"
         android:text="MY ATTENDANCE"
-        android:textColor="@color/black"
+        android:textColor="@color/material_dynamic_tertiary95"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +51,7 @@
         android:layout_marginStart="30dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/home"
-        android:backgroundTint="#223366"
+        android:backgroundTint="@color/material_dynamic_secondary80"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

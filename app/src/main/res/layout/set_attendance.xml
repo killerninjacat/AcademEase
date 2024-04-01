@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#226644">
+    android:background="@color/material_dynamic_neutral_variant10">
 
     <RadioGroup
         android:id="@+id/radioGroup"
@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/prompt_semibold"
             android:text="Present"
-            android:textColor="@color/white"
+            android:textColor="@color/material_dynamic_secondary95"
             android:textSize="30dp" />
 
         <RadioButton
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/prompt_semibold"
             android:text="Absent"
-            android:textColor="@color/white"
+            android:textColor="@color/material_dynamic_secondary95"
             android:textSize="30dp" />
     </RadioGroup>
 
@@ -39,10 +39,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:background="@drawable/dark_green_rounded"
+        android:background="@drawable/new_button"
         android:fontFamily="@font/russo_one"
         android:text="Save"
-        android:textColor="#226644"
+        android:textColor="@color/material_dynamic_neutral_variant10"
         android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/bangers"
         android:text="Date"
-        android:textColor="#aaffaa"
+        android:textColor="@color/material_dynamic_primary95"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

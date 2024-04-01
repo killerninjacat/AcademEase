@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.studentcompanion'
+    namespace 'com.example.academease'
     compileSdk 34
 
     defaultConfig {
-        applicationId "com.example.studentcompanion"
+        applicationId 'com.nithinbalan.academease'
         minSdk 27
         targetSdk 34
         versionCode 1
@@ -42,4 +42,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
     implementation 'nl.dionsegijn:konfetti-xml:2.0.3'
+    implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1'
 }
