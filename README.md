@@ -21,7 +21,7 @@ The AcademEase App is a versatile Android application designed to help students 
 ![Whiteboard](Screenshots/Screenshot_wb.png)
 
 ## Installation
-[Download the apk file](https://github.com/killerninjacat/StudentCompanion/releases/download/v1.0.1/student_companion.apk) and install it on your Android device.
+[Download the apk file](https://github.com/killerninjacat/AcademEase/releases/download/v2.0.0/AcademEase.v2.0.0.apk) and install it on your Android device.
 Or alternatively, if you want to build from source,
 1. Clone this repository.
 2. Open the project in Android Studio.
