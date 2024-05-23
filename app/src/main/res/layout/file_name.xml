@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/material_dynamic_tertiary10">
+    android:background="@color/tertiary_dark">
 
     <EditText
         android:id="@+id/namebox"
@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
-        android:textColor="@color/material_dynamic_tertiary95"
+        android:textColor="@color/tertiary_light"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,7 +24,7 @@
         android:layout_marginTop="60dp"
         android:fontFamily="@font/prompt"
         android:text="Enter the file name"
-        android:textColor="@color/material_dynamic_primary95"
+        android:textColor="@color/primary_light"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +38,7 @@
         android:background="@drawable/new_button"
         android:fontFamily="@font/prompt_semibold"
         android:text="Save"
-        android:textColor="@color/material_dynamic_tertiary10"
+        android:textColor="@color/tertiary_dark"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

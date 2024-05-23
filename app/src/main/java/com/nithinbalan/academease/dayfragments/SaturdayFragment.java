@@ -112,6 +112,7 @@ public class SaturdayFragment extends Fragment {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.new_class);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
         TimePicker timePicker;
         Button save;
         EditText newsubjectbox;
@@ -174,6 +175,7 @@ public class SaturdayFragment extends Fragment {
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.new_class);
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
         TimePicker timePicker;
         Button save;
         TextView newsubjectbox;

@@ -1,12 +1,10 @@
 package com.nithinbalan.academease.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,12 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.academease.R;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import nl.dionsegijn.konfetti.core.PartyFactory;
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
     List<String> tips;
     String name,name1;
     TextView welcome;
-    private SharedPreferences sp;
     SharedPreferences.Editor editor;
     LocalDateTime current;
     public void explode() {
@@ -72,10 +72,11 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.enter_name);
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         namebox=dialog.findViewById(R.id.namebox);
         ok=dialog.findViewById(R.id.ok);
         ok.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onClick(View v) {
                 name=namebox.getText().toString();
@@ -85,17 +86,16 @@ public class MainActivity extends AppCompatActivity {
                 else {
                     editor.putString("username", name);
                     fresh=1;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        if(current.getHour()>=5&&current.getHour()<=11)
-                            welcome.setText("GOOD MORNING, "+name+"!");
-                        else if(current.getHour()>=11&&current.getHour()<=15)
-                            welcome.setText("GOOD AFTERNOON, "+name+"!");
-                        else if(current.getHour()>15&&current.getHour()<=20)
-                            welcome.setText("GOOD EVENING, "+name+"!");
-                        else if(current.getHour()>20&&current.getHour()<=23) welcome.setText("GOOD NIGHT, "+name+"!");
-                        else welcome.setText("SLEEP WELL! DON'T STAY UP TOO LATE, "+name+"!");
-                        Log.d("name",name);
-                    }
+                    if (current.getHour() >= 5 && current.getHour() <= 11)
+                        welcome.setText("GOOD MORNING, " + name + "!");
+                    else if (current.getHour() >= 11 && current.getHour() <= 15)
+                        welcome.setText("GOOD AFTERNOON, " + name + "!");
+                    else if (current.getHour() > 15 && current.getHour() <= 20)
+                        welcome.setText("GOOD EVENING, " + name + "!");
+                    else if (current.getHour() > 20 && current.getHour() <= 23)
+                        welcome.setText("GOOD NIGHT, " + name + "!");
+                    else welcome.setText("SLEEP WELL! DON'T STAY UP TOO LATE, " + name + "!");
+                    Log.d("name",name);
                     editor.putInt("newUser",fresh);
                     editor.apply();
                     dialog.dismiss();
@@ -104,19 +104,20 @@ public class MainActivity extends AppCompatActivity {
         });
         dialog.show();
     }
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        timetable=(Button) findViewById(R.id.button);
-        attendance=(Button) findViewById(R.id.button2);
-        notes=(Button) findViewById(R.id.button3);
-        konfettiView = (KonfettiView) findViewById(R.id.konfettiView);
-        wb=(Button) findViewById(R.id.button4);
-        gh=(Button) findViewById(R.id.gh_link);
-        TextView madeWith = (TextView) findViewById(R.id.madeWith);
+        timetable= findViewById(R.id.button);
+        attendance= findViewById(R.id.button2);
+        notes= findViewById(R.id.button3);
+        konfettiView = findViewById(R.id.konfettiView);
+        wb= findViewById(R.id.button4);
+        gh= findViewById(R.id.gh_link);
+        TextView madeWith = findViewById(R.id.madeWith);
         tips = new ArrayList<>();
-        tips.add("Report bugs and share your thoughts at nithin27balan@gmail.com.");
+        tips.add("Report bugs and share your thoughts at nithin.appdev01@gmail.com.");
         tips.add("Long press the welcome message to edit your name.");
         tips.add("Feel free to share the app with your friends!");
         tips.add("Have you tried out the widget yet?");
@@ -129,87 +130,63 @@ public class MainActivity extends AppCompatActivity {
         tips.add("Fork the project on GitHub to contribute!");
         tips.add("Long press a subject in the timetable page to edit.");
         tips.add("Long press a note in the notes page to edit the content.");
-        madeWith.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                explode();
-                Toast.makeText(MainActivity.this,tips.get((int)(Math.random()*tips.size())),Toast.LENGTH_SHORT).show();
-                return true;
-            }
+        tips.add("Have you tried the PDF scanner?");
+        madeWith.setOnLongClickListener(v -> {
+            explode();
+            Toast.makeText(MainActivity.this,tips.get((int)(Math.random()*tips.size())),Toast.LENGTH_SHORT).show();
+            return true;
         });
-        gh.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Uri uri = Uri.parse("https://github.com/killerninjacat/StudentCompanion");
-                Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent1);
-            }
-        });
+//        gh.setOnClickListener(v -> {
+//            Uri uri = Uri.parse("https://github.com/killerninjacat/StudentCompanion");
+//            Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
+//            startActivity(intent1);
+//        });
 
-        welcome=(TextView) findViewById(R.id.welcome);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            current=LocalDateTime.now();
-        }
-        sp = getSharedPreferences("com.example.academease", 0);
-        fresh=sp.getInt("newUser",0);
+        welcome= findViewById(R.id.welcome);
+        current = LocalDateTime.now();
+        SharedPreferences sp = getSharedPreferences("com.example.academease", 0);
+        fresh= sp.getInt("newUser",0);
         if(fresh==0)
         {
             enterName();
         }
         else {
             name1 = sp.getString("username", "User");
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (current.getHour() >= 5 && current.getHour() <= 11)
-                    welcome.setText("GOOD MORNING, " + name1 + "!");
-                else if (current.getHour() >= 11 && current.getHour() <= 15)
-                    welcome.setText("GOOD AFTERNOON, " + name1 + "!");
-                else if (current.getHour() > 15 && current.getHour() <= 20)
-                    welcome.setText("GOOD EVENING, " + name1 + "!");
-                else if (current.getHour() > 20 && current.getHour() <= 23)
-                    welcome.setText("GOOD NIGHT, " + name1 + "!");
-                else welcome.setText("SLEEP WELL! DON'T STAY UP TOO LATE, " + name1 + "!");
-                Log.d("name1", name1);
-            }
+            if (current.getHour() >= 5 && current.getHour() <= 11)
+                welcome.setText("GOOD MORNING, " + name1 + "!");
+            else if (current.getHour() >= 11 && current.getHour() <= 15)
+                welcome.setText("GOOD AFTERNOON, " + name1 + "!");
+            else if (current.getHour() > 15 && current.getHour() <= 20)
+                welcome.setText("GOOD EVENING, " + name1 + "!");
+            else if (current.getHour() > 20 && current.getHour() <= 23)
+                welcome.setText("GOOD NIGHT, " + name1 + "!");
+            else welcome.setText("SLEEP WELL! DON'T STAY UP TOO LATE, " + name1 + "!");
+            Log.d("name1", name1);
         }
         editor = sp.edit();
-        timetable.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this, TimetableActivity.class);
-                startActivity(i);
-                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-            }
+        timetable.setOnClickListener(v -> {
+            Intent i=new Intent(MainActivity.this, TimetableActivity.class);
+            startActivity(i);
+            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         });
-        attendance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this, AttendanceActivity.class);
-                startActivity(i);
-                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-            }
+        attendance.setOnClickListener(v -> {
+            Intent i=new Intent(MainActivity.this, AttendanceActivity.class);
+            startActivity(i);
+            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         });
-        notes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this, NotesActivity.class);
-                startActivity(i);
-                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-            }
+        notes.setOnClickListener(v -> {
+            Intent i=new Intent(MainActivity.this, NotesActivity.class);
+            startActivity(i);
+            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         });
-        wb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(MainActivity.this, WhiteboardActivity.class);
-                startActivity(i);
-                overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-            }
+        wb.setOnClickListener(v -> {
+            Intent i=new Intent(MainActivity.this, WhiteboardActivity.class);
+            startActivity(i);
+            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         });
-        welcome.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                enterName();
-                return true;
-            }
+        welcome.setOnLongClickListener(v -> {
+            enterName();
+            return true;
         });
     }
     @Override

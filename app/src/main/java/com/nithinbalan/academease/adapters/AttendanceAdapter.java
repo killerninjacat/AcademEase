@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.nithinbalan.academease.ClickListener;
@@ -27,6 +28,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<attendanceViewHolder
         this.longClickListener=longClickListener;
     }
 
+    @NonNull
     @Override
     public attendanceViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {

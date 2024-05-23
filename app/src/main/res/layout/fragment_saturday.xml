@@ -25,7 +25,7 @@
         android:clickable="true"
         android:fontFamily="@font/russo_one"
         android:text="+"
-        android:textColor="@color/material_dynamic_primary10"
+        android:textColor="@color/primary_dark"
         android:textSize="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -35,7 +35,7 @@
         android:layout_height="50dp"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="40dp"
-        android:backgroundTint="@color/material_dynamic_secondary80"
+        android:backgroundTint="@color/secondary_not_so_light"
         android:background="@drawable/home"
         android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"

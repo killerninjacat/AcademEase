@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@color/material_dynamic_neutral_variant10"
+    android:background="@drawable/dark_layout_rounded"
     android:layout_height="match_parent">
 
     <TextView
@@ -14,7 +13,7 @@
         android:fontFamily="@font/russo_one"
         android:text="New Class"
         android:textAllCaps="true"
-        android:textColor="@color/material_dynamic_tertiary90"
+        android:textColor="@color/tertiary_light"
         android:textSize="27sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +28,7 @@
         android:fontFamily="@font/iron"
         android:hint="Subject Name"
         android:inputType="text"
-        android:textColor="@color/material_dynamic_primary95"
+        android:textColor="@color/primary_light"
         android:textColorHint="#99ffffff"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -54,7 +53,7 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/russo_one"
         android:text="TIME"
-        android:textColor="@color/material_dynamic_tertiary90"
+        android:textColor="@color/tertiary_light"
         android:textSize="23sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +67,7 @@
         android:background="@drawable/new_button"
         android:fontFamily="@font/russo_one"
         android:text="Save"
-        android:textColor="@color/material_dynamic_neutral_variant10"
+        android:textColor="@color/neutral_alt_dark"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

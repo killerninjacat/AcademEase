@@ -156,6 +156,7 @@ public class NotesActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.new_note_dialog);
         Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
         titlebox=dialog.findViewById(R.id.titlebox);
         contentbox=dialog.findViewById(R.id.contentbox);
         newNotebox=dialog.findViewById(R.id.newNotebox);
@@ -256,6 +257,7 @@ public class NotesActivity extends AppCompatActivity {
         dialog.setCancelable(false);
         dialog.setContentView(R.layout.new_note_dialog);
         Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
         titlebox=dialog.findViewById(R.id.titlebox);
         contentbox=dialog.findViewById(R.id.contentbox);
         close=dialog.findViewById(R.id.close);

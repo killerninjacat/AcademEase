@@ -2,7 +2,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:background="@color/material_dynamic_primary10"
+    android:background="@color/primary_dark"
     android:layout_height="match_parent">
 
     <!-- Your other views here -->
@@ -12,11 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:background="@color/material_dynamic_primary80"
-        app:tabTextColor="@color/material_dynamic_secondary50"
+        android:background="@color/primary_light"
+        app:tabTextColor="@color/secondary_mid"
         app:tabTextAppearance="@style/CustomTabText"
-        app:tabSelectedTextColor="@color/material_dynamic_tertiary10"
-        app:tabIndicatorColor="@color/material_dynamic_secondary20"/>
+        app:tabSelectedTextColor="@color/tertiary_dark"
+        app:tabIndicatorColor="@color/secondary_dark"/>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager"
