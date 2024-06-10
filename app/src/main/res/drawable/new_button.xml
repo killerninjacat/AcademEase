@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid
-        android:color="@color/material_dynamic_secondary80"></solid>
+        android:color="@color/secondary_not_so_light"></solid>
     <corners
         android:topLeftRadius="20dp"
         android:topRightRadius="20dp"
