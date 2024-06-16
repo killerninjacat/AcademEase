@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.example.academease.R;
 import com.google.gson.Gson;
@@ -105,6 +106,7 @@ public class TimetableActivity extends AppCompatActivity {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         boolean isEnabled=notificationManager.areNotificationsEnabled();
         if(!isEnabled){
+            Toast.makeText(context, "Please enable notifications for Academease!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
             intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
             context.startActivity(intent);
@@ -113,6 +115,7 @@ public class TimetableActivity extends AppCompatActivity {
         else {
             boolean isEnabledCompat= NotificationManagerCompat.from(context).areNotificationsEnabled();
             if(!isEnabledCompat){
+                Toast.makeText(context, "Please enable notifications for Academease!", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS);
                 intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
                 context.startActivity(intent);
