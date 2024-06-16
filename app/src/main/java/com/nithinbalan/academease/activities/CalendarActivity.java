@@ -19,10 +19,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.applandeo.materialcalendarview.CalendarView;
-import com.nithinbalan.academease.AttendanceData;
-import com.nithinbalan.academease.DBHandler;
 import com.example.academease.R;
 import com.google.gson.Gson;
+import com.nithinbalan.academease.AttendanceData;
+import com.nithinbalan.academease.DBHandler;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
