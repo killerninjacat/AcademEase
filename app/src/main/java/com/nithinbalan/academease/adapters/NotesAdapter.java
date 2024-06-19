@@ -45,19 +45,10 @@ public class NotesAdapter extends RecyclerView.Adapter<notesViewHolder> {
         final int index = viewHolder.getAdapterPosition();
         viewHolder.title.setText(list.get(position).title);
         viewHolder.description.setText(list.get(position).description);
-        viewHolder.view1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                clickListener.click(index);
-            }
-        });
-        viewHolder.view1.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                longClickListener.longclick(index);
-                return true;
-            }
+        viewHolder.view1.setOnClickListener(view -> clickListener.click(index));
+        viewHolder.view1.setOnLongClickListener(v -> {
+            longClickListener.longclick(index);
+            return true;
         });
     }
 

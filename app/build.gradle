@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId 'com.nithinbalan.academease'
-        minSdk 27
+        minSdk 29
         targetSdk 34
         versionCode 3
         versionName "2.1"

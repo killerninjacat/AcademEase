@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#331166">
+    android:background="@color/tertiary_dark">
 
     <TextView
         android:id="@+id/titleindialog"
@@ -13,7 +12,7 @@
         android:layout_marginTop="50dp"
         android:fontFamily="@font/prompt_semibold"
         android:text="Title"
-        android:textColor="@color/white"
+        android:textColor="@color/primary_light"
         android:textSize="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -38,7 +37,7 @@
             android:fontFamily="@font/prompt"
             android:text="Description"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@color/secondary_light"
             android:textSize="20dp" />
     </ScrollView>
 
@@ -48,10 +47,10 @@
         android:layout_height="48dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
-        android:background="@color/white"
+        android:background="@color/tertiary_light"
         android:fontFamily="@font/russo_one"
         android:text="X"
-        android:textColor="#220033"
+        android:textColor="@color/tertiary_dark"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
