@@ -7,6 +7,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.content.ContextCompat;
@@ -48,10 +49,17 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
                 for (int i = times.size() - 1; i >= 0; i--) {
-                    if (times.get(i) / 60 - hour >= 0) {
+                    if(times.get(i)/60-hour>0)
+                    {
+                        min=i;
+                        f=1;
+                        break;
+                    }
+                    else if (times.get(i) / 60 == hour ) {
                         if (times.get(i) % 60 - currentMinute >= 0) {
                             min = i;
                             f = 1;
+                            break;
                         }
                     }
                 }
@@ -82,10 +90,17 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
                 for (int i = times.size() - 1; i >= 0; i--) {
-                    if (times.get(i) / 60 - hour >= 0) {
+                    if(times.get(i)/60-hour>0)
+                    {
+                        min=i;
+                        f=1;
+                        break;
+                    }
+                    else if (times.get(i) / 60 == hour ) {
                         if (times.get(i) % 60 - currentMinute >= 0) {
                             min = i;
                             f = 1;
+                            break;
                         }
                     }
                 }
@@ -116,10 +131,17 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
                 for (int i = times.size() - 1; i >= 0; i--) {
-                    if (times.get(i) / 60 - hour >= 0) {
+                    if(times.get(i)/60-hour>0)
+                    {
+                        min=i;
+                        f=1;
+                        break;
+                    }
+                    else if (times.get(i) / 60 == hour ) {
                         if (times.get(i) % 60 - currentMinute >= 0) {
                             min = i;
                             f = 1;
+                            break;
                         }
                     }
                 }
@@ -148,12 +170,23 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                     times = new ArrayList<>();
                 hour = calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute = calendar.get(Calendar.MINUTE);
+                Log.d("hour", String.valueOf(hour));
                 min = 0;
                 for (int i = times.size() - 1; i >= 0; i--) {
-                    if (times.get(i) / 60 - hour >= 0) {
+                    Log.d("loop", String.valueOf(times.get(i)/60-hour));
+                    if(times.get(i)/60-hour>0)
+                    {
+                        Log.d("first loop","entered");
+                        min=i;
+                        f=1;
+                        break;
+                    }
+                    else if (times.get(i) / 60 == hour ) {
                         if (times.get(i) % 60 - currentMinute >= 0) {
+                            Log.d("minute", String.valueOf(times.get(i) % 60 - currentMinute));
                             min = i;
                             f = 1;
+                            break;
                         }
                     }
                 }
@@ -184,10 +217,17 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
                 for (int i = times.size() - 1; i >= 0; i--) {
-                    if (times.get(i) / 60 - hour >= 0) {
+                    if(times.get(i)/60-hour>0)
+                    {
+                        min=i;
+                        f=1;
+                        break;
+                    }
+                    else if (times.get(i) / 60 == hour ) {
                         if (times.get(i) % 60 - currentMinute >= 0) {
                             min = i;
                             f = 1;
+                            break;
                         }
                     }
                 }
@@ -218,10 +258,17 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
                 for (int i = times.size() - 1; i >= 0; i--) {
-                    if (times.get(i) / 60 - hour >= 0) {
+                    if(times.get(i)/60-hour>0)
+                    {
+                        min=i;
+                        f=1;
+                        break;
+                    }
+                    else if (times.get(i) / 60 == hour ) {
                         if (times.get(i) % 60 - currentMinute >= 0) {
                             min = i;
                             f = 1;
+                            break;
                         }
                     }
                 }
@@ -251,12 +298,18 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute=calendar.get(Calendar.MINUTE);
                 min=0;
-                for(int i=times.size()-1;i>=0;i--)
-                {
-                    if(times.get(i)/60-hour>=0) {
-                        if(times.get(i)%60-currentMinute>=0) {
+                for (int i = times.size() - 1; i >= 0; i--) {
+                    if(times.get(i)/60-hour>0)
+                    {
+                        min=i;
+                        f=1;
+                        break;
+                    }
+                    else if (times.get(i) / 60 == hour ) {
+                        if (times.get(i) % 60 - currentMinute >= 0) {
                             min = i;
                             f = 1;
+                            break;
                         }
                     }
                 }
@@ -285,15 +338,20 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
+            Intent intent = new Intent(context, UpcomingClassesWidget.class);
+            intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+            intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            if (alarmManager != null) {
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 600000, pendingIntent);
+            }
+            Intent i1=new Intent(context, TimetableActivity.class);
+            PendingIntent pi=PendingIntent.getActivity(context,0,i1, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.upcoming_classes_widget);
+            views.setOnClickPendingIntent(R.id.appwidget_text, pi);
+            appWidgetManager.updateAppWidget(appWidgetId, views);
             updateAppWidget(context, appWidgetManager, appWidgetId);
-        }
-        Intent intent = new Intent(context, UpcomingClassesWidget.class);
-        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        if (alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 900000, pendingIntent);
         }
     }
 

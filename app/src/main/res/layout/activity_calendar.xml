@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -64,6 +70,7 @@
         android:textColor="@color/primary_light"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/attendedclasses" />
 
@@ -96,8 +103,8 @@
 
     <Button
         android:id="@+id/home_c"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
         android:layout_marginStart="30dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/home"
@@ -123,3 +130,4 @@
         app:layout_constraintTop_toBottomOf="@+id/current_percentage" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

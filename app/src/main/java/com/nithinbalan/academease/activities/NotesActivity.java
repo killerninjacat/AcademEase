@@ -7,6 +7,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -331,6 +332,7 @@ public class NotesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         scannerLauncher =
                 registerForActivityResult(
                         new ActivityResultContracts.StartIntentSenderForResult(),
@@ -366,11 +368,11 @@ public class NotesActivity extends AppCompatActivity {
        descriptions=gson.fromJson(json1,ArrayList.class);
        if(titles==null) {
            titles = new ArrayList<>();
-           titles.add("PDF Notes");
+           titles.add("Click here for PDF Notes");
        }
        if(descriptions==null) {
            descriptions = new ArrayList<>();
-           descriptions.add("Click here");
+           descriptions.add("Long press for folder selection");
        }
        if(titles!=null)
         for(int i=0;i<titles.size();i++)
@@ -383,6 +385,7 @@ public class NotesActivity extends AppCompatActivity {
        };
        longClickListener= index -> {
            if(index!=0) editDeleteDialog(titles.get(index), descriptions.get(index), index);
+           else getFolderAccess();
        };
         home= findViewById(R.id.home_n);
         home.setOnClickListener(v -> {
@@ -399,20 +402,24 @@ public class NotesActivity extends AppCompatActivity {
         new_scan.setOnClickListener(v -> newScan());
     }
     private void getFolderAccess(){
+        Toast.makeText(this,"Select the folder where you want to store your notes",Toast.LENGTH_SHORT).show();
         Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
         startActivityForResult(intent,1234);
     }
     private void openSelectedDirectory() {
         String storedUriString = sp.getString("FileStorageUri", null);
-        DocumentFile directory = DocumentFile.fromTreeUri(getApplicationContext(), Uri.parse(storedUriString));
-        if (directory == null || !directory.exists()) {
-            Toast.makeText(this, "Directory not found or inaccessible", Toast.LENGTH_SHORT).show();
-            return;
+        if(storedUriString==null) getFolderAccess();
+        else {
+            DocumentFile directory = DocumentFile.fromTreeUri(getApplicationContext(), Uri.parse(storedUriString));
+            if (directory == null || !directory.exists()) {
+                Toast.makeText(this, "Directory not found or inaccessible", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(directory.getUri());
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            startActivity(intent);
         }
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(directory.getUri());
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-        startActivity(intent);
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data){
