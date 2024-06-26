@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.academease.R;
 
@@ -109,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         timetable= findViewById(R.id.button);
         attendance= findViewById(R.id.button2);
         notes= findViewById(R.id.button3);
@@ -124,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
         tips.add("Tap the number of classes in the calendar page to view your dates.");
         tips.add("Most list items and text items are long-clickable.");
         tips.add("Heads up! Uninstalling erases all your local data.");
-        tips.add("Coming soon: Feature to organize PDFs within the app.");
+        tips.add("Organize PDFs scanned in the app by creating sub-folders.");
         tips.add("Tip: You can save your doodle by clicking on the save icon.");
         tips.add("Long press a subject in the attendance page to edit.");
         tips.add("Fork the project on GitHub to contribute!");

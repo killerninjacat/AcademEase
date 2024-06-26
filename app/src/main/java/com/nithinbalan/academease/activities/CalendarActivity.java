@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.applandeo.materialcalendarview.CalendarView;
 import com.nithinbalan.academease.AttendanceData;
@@ -43,6 +45,8 @@ public class CalendarActivity extends AppCompatActivity {
     Button home;
     CalendarView calendar;
     List<Double>targetsList;
+    int screenWidth;
+    DisplayMetrics displayMetrics;
     int targetValue;
     String att;
     Gson gson;
@@ -74,7 +78,7 @@ public class CalendarActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dates_view);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(750, 750);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(screenWidth-100, 750);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
         ListView listView=dialog.findViewById(R.id.listView);
         TextView textView = dialog.findViewById(R.id.textView);
@@ -101,7 +105,7 @@ public class CalendarActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.set_attendance);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(750, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(screenWidth-200, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
         present=dialog.findViewById(R.id.presentButton);
         date_display=dialog.findViewById(R.id.date_display);
@@ -237,6 +241,7 @@ public class CalendarActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         sp = getSharedPreferences("com.example.academease", 0);
         gson=new Gson();
         calendar=findViewById(R.id.calendarView);
@@ -253,6 +258,9 @@ public class CalendarActivity extends AppCompatActivity {
         allDates = new ArrayList<>();
         absentDates = new ArrayList<>();
         attendedDates = new ArrayList<>();
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        screenWidth=displayMetrics.widthPixels;
         String json3=sp.getString("targets",null);
         targetsList=gson.fromJson(json3, ArrayList.class);
         if(targetsList==null)
@@ -314,7 +322,7 @@ public class CalendarActivity extends AppCompatActivity {
             String selectedDate = formatDate(clickedDayCalendar.get(Calendar.YEAR),
                     clickedDayCalendar.get(Calendar.MONTH),
                     clickedDayCalendar.get(Calendar.DAY_OF_MONTH));
-            setAttendance(selectedDate);
+            setAttendance(" "+selectedDate+" ");
         });
     }
     private Calendar convertStringToCalendar(String dateString) {

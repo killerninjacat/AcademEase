@@ -6,12 +6,14 @@ import static com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions.
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.documentfile.provider.DocumentFile;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Application;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -20,9 +22,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.storage.StorageManager;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -64,6 +67,7 @@ public class NotesActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     ClickListener clickListener;
     LongClickListener longClickListener;
+    private Uri treeUri;
     private ActivityResultLauncher<IntentSenderRequest> scannerLauncher;
     @SuppressLint("SetTextI18n")
     public void deleteConfirmation(int index)
@@ -222,29 +226,41 @@ public class NotesActivity extends AppCompatActivity {
                     Toast.makeText(this, "Failed to start document scanning", Toast.LENGTH_SHORT).show();
                         });
     }
-    @RequiresApi(api = Build.VERSION_CODES.Q)
-    private static void saveFileUsingMediaStore(Context context, String url, String fileName) throws IOException {
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
-        contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
-        contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+    private void savePdfInScopedStorage(Context context, String url, String fileName) throws IOException {
+        Uri storedUri=sp.getString("FileStorageUri",null)!=null?Uri.parse(sp.getString("FileStorageUri",null)):null;
+        if(storedUri==null) {
+            Log.e("uri", "null");
+            return;
+        }
+        DocumentFile directory=DocumentFile.fromTreeUri(getApplicationContext(), storedUri);
+        if (directory == null || !directory.exists()) {
+            Toast.makeText(context, "Directory not found or inaccessible", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        ContentResolver resolver = context.getContentResolver();
-        Uri uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
-        if (uri != null) {
-            try (InputStream input = new URL(url).openStream();
-                 OutputStream output = resolver.openOutputStream(uri)) {
-                byte[] buffer = new byte[4096];
-                int bytesRead;
-                while ((bytesRead = input.read(buffer)) != -1) {
-                    assert output != null;
-                    output.write(buffer, 0, bytesRead);
-                }
-                Toast.makeText(context, fileName+" saved to Downloads", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                Toast.makeText(context, "Failed to save PDF", Toast.LENGTH_SHORT).show();
-                throw e;
+        DocumentFile newFile = directory.createFile("application/pdf", fileName);
+        if (newFile == null) {
+            Toast.makeText(context, "Failed to create file in the specified directory", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        try (InputStream input = new URL(url).openStream();
+             OutputStream output = context.getContentResolver().openOutputStream(newFile.getUri())) {
+            if (output == null) {
+                throw new IOException("Failed to open output stream.");
             }
+
+            byte[] buffer = new byte[4096];
+            int bytesRead;
+            while ((bytesRead = input.read(buffer)) != -1) {
+                output.write(buffer, 0, bytesRead);
+            }
+
+            Toast.makeText(context, fileName + " saved to chosen directory", Toast.LENGTH_SHORT).show();
+            openSelectedDirectory();
+        } catch (IOException e) {
+            Toast.makeText(context, "Failed to save PDF", Toast.LENGTH_SHORT).show();
+            throw e;
         }
     }
     @SuppressLint("NotifyDataSetChanged")
@@ -301,88 +317,22 @@ public class NotesActivity extends AppCompatActivity {
                 Toast.makeText(NotesActivity.this,"Enter a file name!",Toast.LENGTH_SHORT).show();
             else
             {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    try {
-                        saveFileUsingMediaStore(NotesActivity.this,uri.toString(),fileName+".pdf");
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                else {
-                    savePdf(uri,fileName+".pdf");
+                try {
+                    savePdfInScopedStorage(NotesActivity.this, uri.toString(), fileName + ".pdf");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
                 dialog.dismiss();
             }
         });
         dialog.show();
     }
-    private void savePdf(Uri pdfUri, String fileName) {
-        try {
-            InputStream in = getContentResolver().openInputStream(pdfUri);
-            File outputDir = new File(Environment.getExternalStorageDirectory(), "AcademEase");
-            if(!outputDir.exists())
-                outputDir.mkdirs();
-            File outputFile = new File(outputDir, fileName);
-
-            OutputStream out = Files.newOutputStream(outputFile.toPath());
-            byte[] buf = new byte[1024];
-            int len;
-            while (true) {
-                assert in != null;
-                if (!((len = in.read(buf)) > 0)) break;
-                out.write(buf, 0, len);
-            }
-            in.close();
-            out.close();
-            Toast.makeText(this, "PDF saved at " + outputFile.getAbsolutePath(), Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            Log.e("Save PDF", "Failed to save PDF", e);
-            Toast.makeText(this, "Failed to save PDF", Toast.LENGTH_SHORT).show();
-        }
-    }
-    private void deletePdf(Uri pdfUri) {
-        try {
-            // Get the file path from the Uri
-            String filePath = getPathFromUri(pdfUri);
-
-            // Create a File object from the file path
-            assert filePath != null;
-            File file = new File(filePath);
-
-            // Delete the file
-            if (file.exists()) {
-                boolean deleted = file.delete();
-                if (deleted) {
-                    Toast.makeText(this, "PDF deleted successfully", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Failed to delete PDF", Toast.LENGTH_SHORT).show();
-                }
-            } else {
-                Toast.makeText(this, "File does not exist", Toast.LENGTH_SHORT).show();
-            }
-        } catch (Exception e) {
-            Log.e("Delete PDF", "Failed to delete PDF", e);
-            Toast.makeText(this, "Failed to delete PDF", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private String getPathFromUri(Uri uri) {
-        String[] projection = { MediaStore.Files.FileColumns.DATA };
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA);
-            cursor.moveToFirst();
-            String path = cursor.getString(column_index);
-            cursor.close();
-            return path;
-        }
-        return null;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         scannerLauncher =
                 registerForActivityResult(
                         new ActivityResultContracts.StartIntentSenderForResult(),
@@ -401,40 +351,90 @@ public class NotesActivity extends AppCompatActivity {
                                 setFileName(pdfUri);
                             }
                         });
-        new_note=(Button) findViewById(R.id.new_note);
-        new_scan=(Button) findViewById(R.id.new_scan);
-        recyclerView=(RecyclerView) findViewById(R.id.recyclerView);
+        new_note= findViewById(R.id.new_note);
+        new_scan= findViewById(R.id.new_scan);
+        recyclerView= findViewById(R.id.recyclerView);
         titles=new ArrayList<>();
         descriptions=new ArrayList<>();
         Gson gson=new Gson();
-       sp = getSharedPreferences("com.example.academease", 0);
+        sp = getSharedPreferences("com.example.academease", 0);
+        String checkStorageString=sp.getString("FileStorageUri",null);
+        if(checkStorageString==null) getFolderAccess();
         displaylist=new ArrayList<>();
        String json=sp.getString("titles",null);
        String json1=sp.getString("descriptions",null);
        Log.d("json", "json: "+json);
        titles=gson.fromJson(json,ArrayList.class);
        descriptions=gson.fromJson(json1,ArrayList.class);
-       if(titles==null)
-           titles=new ArrayList<>();
-       if(descriptions==null)
-           descriptions=new ArrayList<>();
+       if(titles==null) {
+           titles = new ArrayList<>();
+           titles.add("Click here for PDF Notes");
+       }
+       if(descriptions==null) {
+           descriptions = new ArrayList<>();
+           descriptions.add("Long press for folder selection");
+       }
        if(titles!=null)
         for(int i=0;i<titles.size();i++)
        {
            displaylist.add(new notesData(titles.get(i),descriptions.get(i)));
        }
-       clickListener = index -> eachNote(titles.get(index),descriptions.get(index));
-       longClickListener= index -> editDeleteDialog(titles.get(index),descriptions.get(index),index);
-        home=(Button) findViewById(R.id.home_n);
+       clickListener = index -> {
+           if(index==0) openSelectedDirectory();
+           else eachNote(titles.get(index), descriptions.get(index));
+       };
+       longClickListener= index -> {
+           if(index!=0) editDeleteDialog(titles.get(index), descriptions.get(index), index);
+           else getFolderAccess();
+       };
+        home= findViewById(R.id.home_n);
         home.setOnClickListener(v -> {
             startActivity(new Intent(NotesActivity.this,MainActivity.class));
             overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         });
+        if(displaylist==null) {
+            displaylist = new ArrayList<>();
+        }
        notesAdapter =new NotesAdapter(displaylist,getApplication(),clickListener,longClickListener);
        recyclerView.setAdapter(notesAdapter);
        recyclerView.setLayoutManager(new LinearLayoutManager(NotesActivity.this));
         new_note.setOnClickListener(v -> newNote());
         new_scan.setOnClickListener(v -> newScan());
+    }
+    private void getFolderAccess(){
+        Toast.makeText(this,"Select the folder where you want to store your notes",Toast.LENGTH_SHORT).show();
+        Intent intent=new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+        startActivityForResult(intent,1234);
+    }
+    private void openSelectedDirectory() {
+        String storedUriString = sp.getString("FileStorageUri", null);
+        if(storedUriString==null) getFolderAccess();
+        else {
+            DocumentFile directory = DocumentFile.fromTreeUri(getApplicationContext(), Uri.parse(storedUriString));
+            if (directory == null || !directory.exists()) {
+                Toast.makeText(this, "Directory not found or inaccessible", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(directory.getUri());
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+            startActivity(intent);
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data){
+        super.onActivityResult(requestCode,resultCode,data);
+        //Log.d("onActivityResult","visited");
+        if(resultCode==RESULT_OK){
+            treeUri=data.getData();
+            if(treeUri!=null){
+                getContentResolver().takePersistableUriPermission(treeUri,Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+                SharedPreferences.Editor editor=sp.edit();
+                editor.putString("FileStorageUri",data.getData().toString());
+                editor.apply();
+            }
+        }
+        else Log.e("FileUtility", resultCode+"");
     }
     @Override
     public void onBackPressed() {
