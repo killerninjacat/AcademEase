@@ -191,7 +191,19 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
     }
+    private static final int TIME_INTERVAL = 2000;
+    private long mBackPressed;
+
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
+        if (mBackPressed + TIME_INTERVAL > System.currentTimeMillis())
+        {
+            super.onBackPressed();
+            this.finishAffinity();
+        }
+        else { Toast.makeText(getBaseContext(), "Press the back button again to exit the app", Toast.LENGTH_SHORT).show(); }
+
+        mBackPressed = System.currentTimeMillis();
     }
 }
