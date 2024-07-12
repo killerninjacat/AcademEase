@@ -1,7 +1,6 @@
-# AcademEase App
+# AcademEase
 
-## Overview
-The AcademEase App is a versatile Android application designed to help students manage their daily schedules, attendance, notes, and stay organized with a virtual whiteboard. It also provides a handy widget to display upcoming classes, ensuring students never miss an important session.
+[<img alt="banner" src="Images/banner.png" />](https://play.google.com/store/apps/details?id=com.nithinbalan.academease)
 
 ## Features
 - **Timetable Creation:** Create and manage daily timetables to keep track of your classes and other activities.
@@ -11,21 +10,9 @@ The AcademEase App is a versatile Android application designed to help students 
 - **Virtual Whiteboard:** Utilize a digital whiteboard for brainstorming, diagrams, and sketching.
 - **Upcoming Class Widget:** A widget on your home screen displays your upcoming class schedule at a glance.
 
-## Screenshots
-![Home page](Screenshots/Screenshot_home.png)
-![Timetable](Screenshots/Screenshot_timetable.png)
-![Attendance](Screenshots/Screenshot_attendance.png)
-![Calendar](Screenshots/Screenshot_calendar.png)
-![View Dates](Screenshots/Screenshot_view_dates.png)
-![Notes](Screenshots/Screenshot_notes.png)
-![Whiteboard](Screenshots/Screenshot_wb.png)
+## Download
 
-## Installation
-[Download the apk file](https://github.com/killerninjacat/AcademEase/releases/download/v2.0.0/AcademEase.v2.0.0.apk) and install it on your Android device.
-Or alternatively, if you want to build from source,
-1. Clone this repository.
-2. Open the project in Android Studio.
-3. Build and run the app on your Android device or emulator.
+[<img alt="Get it on Google Play" height="100" src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png" />](https://play.google.com/store/apps/details?id=com.nithinbalan.academease)
 
 ## Usage
 1. Launch the app and create your timetable for each day.
