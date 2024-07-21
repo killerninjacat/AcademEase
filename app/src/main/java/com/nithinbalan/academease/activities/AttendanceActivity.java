@@ -73,6 +73,12 @@ public class AttendanceActivity extends AppCompatActivity{
             public void onClick(View v) {
                 if (subjectsList.contains(subject_name.getText().toString())&&!(subject_name.getText().toString().equals(subjectsList.get(index))))
                     Toast.makeText(AttendanceActivity.this, "Subject \"" + subject_name.getText().toString() + "\" already exists!", Toast.LENGTH_SHORT).show();
+                else if(target_box.getText().toString().isEmpty())
+                    Toast.makeText(AttendanceActivity.this, "Enter a valid target attendance", Toast.LENGTH_SHORT).show();
+                else if (subject_name.getText().toString().isEmpty())
+                    Toast.makeText(AttendanceActivity.this, "Enter a valid subject name", Toast.LENGTH_SHORT).show();
+                else if (Double.parseDouble(target_box.getText().toString()) < 0 || Double.parseDouble(target_box.getText().toString()) > 100)
+                    Toast.makeText(AttendanceActivity.this, "Enter a valid target attendance", Toast.LENGTH_SHORT).show();
                 else {
                     dbHandler.updateName(subject_name.getText().toString(), subjectsList.get(index));
                     subjectsList.set(index, subject_name.getText().toString());

@@ -10,8 +10,8 @@ android {
         applicationId 'com.nithinbalan.academease'
         minSdk 29
         targetSdk 34
-        versionCode 8
-        versionName "2.3.3"
+        versionCode 11
+        versionName "2.3.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

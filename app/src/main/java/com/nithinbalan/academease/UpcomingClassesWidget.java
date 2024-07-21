@@ -48,7 +48,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 hour = calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
-                for (int i = times.size() - 1; i >= 0; i--) {
+                for (int i = 0; i <times.size(); i++) {
                     if(times.get(i)/60-hour>0)
                     {
                         min=i;
@@ -89,7 +89,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 hour = calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
-                for (int i = times.size() - 1; i >= 0; i--) {
+                for (int i = 0; i <times.size(); i++) {
                     if(times.get(i)/60-hour>0)
                     {
                         min=i;
@@ -130,7 +130,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 hour = calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
-                for (int i = times.size() - 1; i >= 0; i--) {
+                for (int i = 0; i <times.size(); i++) {
                     if(times.get(i)/60-hour>0)
                     {
                         min=i;
@@ -172,7 +172,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 currentMinute = calendar.get(Calendar.MINUTE);
                 Log.d("hour", String.valueOf(hour));
                 min = 0;
-                for (int i = times.size() - 1; i >= 0; i--) {
+                for (int i = 0; i <times.size(); i++) {
                     Log.d("loop", String.valueOf(times.get(i)/60-hour));
                     if(times.get(i)/60-hour>0)
                     {
@@ -216,7 +216,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 hour = calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
-                for (int i = times.size() - 1; i >= 0; i--) {
+                for (int i = 0; i <times.size(); i++) {
                     if(times.get(i)/60-hour>0)
                     {
                         min=i;
@@ -257,7 +257,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 hour = calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute = calendar.get(Calendar.MINUTE);
                 min = 0;
-                for (int i = times.size() - 1; i >= 0; i--) {
+                for (int i = 0; i <times.size(); i++) {
                     if(times.get(i)/60-hour>0)
                     {
                         min=i;
@@ -298,7 +298,7 @@ public class UpcomingClassesWidget extends AppWidgetProvider {
                 hour=calendar.get(Calendar.HOUR_OF_DAY);
                 currentMinute=calendar.get(Calendar.MINUTE);
                 min=0;
-                for (int i = times.size() - 1; i >= 0; i--) {
+                for (int i = 0; i <times.size(); i++) {
                     if(times.get(i)/60-hour>0)
                     {
                         min=i;
