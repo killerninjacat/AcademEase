@@ -12,12 +12,13 @@ import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
     private static final String DB_NAME = "attendancedb";
-    private static final int DB_VERSION = 1;
+    private static final int DB_VERSION = 2;
     private static final String TABLE_NAME = "attendance";
     private static final String ID_COL = "id";
     private static final String NAME_COL = "Course";
     private static final String DATE_COL = "Date";
     private static final String ATTENDED = "Attended";
+    private static final String COUNT = "Count";
     public void deleteAttendance(String courseName, String date) {
         SQLiteDatabase db = this.getWritableDatabase();
         String whereClause = NAME_COL + "=? AND " + DATE_COL + "=?";
@@ -50,7 +51,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
         db.close();
     }
-    public void updateAttended(String subjectName, String date, String newAttended)
+    public void updateAttended(String subjectName, String date, String newAttended, int cnt)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -68,7 +69,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst())
         {
             do{
-                attendanceDataList.add(new AttendanceData(cursor.getString(1),cursor.getString(2), cursor.getString(3),cursor.getInt(0) ));
+                attendanceDataList.add(new AttendanceData(cursor.getString(1),cursor.getString(2), cursor.getString(3),cursor.getInt(0),cursor.getInt(4) ));
             }while(cursor.moveToNext());
         }
         cursor.close();
@@ -83,23 +84,26 @@ public class DBHandler extends SQLiteOpenHelper {
                 + ID_COL + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + NAME_COL + " TEXT,"
                 + DATE_COL + " TEXT,"
-                + ATTENDED + " TEXT)";
+                + ATTENDED + " TEXT,"
+                + COUNT + " INTEGER" + ")";
         db.execSQL(query);
     }
 
-    public void addNewCourse(String courseName, String date, String attended) {
+    public void addNewCourse(String courseName, String date, String attended, int cnt) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(NAME_COL, courseName);
         values.put(DATE_COL, date);
         values.put(ATTENDED, attended);
+        values.put(COUNT, cnt);
         db.insert(TABLE_NAME, null, values);
         db.close();
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+        if (oldVersion < 2) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME + " ADD COLUMN " + COUNT + " INTEGER DEFAULT 1");
+        }
     }
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/dark_layout_rounded">
@@ -18,7 +19,7 @@
             android:id="@+id/presentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/prompt_semibold"
+            android:fontFamily="@font/spacemono_bold"
             android:text="Present"
             android:textColor="@color/secondary_light"
             android:textSize="30sp" />
@@ -27,7 +28,7 @@
             android:id="@+id/absentButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/prompt_semibold"
+            android:fontFamily="@font/spacemono_bold"
             android:text="Absent"
             android:textColor="@color/secondary_light"
             android:textSize="30sp" />
@@ -37,22 +38,22 @@
         android:id="@+id/save_attendance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:background="@drawable/new_button"
-        android:fontFamily="@font/russo_one"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/spacemono_regular"
         android:text=" Save "
         android:textColor="@color/neutral_alt_dark"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
+        app:layout_constraintTop_toBottomOf="@+id/classes" />
 
     <TextView
         android:id="@+id/date_display"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:fontFamily="@font/bangers"
+        android:fontFamily="@font/spacemono_bold"
         android:text="Date"
         android:textColor="@color/tertiary_light"
         android:textSize="30sp"
@@ -66,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/red1_rounded"
-        android:fontFamily="@font/russo_one"
+        android:fontFamily="@font/spacemono_regular"
         android:text=" DELETE "
         android:textSize="18sp"
         android:textColor="#553333"
@@ -79,4 +80,21 @@
         app:layout_constraintTop_toBottomOf="@+id/del_day"
         android:layout_width="0dp"
         android:layout_height="20dp" />
+
+    <EditText
+        android:id="@+id/classes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:autofillHints="1"
+        android:ems="10"
+        android:hint="No. of classes"
+        android:textColor="@color/secondary_light"
+        android:textColorHint="#bbffffff"
+        android:fontFamily="@font/spacemono_regular"
+        android:textAlignment="center"
+        android:inputType="number"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 </androidx.constraintlayout.widget.ConstraintLayout>

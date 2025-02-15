@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:fontFamily="@font/moontank"
+        android:fontFamily="@font/spacemono_bold"
         android:text="MY NOTES"
         android:textColor="@color/tertiary_light"
         android:textSize="40sp"
