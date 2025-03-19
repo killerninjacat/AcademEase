@@ -27,7 +27,7 @@
         app:layout_constraintTop_toBottomOf="@id/target"
         app:pagesColor="@color/secondary_light"
         app:todayLabelColor="#0000ff"
-        app:typeface="@font/spacemono_bold" />
+        app:typeface="@font/spacemono_regular" />
 
     <TextView
         android:id="@+id/totalclasses"

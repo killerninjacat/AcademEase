@@ -15,7 +15,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <TextView
         android:id="@+id/welcome"
         android:layout_width="0dp"
@@ -40,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="160dp"
         android:background="@drawable/mainbuttons"
-        android:fontFamily="@font/spacemono_bold"
+        android:fontFamily="@font/spacemono_regular"
         android:shadowColor="@color/neutral_alt_dark"
         android:shadowRadius="5"
         android:text="  Timetable   "
@@ -57,11 +56,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/mainbuttons"
-        android:fontFamily="@font/spacemono_bold"
-        android:shadowColor="@color/neutral_alt_dark"
-        android:shadowRadius="5"
+        android:fontFamily="@font/spacemono_regular"
         android:text="  Attendance  "
         android:textColor="@color/neutral_alt_light"
+        android:shadowRadius="5"
+        android:shadowColor="@color/neutral_alt_dark"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -73,10 +72,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/mainbuttons"
-        android:fontFamily="@font/spacemono_bold"
-        android:shadowColor="@color/neutral_alt_dark"
-        android:shadowRadius="5"
+        android:fontFamily="@font/spacemono_regular"
         android:text="   My Notes   "
+        android:shadowRadius="5"
+        android:shadowColor="@color/neutral_alt_dark"
         android:textColor="@color/neutral_alt_light"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -89,10 +88,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/mainbuttons"
-        android:fontFamily="@font/spacemono_bold"
-        android:shadowColor="@color/neutral_alt_dark"
-        android:shadowRadius="5"
+        android:fontFamily="@font/spacemono_regular"
         android:text="  Whiteboard  "
+        android:shadowRadius="5"
+        android:shadowColor="@color/neutral_alt_dark"
         android:textColor="@color/neutral_alt_light"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -100,25 +99,15 @@
         app:layout_constraintTop_toBottomOf="@+id/button3" />
 
     <Button
+        android:visibility="invisible"
         android:id="@+id/gh_link"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginStart="40dp"
         android:layout_marginBottom="40dp"
         android:background="@drawable/github"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/import_tt"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/github"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/madeWith"
