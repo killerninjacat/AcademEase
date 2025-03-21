@@ -26,6 +26,7 @@ import com.nithinbalan.academease.AttendanceData;
 import com.nithinbalan.academease.DBHandler;
 import com.example.academease.R;
 import com.google.gson.Gson;
+import com.nithinbalan.academease.DayData;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -41,7 +42,7 @@ public class CalendarActivity extends AppCompatActivity {
     String currentSubject;
     private int attendedClasses,totalclasses;
     List<Calendar> highlightedDays;
-    List<String> attendedDates, allDates, absentDates;
+    List<DayData> attendedDates, allDates, absentDates;
     int exists,c,current_index,cnt;
     Button home;
     CalendarView calendar;
@@ -56,16 +57,20 @@ public class CalendarActivity extends AppCompatActivity {
     private SharedPreferences sp;
     TextView current_percentage,totalbox,presentbox,absentbox,subname1,target;
     @SuppressLint("SetTextI18n")
-    public void showDates(List<String> dates1, int id)
+    public void showDates(List<DayData> dates1, int id)
     {
-        List<String> temp = new ArrayList<>(dates1);
+        List<String> temp = new ArrayList<>();
+        for(int i=0;i<dates1.size();i++){
+            temp.add(dates1.get(i).getDay()+"-"+dates1.get(i).getCnt());
+        }
         for(int i=0;i<temp.size();i++)
         {
             String[] parts = temp.get(i).split("-");
             String day = parts[0];
             String month = parts[1];
             String year = parts[2];
-            temp.set(i,year+"-"+month+"-"+day);
+            String cnt=parts[3];
+            temp.set(i,year+"-"+month+"-"+day+"-"+cnt);
         }
         Collections.sort(temp);
         for(int i=0;i<temp.size();i++)
@@ -74,7 +79,8 @@ public class CalendarActivity extends AppCompatActivity {
             String day = parts[2];
             String month = parts[1];
             String year = parts[0];
-            temp.set(i,day+"-"+month+"-"+year);
+            String cnt=parts[3];
+            temp.set(i,day+"-"+month+"-"+year+": "+cnt);
         }
         final Dialog dialog = new Dialog(CalendarActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -139,8 +145,8 @@ public class CalendarActivity extends AppCompatActivity {
                     dbHandler.updateAttended(currentSubject, date, "true", cnt);
                     if(att.equals("false")) {
                         attendedClasses+=cnt;
-                        attendedDates.add(date);
-                        absentDates.remove(date);
+                        attendedDates.add(new DayData(date,cnt));
+                        absentDates.remove(new DayData(date,cnt));
                         Calendar highlightedDate = convertStringToCalendar(date);
                         highlightedDays.remove(highlightedDate);
                     }
@@ -149,8 +155,8 @@ public class CalendarActivity extends AppCompatActivity {
                     dbHandler.updateAttended(currentSubject, date, "false", cnt);
                     if(att.equals("true")) {
                         attendedClasses--;
-                        absentDates.add(date);
-                        attendedDates.remove(date);
+                        absentDates.add(new DayData(date,cnt));
+                        attendedDates.remove(new DayData(date,cnt));
                     }
                     Calendar highlightedDate = convertStringToCalendar(date);
                     highlightedDays.add(highlightedDate);
@@ -161,16 +167,16 @@ public class CalendarActivity extends AppCompatActivity {
                     dbHandler.addNewCourse(currentSubject, date, "true", cnt);
                     attendedClasses+=cnt;
                     totalclasses+=cnt;
-                    allDates.add(date);
-                    attendedDates.add(date);
+                    allDates.add(new DayData(date,cnt));
+                    attendedDates.add(new DayData(date,cnt));
                 }
                 else if (absent.isChecked()) {
                     dbHandler.addNewCourse(currentSubject, date, "false", cnt);
                     totalclasses+=cnt;
                     Calendar highlightedDate = convertStringToCalendar(date);
                     highlightedDays.add(highlightedDate);
-                    allDates.add(date);
-                    absentDates.add(date);
+                    allDates.add(new DayData(date,cnt));
+                    absentDates.add(new DayData(date,cnt));
                 }
                 else {
                     Toast.makeText(CalendarActivity.this, "Were you present or absent?", Toast.LENGTH_SHORT).show();
@@ -294,17 +300,17 @@ public class CalendarActivity extends AppCompatActivity {
         }
         for(int j=0;j<attendanceDataList.size();j++)
         {
-            totalclasses+=attendanceDataList.get(j).getCnt();
-            allDates.add(attendanceDataList.get(j).getDate());
+            int cnt=attendanceDataList.get(j).getCnt();
+            totalclasses+=cnt;
+            allDates.add(new DayData(attendanceDataList.get(j).getDate(),cnt));
             if(attendanceDataList.get(j).getAttended().equals("true")) {
-                int cnt=attendanceDataList.get(j).getCnt();
                 attendedClasses+=cnt;
-                attendedDates.add(attendanceDataList.get(j).getDate());
+                attendedDates.add(new DayData(attendanceDataList.get(j).getDate(),cnt));
             }
             else {
                 Calendar highlightedDate = convertStringToCalendar(attendanceDataList.get(j).getDate());
                 highlightedDays.add(highlightedDate);
-                absentDates.add(attendanceDataList.get(j).getDate());
+                absentDates.add(new DayData(attendanceDataList.get(j).getDate(),cnt));
             }
         }
         calendar.setHighlightedDays(highlightedDays);

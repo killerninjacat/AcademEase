@@ -239,9 +239,9 @@ public class AttendanceActivity extends AppCompatActivity{
             int tc=0, ac=0;
             for(int k=0;k<attendanceDataList1.size();k++)
             {
-                tc++;
+                tc+=attendanceDataList1.get(k).getCnt();
                 if(attendanceDataList1.get(k).getAttended().equals("true"))
-                    ac++;
+                    ac+=attendanceDataList1.get(k).getCnt();
             }
             float ac1=ac;
             double percentage=(double) Math.round((ac1 * 100 / tc) * 100) / 100;

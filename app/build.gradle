@@ -10,15 +10,15 @@ android {
         applicationId 'com.nithinbalan.academease'
         minSdk 29
         targetSdk 34
-        versionCode 11
-        versionName "2.3.6"
+        versionCode 13
+        versionName "2.3.8"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
