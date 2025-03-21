@@ -4,6 +4,16 @@ public class AttendanceData {
     private String name,date,attended;
     private int id;
 
+    public int getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(int cnt) {
+        this.cnt = cnt;
+    }
+
+    private int cnt;
+
     public String getName() {
         return name;
     }
@@ -36,10 +46,11 @@ public class AttendanceData {
         this.id = id;
     }
 
-    public AttendanceData(String name, String date, String attended, int id) {
+    public AttendanceData(String name, String date, String attended, int id, int cnt) {
         this.name = name;
         this.date = date;
         this.attended = attended;
+        this.cnt=cnt;
         this.id = id;
     }
 }

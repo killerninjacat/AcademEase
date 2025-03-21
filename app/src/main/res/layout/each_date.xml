@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="3dp"
         android:layout_weight="1"
-        android:fontFamily="@font/iron"
+        android:fontFamily="@font/spacemono_bold"
         android:textAlignment="center"
         android:textColor="@color/tertiary_light"
         android:textSize="21sp" />

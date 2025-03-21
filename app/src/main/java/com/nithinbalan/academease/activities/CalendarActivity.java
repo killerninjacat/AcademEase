@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -41,12 +42,13 @@ public class CalendarActivity extends AppCompatActivity {
     private int attendedClasses,totalclasses;
     List<Calendar> highlightedDays;
     List<String> attendedDates, allDates, absentDates;
-    int exists,c,current_index;
+    int exists,c,current_index,cnt;
     Button home;
     CalendarView calendar;
     List<Double>targetsList;
     int screenWidth;
     DisplayMetrics displayMetrics;
+    EditText numberOfClasses;
     int targetValue;
     String att;
     Gson gson;
@@ -113,10 +115,14 @@ public class CalendarActivity extends AppCompatActivity {
         date_display.setText(date);
         absent=dialog.findViewById(R.id.absentButton);
         save=dialog.findViewById(R.id.save_attendance);
+        numberOfClasses=dialog.findViewById(R.id.classes);
+        numberOfClasses.setText("1");
         for(int k=0;k<attendanceDataList.size();k++)
         {
             if(attendanceDataList.get(k).getName().equals(currentSubject)&&attendanceDataList.get(k).getDate().equals(date)) {
                 exists=1;
+                cnt=attendanceDataList.get(k).getCnt();
+                numberOfClasses.setText(""+cnt);
                 att=attendanceDataList.get(k).getAttended();
                 if (attendanceDataList.get(k).getAttended().equals("true"))
                     present.setChecked(true);
@@ -126,12 +132,13 @@ public class CalendarActivity extends AppCompatActivity {
         }
         save.setOnClickListener(v -> {
             c=0;
+            cnt=Integer.parseInt(numberOfClasses.getText().toString());
             if(exists==1)
             {
                 if(present.isChecked()) {
-                    dbHandler.updateAttended(currentSubject, date, "true");
+                    dbHandler.updateAttended(currentSubject, date, "true", cnt);
                     if(att.equals("false")) {
-                        attendedClasses++;
+                        attendedClasses+=cnt;
                         attendedDates.add(date);
                         absentDates.remove(date);
                         Calendar highlightedDate = convertStringToCalendar(date);
@@ -139,7 +146,7 @@ public class CalendarActivity extends AppCompatActivity {
                     }
                 }
                 else if(absent.isChecked()) {
-                    dbHandler.updateAttended(currentSubject, date, "false");
+                    dbHandler.updateAttended(currentSubject, date, "false", cnt);
                     if(att.equals("true")) {
                         attendedClasses--;
                         absentDates.add(date);
@@ -151,15 +158,15 @@ public class CalendarActivity extends AppCompatActivity {
             }
             else {
                 if (present.isChecked()) {
-                    dbHandler.addNewCourse(currentSubject, date, "true");
-                    attendedClasses++;
-                    totalclasses++;
+                    dbHandler.addNewCourse(currentSubject, date, "true", cnt);
+                    attendedClasses+=cnt;
+                    totalclasses+=cnt;
                     allDates.add(date);
                     attendedDates.add(date);
                 }
                 else if (absent.isChecked()) {
-                    dbHandler.addNewCourse(currentSubject, date, "false");
-                    totalclasses++;
+                    dbHandler.addNewCourse(currentSubject, date, "false", cnt);
+                    totalclasses+=cnt;
                     Calendar highlightedDate = convertStringToCalendar(date);
                     highlightedDays.add(highlightedDate);
                     allDates.add(date);
@@ -287,10 +294,11 @@ public class CalendarActivity extends AppCompatActivity {
         }
         for(int j=0;j<attendanceDataList.size();j++)
         {
-            totalclasses++;
+            totalclasses+=attendanceDataList.get(j).getCnt();
             allDates.add(attendanceDataList.get(j).getDate());
             if(attendanceDataList.get(j).getAttended().equals("true")) {
-                attendedClasses++;
+                int cnt=attendanceDataList.get(j).getCnt();
+                attendedClasses+=cnt;
                 attendedDates.add(attendanceDataList.get(j).getDate());
             }
             else {

@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/paint_options"
-            android:fontFamily="@font/prompt_semibold"
+            android:fontFamily="@font/spacemono_bold"
             android:text=" Stroke Width "
             android:textColor="@color/primary_dark" />
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:background="@drawable/paint_options"
-            android:fontFamily="@font/prompt_semibold"
+            android:fontFamily="@font/spacemono_bold"
             android:text=" Paint Color "
             android:textColor="@color/primary_dark" />
 
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/paint_options"
-            android:fontFamily="@font/prompt_semibold"
+            android:fontFamily="@font/spacemono_bold"
             android:text="Clear"
             android:textColor="@color/primary_dark" />
     </LinearLayout>
