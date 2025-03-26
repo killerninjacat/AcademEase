@@ -4,22 +4,34 @@ plugins {
 
 android {
     namespace 'com.example.academease'
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId 'com.nithinbalan.academease'
         minSdk 29
         targetSdk 34
-        versionCode 13
-        versionName "2.3.8"
+        versionCode 14
+        versionName "2.3.9"
+
+        buildConfigField "String", "API_KEY", "${apiKey}"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+            storeFile file('/home/nithin/Documents/academease.jks')
+            storePassword 'Nl19bS27V24'
+            keyAlias 'key0'
+            keyPassword 'Nl19bS27V24'
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -28,6 +40,7 @@ android {
     }
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 }
 
@@ -35,11 +48,11 @@ dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation 'com.google.android.material:material:1.12.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
-    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.google.code.gson:gson:2.12.1'
     implementation 'com.applandeo:material-calendar-view:1.9.0-rc03'
     implementation 'nl.dionsegijn:konfetti-xml:2.0.3'
     implementation 'com.google.android.gms:play-services-mlkit-document-scanner:16.0.0-beta1'
