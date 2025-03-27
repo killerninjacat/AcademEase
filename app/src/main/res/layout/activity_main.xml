@@ -110,6 +110,17 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        android:id="@+id/query"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/question"
+        android:backgroundTint="#aaffffff"
+        app:layout_constraintBottom_toTopOf="@id/import_tt"
+        app:layout_constraintEnd_toEndOf="@+id/import_tt"
+        app:layout_constraintStart_toStartOf="@+id/import_tt" />
+
+    <Button
         android:id="@+id/import_tt"
         android:layout_width="50dp"
         android:layout_height="50dp"

@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +24,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -171,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                     "  \"contents\": [\n" +
                     "    {\n" +
                     "      \"parts\": [\n" +
-                    "        {\"text\": \"Parse this timetable image and extract all class schedules, times and course names in a structured format. Return the data in a JSON format. I just need the day, start time and course name.\"}, \n" +
+                    "        {\"text\": \"Parse this timetable image and extract all class schedules, times and course names in a structured format. Return the data in a JSON format. I just need the day, start time and course name. Make sure to detect the correct time and slot for each class. The slot code is horizontally next to the corresponding course.\"}, \n" +
                     "        {\"inline_data\": {\"mime_type\": \"image/jpeg\", \"data\": \"" + base64Image + "\"}}\n" +
                     "      ]\n" +
                     "    }\n" +
@@ -399,21 +402,47 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     public void promptForApiKey(ApiKeyCallback callback) {
         EditText keybox;
-        Button ok,close,defaultKey;
+        Button ok,close,defaultKey,editKey;
+        TextView title;
         final Dialog dialog = new Dialog(MainActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(false);
+        String userKey = sp.getString("userKey", null);
         dialog.setContentView(R.layout.enter_key);
         Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         keybox = dialog.findViewById(R.id.key_box);
-        ok = dialog.findViewById(R.id.ok);
+        ok = dialog.findViewById(R.id.ok_key);
         close = dialog.findViewById(R.id.close_key);
         defaultKey = dialog.findViewById(R.id.def_key);
+        editKey = dialog.findViewById(R.id.edit_key);
+        title = dialog.findViewById(R.id.textView3);
+        if(userKey != null){
+            keybox.setVisibility(View.INVISIBLE);
+            ok.setText("Saved Key ("+userKey+")");
+            defaultKey.setVisibility(View.VISIBLE);
+            title.setText("Choose the API key to use");
+        }
+        else editKey.setVisibility(View.INVISIBLE);
+
+        editKey.setOnClickListener(view -> {
+            keybox.setVisibility(View.VISIBLE);
+            defaultKey.setVisibility(View.GONE);
+            ok.setText(" Save Key and use ");
+            title.setText("Enter your new key");
+            editKey.setVisibility(View.INVISIBLE);
+        });
 
         ok.setOnClickListener(v -> {
-            String key = keybox.getText().toString().trim();
+            String key;
+            if(userKey!=null && ok.getText() != " Save Key and use ") key = userKey;
+            else {
+                key = keybox.getText().toString().trim();
+                editor.putString("userKey", key);
+                editor.apply();
+            }
             if (key.isEmpty()) {
                 Toast.makeText(MainActivity.this, "Enter a key.", Toast.LENGTH_SHORT).show();
             } else {
@@ -434,6 +463,7 @@ public class MainActivity extends AppCompatActivity {
             useCount++;
             SharedPreferences.Editor editor = sp.edit();
             editor.putInt("useCount",useCount);
+            editor.apply();
             dialog.dismiss();
             callback.onApiKeyProvided(myKey);
         });
@@ -509,6 +539,25 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+
+    private void showTimetableImportInstructions() {
+        final Dialog dialog = new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(true);
+        dialog.setContentView(R.layout.query_dialog);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+        ImageView start = dialog.findViewById(R.id.import_timetable_icon);
+        start.setOnClickListener(view -> {
+            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            galleryLauncher.launch(intent);
+        });
+
+        dialog.findViewById(R.id.ok_button).setOnClickListener(v -> dialog.dismiss());
+
+        dialog.show();
+    }
     @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -596,6 +645,9 @@ public class MainActivity extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(appUpdateHelper::checkForUpdates, 3000);
 
         Button importTimetable = findViewById(R.id.import_tt);
+        Button query = findViewById(R.id.query);
+
+        query.setOnClickListener(view -> showTimetableImportInstructions());
 
 
         importTimetable.setOnClickListener(v -> {

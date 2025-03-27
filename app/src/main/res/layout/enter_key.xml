@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/ok"
+        android:id="@+id/ok_key"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -44,6 +44,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/key_box" />
+
+    <Button
+        android:id="@+id/edit_key"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/new_button"
+        android:fontFamily="@font/spacemono_bold"
+        android:text=" Edit saved key "
+        android:textColor="@color/tertiary_dark"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ok_key" />
 
     <Button
         android:id="@+id/def_key"
@@ -58,7 +72,7 @@
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ok" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_key" />
 
     <Button
         android:id="@+id/close_key"
