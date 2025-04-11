@@ -59,12 +59,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/subjectnamebox" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/save_class"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:background="@drawable/new_button"
+        android:backgroundTint="?attr/colorButtonNormal"
         android:fontFamily="@font/spacemono_bold"
         android:text="Save"
         android:textColor="@color/neutral_alt_dark"

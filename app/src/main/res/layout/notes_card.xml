@@ -14,7 +14,7 @@
         android:fontFamily="@font/spacemono_bold"
         android:textStyle="bold"
         android:text="Title"
-        android:textColor="@color/primary_light"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -29,7 +29,7 @@
         android:scrollbars="vertical"
         android:text="Description"
         android:textAlignment="viewStart"
-        android:textColor="@color/primary_not_so_light"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="22sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/note_title" />

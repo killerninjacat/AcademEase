@@ -16,4 +16,21 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TopBar">
+        <item name="android:fontFamily">@font/spacemono_regular</item>
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">?attr/colorOnSurface</item>
+    </style>
+
+    <style name="MadeWith">
+        <item name="android:fontFamily">@font/spacemono_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">#757575</item>
+    </style>
+
+    <style name="CustomBottomNavText" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/spacemono_bold</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
 </resources>

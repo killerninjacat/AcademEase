@@ -7,209 +7,46 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
-import android.app.Application;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.storage.StorageManager;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nithinbalan.academease.ClickListener;
 import com.nithinbalan.academease.LongClickListener;
 import com.example.academease.R;
-import com.nithinbalan.academease.adapters.NotesAdapter;
-import com.nithinbalan.academease.adapters.notesData;
 import com.google.gson.Gson;
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanner;
 import com.google.mlkit.vision.documentscanner.GmsDocumentScannerOptions;
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanning;
 import com.google.mlkit.vision.documentscanner.GmsDocumentScanningResult;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;
-import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 import java.io.InputStream;
 
 public class NotesActivity extends AppCompatActivity {
-    Button new_note,home,new_scan;
-    String t,d;
-    List<String> titles, descriptions;
-    List<notesData> displaylist;
+    Button new_scan,open,choose;
     private SharedPreferences sp;
-    NotesAdapter notesAdapter;
-    RecyclerView recyclerView;
     ClickListener clickListener;
     LongClickListener longClickListener;
     private Uri treeUri;
     private ActivityResultLauncher<IntentSenderRequest> scannerLauncher;
-    @SuppressLint("SetTextI18n")
-    public void deleteConfirmation(int index)
-    {
-        final Dialog dialog = new Dialog(NotesActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.delete_confirmation);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button yes,no;
-        TextView textView;
-        textView=dialog.findViewById(R.id.deleteText);
-        textView.setText("Do you really want to delete this note?");
-        yes=dialog.findViewById(R.id.yes_att);
-        no=dialog.findViewById(R.id.no_att);
-        Gson gson=new Gson();
-        yes.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onClick(View v) {
-                titles.remove(index);
-                descriptions.remove(index);
-                displaylist.remove(index);
-                notesAdapter.notifyDataSetChanged();
-                String json=gson.toJson(titles);
-                String json1=gson.toJson(descriptions);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("titles",json);
-                editor.putString("descriptions",json1);
-                editor.apply();
-                dialog.dismiss();
-            }
-        });
-        no.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
-    public void editDeleteDialog(String title, String description, int index)
-    {
-        final Dialog dialog = new Dialog(NotesActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.edit_delete_dialog);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        Button edit,delete;
-        edit=dialog.findViewById(R.id.editAtt);
-        delete=dialog.findViewById(R.id.deleteAtt);
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                deleteConfirmation(index);
-                dialog.dismiss();
-            }
-        });
-        edit.setOnClickListener(v -> {
-            editNotedialog(title,description,index);
-            dialog.dismiss();
-        });
-        dialog.show();
-    }
-    public void eachNote(String title,String description)
-    {
-        Button close;
-        TextView ti,de;
-        final Dialog dialog = new Dialog(NotesActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(true);
-        dialog.setContentView(R.layout.each_note_dialog);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        close=dialog.findViewById(R.id.close1);
-        ti=dialog.findViewById(R.id.titleindialog);
-        de=dialog.findViewById(R.id.descriptionindialog);
-        ti.setText(title);
-        de.setText(description);
-        close.setOnClickListener(v -> dialog.dismiss());
-        dialog.show();
-    }
-    @SuppressLint("SetTextI18n")
-    public void editNotedialog(String title, String description, int index)
-    {
-        EditText titlebox,contentbox;
-        TextView newNotebox;
-        Button close,save;
-        final Dialog dialog = new Dialog(NotesActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.new_note_dialog);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
-        titlebox=dialog.findViewById(R.id.titlebox);
-        contentbox=dialog.findViewById(R.id.contentbox);
-        newNotebox=dialog.findViewById(R.id.newNotebox);
-        newNotebox.setText("Edit Note");
-        titlebox.setText(title);
-        contentbox.setText(description);
-        close=dialog.findViewById(R.id.close);
-        save=dialog.findViewById(R.id.save_note);
-        Gson gson=new Gson();
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        save.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void onClick(View v) {
-                t=titlebox.getText().toString();
-                d=contentbox.getText().toString();
-                if(t.equals("") && d.equals("")) {
-                    Toast.makeText(NotesActivity.this,"Add a title or description!",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    titles.remove(index);
-                    descriptions.remove(index);
-                    titles.add(t);
-                    descriptions.add(d);
-                    for (notesData note : displaylist) {
-                        if (note.getTitle().equals(title) && note.getDescription().equals(description)) {
-                            displaylist.remove(note);
-                            break;
-                        }
-                    }
-                    displaylist.add(new notesData(t,d));
-                    notesAdapter.notifyDataSetChanged();
-                    String json=gson.toJson(titles);
-                    String json1=gson.toJson(descriptions);
-                    SharedPreferences.Editor editor = sp.edit();
-                    editor.putString("titles",json);
-                    editor.putString("descriptions",json1);
-                    editor.apply();
-                    dialog.dismiss();
-                }
-            }
-        });
-        dialog.show();
-    }
+
     public void newScan() {
         GmsDocumentScannerOptions options = new GmsDocumentScannerOptions.Builder()
                 .setGalleryImportAllowed(true)
@@ -263,45 +100,6 @@ public class NotesActivity extends AppCompatActivity {
             throw e;
         }
     }
-    @SuppressLint("NotifyDataSetChanged")
-    public void newNote()
-    {
-        EditText titlebox,contentbox;
-        Button close,save;
-        final Dialog dialog = new Dialog(NotesActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.new_note_dialog);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
-        titlebox=dialog.findViewById(R.id.titlebox);
-        contentbox=dialog.findViewById(R.id.contentbox);
-        close=dialog.findViewById(R.id.close);
-        save=dialog.findViewById(R.id.save_note);
-        Gson gson=new Gson();
-        close.setOnClickListener(v -> dialog.dismiss());
-        save.setOnClickListener(v -> {
-            t=titlebox.getText().toString();
-            d=contentbox.getText().toString();
-            if(t.equals("") && d.equals("")) {
-                Toast.makeText(NotesActivity.this,"Add a title or description!",Toast.LENGTH_SHORT).show();
-            }
-            else {
-                titles.add(t);
-                descriptions.add(d);
-                displaylist.add(new notesData(t,d));
-                notesAdapter.notifyDataSetChanged();
-                String json=gson.toJson(titles);
-                String json1=gson.toJson(descriptions);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("titles",json);
-                editor.putString("descriptions",json1);
-                editor.apply();
-                dialog.dismiss();
-            }
-        });
-        dialog.show();
-    }
     private void setFileName(Uri uri) {
         final Dialog dialog=new Dialog(NotesActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -332,7 +130,39 @@ public class NotesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notes);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_notes) {
+                return true;
+            } else if (itemId == R.id.nav_timetable) {
+                startActivity(new Intent(NotesActivity.this, TimetableActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(NotesActivity.this, MainActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            } else if (itemId == R.id.nav_attendance) {
+                startActivity(new Intent(NotesActivity.this, AttendanceActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            }
+
+            return false;
+        });
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_notes);
+
+        open = findViewById(R.id.openScannedNotesButton);
+        choose = findViewById(R.id.chooseFolderButton);
+
+        open.setOnClickListener(view -> openSelectedDirectory());
+
+        choose.setOnClickListener(view -> getFolderAccess());
+
         scannerLauncher =
                 registerForActivityResult(
                         new ActivityResultContracts.StartIntentSenderForResult(),
@@ -351,54 +181,10 @@ public class NotesActivity extends AppCompatActivity {
                                 setFileName(pdfUri);
                             }
                         });
-        new_note= findViewById(R.id.new_note);
         new_scan= findViewById(R.id.new_scan);
-        recyclerView= findViewById(R.id.recyclerView);
-        titles=new ArrayList<>();
-        descriptions=new ArrayList<>();
-        Gson gson=new Gson();
         sp = getSharedPreferences("com.example.academease", 0);
         String checkStorageString=sp.getString("FileStorageUri",null);
         if(checkStorageString==null) getFolderAccess();
-        displaylist=new ArrayList<>();
-       String json=sp.getString("titles",null);
-       String json1=sp.getString("descriptions",null);
-       Log.d("json", "json: "+json);
-       titles=gson.fromJson(json,ArrayList.class);
-       descriptions=gson.fromJson(json1,ArrayList.class);
-       if(titles==null) {
-           titles = new ArrayList<>();
-           titles.add("Click here for PDF Notes");
-       }
-       if(descriptions==null) {
-           descriptions = new ArrayList<>();
-           descriptions.add("Long press for folder selection");
-       }
-       if(titles!=null)
-        for(int i=0;i<titles.size();i++)
-       {
-           displaylist.add(new notesData(titles.get(i),descriptions.get(i)));
-       }
-       clickListener = index -> {
-           if(index==0) openSelectedDirectory();
-           else eachNote(titles.get(index), descriptions.get(index));
-       };
-       longClickListener= index -> {
-           if(index!=0) editDeleteDialog(titles.get(index), descriptions.get(index), index);
-           else getFolderAccess();
-       };
-        home= findViewById(R.id.home_n);
-        home.setOnClickListener(v -> {
-            startActivity(new Intent(NotesActivity.this,MainActivity.class));
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-        });
-        if(displaylist==null) {
-            displaylist = new ArrayList<>();
-        }
-       notesAdapter =new NotesAdapter(displaylist,getApplication(),clickListener,longClickListener);
-       recyclerView.setAdapter(notesAdapter);
-       recyclerView.setLayoutManager(new LinearLayoutManager(NotesActivity.this));
-        new_note.setOnClickListener(v -> newNote());
         new_scan.setOnClickListener(v -> newScan());
     }
     private void getFolderAccess(){

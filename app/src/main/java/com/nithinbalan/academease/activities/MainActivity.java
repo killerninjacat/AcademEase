@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.IntentSenderRequest;
+import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -38,6 +39,9 @@ import androidx.core.content.ContextCompat;
 
 import com.example.academease.BuildConfig;
 import com.example.academease.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.nithinbalan.academease.adapters.AppUpdateHelper;
 
@@ -174,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     "  \"contents\": [\n" +
                     "    {\n" +
                     "      \"parts\": [\n" +
-                    "        {\"text\": \"Parse this timetable image and extract all class schedules, times and course names in a structured format. Return the data in a JSON format. I just need the day, start time and course name. Make sure to detect the correct time and slot for each class. The slot code is horizontally next to the corresponding course.\"}, \n" +
+                    "        {\"text\": \"Parse this timetable image and extract all class schedules, times and course names in a structured format. Return the data in a JSON format with the following keys: day, start_time, course_name. I just need the day, start time and course name. Make sure to detect the correct time and slot for each class. The slot code is horizontally next to the corresponding course. The course_name must be the actual name corresponding to the slot code.\"}, \n" +
                     "        {\"inline_data\": {\"mime_type\": \"image/jpeg\", \"data\": \"" + base64Image + "\"}}\n" +
                     "      ]\n" +
                     "    }\n" +
@@ -419,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
         defaultKey = dialog.findViewById(R.id.def_key);
         editKey = dialog.findViewById(R.id.edit_key);
         title = dialog.findViewById(R.id.textView3);
-        if(userKey != null){
+        if(userKey != null && !userKey.isEmpty()) {
             keybox.setVisibility(View.INVISIBLE);
             ok.setText("Saved Key ("+userKey+")");
             defaultKey.setVisibility(View.VISIBLE);
@@ -476,67 +480,63 @@ public class MainActivity extends AppCompatActivity {
         void onDialogClosed();
     }
 
-    private final ActivityResultLauncher<Intent> galleryLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result -> {
-                if (result.getResultCode() == Activity.RESULT_OK && result.getData() != null) {
-                    Uri selectedImageUri = result.getData().getData();
-                    if (selectedImageUri != null) {
-                        // Show loading dialog
-                        Dialog loadingDialog = new Dialog(MainActivity.this);
-                        loadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                        loadingDialog.setCancelable(false);
-                        loadingDialog.setContentView(R.layout.dialog_loading);
-                        loadingDialog.show();
+    // At the top of your MainActivity class, replace the existing galleryLauncher with:
+    private final ActivityResultLauncher<PickVisualMediaRequest> photoPickerLauncher =
+            registerForActivityResult(new ActivityResultContracts.PickVisualMedia(), uri -> {
+                if (uri != null) {
+                    // Show loading dialog
+                    Dialog loadingDialog = new Dialog(MainActivity.this);
+                    loadingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    loadingDialog.setCancelable(false);
+                    loadingDialog.setContentView(R.layout.dialog_loading);
+                    loadingDialog.show();
 
-                        // Process the image in background
-                        new Thread(() -> {
-                            try {
-                                // Convert image to base64
-                                InputStream imageStream = getContentResolver().openInputStream(selectedImageUri);
-                                Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
-                                String base64Image = bitmapToBase64(bitmap);
+                    // Process the image in background
+                    new Thread(() -> {
+                        try {
+                            // Convert image to base64
+                            InputStream imageStream = getContentResolver().openInputStream(uri);
+                            Bitmap bitmap = BitmapFactory.decodeStream(imageStream);
+                            String base64Image = bitmapToBase64(bitmap);
 
-                                runOnUiThread(() -> {
-                                    promptForApiKey(new ApiKeyCallback() {
-                                        @Override
-                                        public void onApiKeyProvided(String apiKey) {
-                                            // Once we have the API key, continue the API request in background
-                                            new Thread(() -> {
-                                                String response = sendToGeminiAPI(base64Image, apiKey);
+                            runOnUiThread(() -> {
+                                promptForApiKey(new ApiKeyCallback() {
+                                    @Override
+                                    public void onApiKeyProvided(String apiKey) {
+                                        // Continue with API request in background
+                                        new Thread(() -> {
+                                            String response = sendToGeminiAPI(base64Image, apiKey);
 
-                                                // Update UI on main thread
-                                                runOnUiThread(() -> {
-                                                    loadingDialog.dismiss();
-                                                    if (response != null) {
-                                                        showTimetableResultDialog(response);
-                                                    } else {
-                                                        Toast.makeText(MainActivity.this,
-                                                                "Failed to process timetable image. Check your API key and try again.",
-                                                                Toast.LENGTH_LONG).show();
-                                                    }
-                                                });
-                                            }).start();
-                                        }
+                                            // Update UI on main thread
+                                            runOnUiThread(() -> {
+                                                loadingDialog.dismiss();
+                                                if (response != null) {
+                                                    showTimetableResultDialog(response);
+                                                } else {
+                                                    Toast.makeText(MainActivity.this,
+                                                            "Failed to process timetable image. Check your API key and try again.",
+                                                            Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                        }).start();
+                                    }
 
-                                        @Override
-                                        public void onDialogClosed() {
-                                            // Dismiss loading dialog when API key dialog is closed
-                                            loadingDialog.dismiss();
-                                        }
-                                    });
+                                    @Override
+                                    public void onDialogClosed() {
+                                        loadingDialog.dismiss();
+                                    }
                                 });
-                            } catch (Exception e) {
-                                Log.e("ImportTimetable", "Error processing image", e);
-                                new Handler(Looper.getMainLooper()).post(() -> {
-                                    loadingDialog.dismiss();
-                                    Toast.makeText(MainActivity.this,
-                                            "Error processing image: " + e.getMessage(),
-                                            Toast.LENGTH_LONG).show();
-                                });
-                            }
-                        }).start();
-                    }
+                            });
+                        } catch (Exception e) {
+                            Log.e("ImportTimetable", "Error processing image", e);
+                            new Handler(Looper.getMainLooper()).post(() -> {
+                                loadingDialog.dismiss();
+                                Toast.makeText(MainActivity.this,
+                                        "Error processing image: " + e.getMessage(),
+                                        Toast.LENGTH_LONG).show();
+                            });
+                        }
+                    }).start();
                 }
             });
 
@@ -545,13 +545,16 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.query_dialog);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        int screenHeight = getResources().getDisplayMetrics().heightPixels;
+        int dialogHeight = (int)(screenHeight * 0.75);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(ViewGroup.LayoutParams.MATCH_PARENT, dialogHeight);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
 
         ImageView start = dialog.findViewById(R.id.import_timetable_icon);
         start.setOnClickListener(view -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            galleryLauncher.launch(intent);
+            photoPickerLauncher.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
         });
 
         dialog.findViewById(R.id.ok_button).setOnClickListener(v -> dialog.dismiss());
@@ -563,7 +566,32 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_home) {
+                return true;
+            } else if (itemId == R.id.nav_timetable) {
+                startActivity(new Intent(MainActivity.this, TimetableActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            } else if (itemId == R.id.nav_notes) {
+                startActivity(new Intent(MainActivity.this, NotesActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            } else if (itemId == R.id.nav_attendance) {
+                startActivity(new Intent(MainActivity.this, AttendanceActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            }
+
+            return false;
+        });
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
+
         SharedPreferences sp1 = getSharedPreferences("com.example.academease", MODE_PRIVATE);
 
         useCount = sp1.getInt("useCount", 0);
@@ -617,49 +645,26 @@ public class MainActivity extends AppCompatActivity {
         if(saturdayTimes==null) saturdayTimes=new ArrayList<>();
         if(sundayTimes==null) sundayTimes=new ArrayList<>();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            // Android 14+ (API 34+)
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_MEDIA_VISUAL_USER_SELECTED}, 2);
-            }
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            // Android 13 (API 33)
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_MEDIA_IMAGES)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_MEDIA_IMAGES}, 2);
-            }
-        } else {
-            // Android 12 and below (API 32-)
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                    != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
-            }
-        }
-
         AppUpdateHelper appUpdateHelper =  new AppUpdateHelper(this, updateResultLauncher);
         getLifecycle().addObserver(appUpdateHelper);
         new Handler(Looper.getMainLooper()).postDelayed(appUpdateHelper::checkForUpdates, 3000);
 
-        Button importTimetable = findViewById(R.id.import_tt);
-        Button query = findViewById(R.id.query);
+        ExtendedFloatingActionButton importTimetable = findViewById(R.id.import_tt);
+        FloatingActionButton query = findViewById(R.id.query);
 
         query.setOnClickListener(view -> showTimetableImportInstructions());
 
 
         importTimetable.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            galleryLauncher.launch(intent);
+            photoPickerLauncher.launch(new PickVisualMediaRequest.Builder()
+                    .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                    .build());
         });
-        timetable= findViewById(R.id.button);
-        attendance= findViewById(R.id.button2);
-        notes= findViewById(R.id.button3);
+        timetable= findViewById(R.id.timetableButton);
+        attendance= findViewById(R.id.attendanceButton);
+        notes= findViewById(R.id.notesButton);
         konfettiView = findViewById(R.id.konfettiView);
-        wb= findViewById(R.id.button4);
-        gh= findViewById(R.id.gh_link);
+        wb= findViewById(R.id.whiteboardButton);
         TextView madeWith = findViewById(R.id.madeWith);
         tips = new ArrayList<>();
         tips.add("Report bugs and share your thoughts at nithin.appdev01@gmail.com.");
@@ -681,11 +686,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(MainActivity.this,tips.get((int)(Math.random()*tips.size())),Toast.LENGTH_SHORT).show();
             return true;
         });
-//        gh.setOnClickListener(v -> {
-//            Uri uri = Uri.parse("https://github.com/killerninjacat/StudentCompanion");
-//            Intent intent1 = new Intent(Intent.ACTION_VIEW, uri);
-//            startActivity(intent1);
-//        });
 
         welcome= findViewById(R.id.welcome);
         current = LocalDateTime.now();
@@ -733,17 +733,6 @@ public class MainActivity extends AppCompatActivity {
             enterName();
             return true;
         });
-    }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 2) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
-            } else {
-                Log.d("Permission", "Permission denied");
-            }
-        }
     }
     private static final int TIME_INTERVAL = 2000;
     private long mBackPressed;

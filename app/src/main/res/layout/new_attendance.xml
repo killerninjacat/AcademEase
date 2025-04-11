@@ -29,7 +29,7 @@
         android:background="@drawable/new_button"
         android:fontFamily="@font/spacemono_bold"
         android:text="Save"
-        android:textColor="@color/neutral_alt_dark"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

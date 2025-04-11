@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -46,16 +52,42 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
+        android:id="@+id/example_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/spacemono_regular"
+        android:text="Example of a compatible timetable:"
+        android:textColor="@color/material_dynamic_neutral10"
+        android:textSize="14sp"
+        app:layout_constraintTop_toBottomOf="@id/instructions_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/example_timetable_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/sample_tt"
+        android:background="@android:color/darker_gray"
+        android:contentDescription="Example of a timetable"
+        app:layout_constraintTop_toBottomOf="@id/example_text"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
         android:id="@+id/note_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/spacemono_bold"
-        android:text="Note: For best results, use a clear screenshot of the timetable, ensuring that only your class timetable is visible."
-        android:textSize="12sp"
+        android:text="Note: For best results, use a clear screenshot of the timetable (like the one above), ensuring that only your class timetable is visible."
+        android:textSize="14sp"
         android:textColor="@color/material_dynamic_neutral_variant10"
         android:textStyle="italic"
-        app:layout_constraintTop_toBottomOf="@id/instructions_text"
+        app:layout_constraintTop_toBottomOf="@id/example_timetable_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -81,3 +113,4 @@
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

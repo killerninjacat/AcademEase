@@ -1,76 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.nithinbalan.academease.activities.NotesActivity"
-    android:background="@color/primary_dark">
+    android:background="?attr/colorSurface"
+    tools:context="com.nithinbalan.academease.activities.NotesActivity">
 
-
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:fontFamily="@font/spacemono_bold"
-        android:text="MY NOTES"
-        android:textColor="@color/tertiary_light"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="10dp"
-        android:nestedScrollingEnabled="false"
-        android:overScrollMode="never"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/new_note"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/new_scan"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="15dp"
-        android:clickable="true"
-        android:background="@drawable/scanner"
-        android:backgroundTint="@color/secondary_not_so_light"
-        app:layout_constraintBottom_toTopOf="@id/new_note"
-        app:layout_constraintEnd_toEndOf="parent" />
+        <!-- Top App Bar -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/new_note"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="40dp"
-        android:clickable="true"
-        android:text="+"
-        android:fontFamily="@font/russo_one"
-        android:textSize="40dp"
-        android:textColor="@color/primary_dark"
-        android:background="@drawable/new_button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppBar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="MY NOTES"
+                app:titleTextAppearance="@style/TopBar"
+                app:titleCentered="true"
+                app:titleTextColor="?attr/colorOnSurface" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-    <Button
-        android:id="@+id/home_n"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginBottom="40dp"
-        android:background="@drawable/home"
-        android:backgroundTint="@color/secondary_not_so_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <!-- Action Buttons (Open Scanned Notes and Choose Folder) -->
+        <LinearLayout
+            android:id="@+id/actionButtonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="64dp"
+            app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/openScannedNotesButton"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/spacemono_bold"
+                android:text="Open Saved Notes"
+                app:strokeColor="?attr/colorOnSurface"
+                android:textAllCaps="false"
+                android:textColor="?attr/colorOnSurface"
+                android:minLines="1"
+                android:maxLines="1"
+                android:textSize="16sp"
+                android:gravity="center"
+                app:icon="@drawable/ic_note"
+                app:iconGravity="textStart"
+                app:iconSize="24dp"
+                app:iconPadding="8dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="32dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chooseFolderButton"
+                style="@style/Widget.Material3.Button.OutlinedButton.Icon"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/spacemono_bold"
+                android:gravity="center"
+                android:maxLines="1"
+                android:minLines="1"
+                android:text="Choose Folder to Save"
+                android:textAllCaps="false"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="16sp"
+                app:icon="@drawable/ic_folder"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
+                app:iconSize="24dp"
+                app:strokeColor="?attr/colorOnSurface" />
+        </LinearLayout>
+
+        <!-- Large Scan Button (Center) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/new_scan"
+            style="@style/Widget.Material3.Button.ElevatedButton"
+            android:layout_width="240dp"
+            android:layout_height="64dp"
+            android:fontFamily="@font/spacemono_bold"
+            android:text="Scan Document"
+            android:textSize="16sp"
+            android:backgroundTint="?attr/colorPrimarySurface"
+            android:textColor="?attr/colorOnPrimarySurface"
+            app:icon="@drawable/scanner"
+            app:iconGravity="textStart"
+            app:iconPadding="12dp"
+            app:iconTint="?attr/colorOnPrimarySurface"
+            app:iconSize="24dp"
+            app:cornerRadius="16dp"
+            app:elevation="4dp"
+            app:layout_constraintBottom_toTopOf="@+id/bottom_nav"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.85" />
+
+        <!-- Bottom Navigation Bar -->
+        <include
+            android:id="@+id/bottom_nav"
+            layout="@layout/bottom_nav"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

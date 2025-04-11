@@ -19,6 +19,8 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nithinbalan.academease.AttendanceData;
 import com.nithinbalan.academease.ClickListener;
 import com.nithinbalan.academease.DBHandler;
@@ -34,8 +36,7 @@ import java.util.Objects;
 
 public class AttendanceActivity extends AppCompatActivity{
     RecyclerView subject_view;
-    Button new_subject;
-    Button home;
+    FloatingActionButton new_subject;
     Gson gson;
     private DBHandler dbHandler;
     List<AttendanceData> attendanceDataList, attendanceDataList1;
@@ -205,12 +206,40 @@ public class AttendanceActivity extends AppCompatActivity{
         });
         dialog.show();
     }
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_attendance);
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_attendance) {
+                return true;
+            } else if (itemId == R.id.nav_timetable) {
+                startActivity(new Intent(AttendanceActivity.this, TimetableActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            } else if (itemId == R.id.nav_notes) {
+                startActivity(new Intent(AttendanceActivity.this, NotesActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(AttendanceActivity.this, MainActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            }
+
+            return false;
+        });
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_attendance);
+
         subjectsList=new ArrayList<>();
+        int totalAtt=0,totalAll=0;
+        TextView overall = findViewById(R.id.overallAttendance);
         targetsList=new ArrayList<>();
         attendanceDataList=new ArrayList<>();
         attendanceDataList1=new ArrayList<>();
@@ -222,7 +251,6 @@ public class AttendanceActivity extends AppCompatActivity{
         String json1=sp.getString("targets",null);
         subjectsList=gson.fromJson(json,ArrayList.class);
         targetsList=gson.fromJson(json1,ArrayList.class);
-        home= findViewById(R.id.home_a);
         dbHandler=new DBHandler(AttendanceActivity.this);
         attendanceDataList=dbHandler.readData();
         if(subjectsList==null)
@@ -239,19 +267,20 @@ public class AttendanceActivity extends AppCompatActivity{
             int tc=0, ac=0;
             for(int k=0;k<attendanceDataList1.size();k++)
             {
-                tc+=attendanceDataList1.get(k).getCnt();
-                if(attendanceDataList1.get(k).getAttended().equals("true"))
-                    ac+=attendanceDataList1.get(k).getCnt();
+                int cnt=attendanceDataList1.get(k).getCnt();
+                tc+=cnt;
+                if(attendanceDataList1.get(k).getAttended().equals("true")) {
+                    ac += cnt;
+                }
             }
+            totalAll+=tc;
+            totalAtt+=ac;
             float ac1=ac;
             double percentage=(double) Math.round((ac1 * 100 / tc) * 100) / 100;
             percentagesList.add(percentage);
             displaylist.add(new notesData(subjectsList.get(i),String.valueOf(percentage)));
         }
-        home.setOnClickListener(v -> {
-            startActivity(new Intent(AttendanceActivity.this,MainActivity.class));
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-        });
+        overall.setText("Overall: "+ Math.round((totalAtt * 100.0 / totalAll) * 100) / 100.0 +"%");
         subject_view = findViewById(R.id.attendance_recycler_view);
          new_subject= findViewById(R.id.new_subject);
         new_subject.setOnClickListener(v -> new_attendance_dialog());
@@ -261,7 +290,6 @@ public class AttendanceActivity extends AppCompatActivity{
             i.putExtra("target_percentage",targetsList.get(index));
             i.putExtra("sub_index",index);
             startActivity(i);
-            overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
         };
         longClickListener= this::editdeletedialog;
         attendanceAdapter=new AttendanceAdapter(displaylist,this,clickListener,longClickListener);
