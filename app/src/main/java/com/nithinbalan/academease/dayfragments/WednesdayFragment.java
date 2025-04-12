@@ -1,5 +1,6 @@
 package com.nithinbalan.academease.dayfragments;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.nithinbalan.academease.LongClickListener;
 import com.nithinbalan.academease.activities.MainActivity;
 import com.nithinbalan.academease.ClickListener;
@@ -34,9 +36,10 @@ public class WednesdayFragment extends Fragment {
     List<notesData> displaylist;
     List<String> classes;
     List<Double> times;
-    Button new_class,home;
+    FloatingActionButton new_class;
     TimetableAdapter timetableAdapter;
     RecyclerView recyclerView;
+    TextView cnt,dayName;
     private SharedPreferences sp;
     Gson gson;
     ClickListener clickListener;
@@ -227,16 +230,19 @@ public class WednesdayFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_tuesday, container, false);
+        View view= inflater.inflate(R.layout.fragment_day, container, false);
         displaylist=new ArrayList<>();
         classes=new ArrayList<>();
         times=new ArrayList<>();
-        recyclerView=view.findViewById(R.id.tue_view);
-        new_class=view.findViewById(R.id.new_subject_tuesday);
-        home=view.findViewById(R.id.home_tt);
+        recyclerView=view.findViewById(R.id.day_view);
+        new_class=view.findViewById(R.id.new_subject_tt);
+        dayName = view.findViewById(R.id.day_name);
+        dayName.setText("Wednesday");
+        
         gson=new Gson();
         sp = getContext().getSharedPreferences("com.example.academease", 0);
         classes=gson.fromJson(sp.getString("wednesdayClasses",null),ArrayList.class);
@@ -258,38 +264,21 @@ public class WednesdayFragment extends Fragment {
             times.set(min, temp);
             classes.set(min, tm);
         }
+        cnt=view.findViewById(R.id.dayClassCount);
+        cnt.setText(classes.size()+" Classes");
         for(int k=0;k<classes.size();k++) {
             int hour=(int)(times.get(k)/60);
             int minutes=(int)(times.get(k)%60);
-            displaylist.add(new notesData(classes.get(k), ""+hour+":"+minutes));
+            displaylist.add(new notesData(classes.get(k), hour+":"+minutes));
         }
-        clickListener = new ClickListener() {
-            @Override
-            public void click(int index){
-            }
+        clickListener = index -> {
         };
-        longClickListener=new LongClickListener() {
-            @Override
-            public void longclick(int index) {
-                editdeletedialog(index);
-            }
-        };
+        longClickListener= index -> editdeletedialog(index);
         timetableAdapter =new TimetableAdapter(displaylist,getContext(),clickListener,longClickListener);
         recyclerView.setAdapter(timetableAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        new_class.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                newClassDialog();
-            }
-        });
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), MainActivity.class));
-                requireActivity().overridePendingTransition(android.R.anim.slide_in_left,android.R.anim.slide_out_right);
-            }
-        });
+        new_class.setOnClickListener(v -> newClassDialog());
+        
 
         return view;
     }

@@ -125,6 +125,7 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/whiteboardButton"
+                    android:visibility="gone"
                     style="@style/Widget.Material3.Button.OutlinedButton.Icon"
                     android:layout_width="match_parent"
                     android:layout_height="64dp"
@@ -147,6 +148,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:textSize="16sp"
             android:fontFamily="@font/spacemono_regular"
             android:text="Made with 🤍 and ☕"
             android:textAlignment="center"
@@ -163,7 +165,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="48dp"
             android:backgroundTint="?attr/colorSecondary"
-            android:textColor="?attr/colorOnSecondary"
+            android:textColor="?attr/colorOnBackground"
             android:contentDescription="Help"
             app:srcCompat="@drawable/question"
             app:layout_constraintBottom_toTopOf="@id/bottom_nav"
@@ -182,6 +184,7 @@
             android:backgroundTint="?attr/colorSecondary"
             android:textColor="?attr/colorOnPrimary"
             app:icon="@drawable/import_tt"
+            app:iconTint="?attr/colorOnBackground"
             app:layout_constraintBottom_toTopOf="@id/bottom_nav"
             app:layout_constraintStart_toStartOf="parent" />
 

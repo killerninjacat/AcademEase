@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/tertiary_dark">
+    android:background="?attr/colorSecondary">
 
     <EditText
         android:id="@+id/namebox"
@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:ems="10"
-        android:textColor="@color/tertiary_light"
+        android:textColor="?attr/colorOnSurface"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,7 +26,7 @@
         android:layout_marginHorizontal="10dp"
         android:fontFamily="@font/spacemono_regular"
         android:text="What do you want to be called?"
-        android:textColor="@color/primary_light"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         android:background="@drawable/new_button"
         android:fontFamily="@font/spacemono_bold"
         android:text="OK"
-        android:textColor="@color/tertiary_dark"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

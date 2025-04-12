@@ -50,7 +50,7 @@ public class CalendarActivity extends AppCompatActivity {
     int exists, c, current_index, cnt;
     CalendarView calendar;
     List<Double> targetsList;
-    int screenWidth;
+    int screenWidth, screenHeight;
     DisplayMetrics displayMetrics;
     EditText numberOfClasses;
     int targetValue;
@@ -94,7 +94,8 @@ public class CalendarActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
         dialog.setContentView(R.layout.dates_view);
-        Objects.requireNonNull(dialog.getWindow()).setLayout(screenWidth-100, 750);
+        int h= (int) (screenHeight*0.5);
+        Objects.requireNonNull(dialog.getWindow()).setLayout(screenWidth-100,h);
         dialog.getWindow().setBackgroundDrawableResource(R.drawable.dark_layout_rounded);
         ListView listView=dialog.findViewById(R.id.listView);
         TextView textView = dialog.findViewById(R.id.textView);
@@ -102,13 +103,13 @@ public class CalendarActivity extends AppCompatActivity {
         String title;
         switch (id) {
             case 0:
-                title = "All Classes";
+                title = " All Classes ";
                 break;
             case 1:
-                title = "Attended Classes";
+                title = " Attended Classes ";
                 break;
             case 2:
-                title = "Missed Classes";
+                title = " Missed Classes ";
                 break;
             default:
                 title = "Class Dates";
@@ -342,6 +343,7 @@ public class CalendarActivity extends AppCompatActivity {
         DisplayMetrics displayMetrics = new DisplayMetrics();
         this.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         screenWidth = displayMetrics.widthPixels;
+        screenHeight = displayMetrics.heightPixels;
 
         String json3 = sp.getString("targets", null);
         targetsList = gson.fromJson(json3, ArrayList.class);

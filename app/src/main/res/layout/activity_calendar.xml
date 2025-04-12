@@ -115,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:daysLabelsColor="?attr/colorOnSurface"
-                    app:headerColor="?attr/colorPrimary"
+                    app:headerColor="@color/main_dark_800"
                     app:selectionColor="#5555ff"
                     app:selectionLabelColor="#5555ff"
                     app:highlightedDaysLabelsColor="?attr/colorError"

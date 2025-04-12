@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/spacemono_bold"
             android:text="Present"
-            android:textColor="@color/secondary_light"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="30sp" />
 
         <RadioButton
@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/spacemono_bold"
             android:text="Absent"
-            android:textColor="@color/secondary_light"
+            android:textColor="?attr/colorOnSurface"
             android:textSize="30sp" />
     </RadioGroup>
 
@@ -42,7 +42,7 @@
         android:layout_marginTop="20dp"
         android:fontFamily="@font/spacemono_bold"
         android:text=" Save "
-        android:textColor="@color/neutral_alt_dark"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +55,7 @@
         android:layout_marginTop="30dp"
         android:fontFamily="@font/spacemono_bold"
         android:text="Date"
-        android:textColor="@color/tertiary_light"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,7 +89,7 @@
         android:autofillHints="1"
         android:ems="10"
         android:hint="No. of classes"
-        android:textColor="@color/secondary_light"
+        android:textColor="?attr/colorOnSurface"
         android:textColorHint="#bbffffff"
         android:fontFamily="@font/spacemono_regular"
         android:textAlignment="center"

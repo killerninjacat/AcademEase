@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.academease.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.nithinbalan.academease.adapters.TabPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -20,6 +21,32 @@ public class TimetableActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timetable);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_nav);
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+
+            if (itemId == R.id.nav_timetable) {
+                return true;
+            } else if (itemId == R.id.nav_home) {
+                startActivity(new Intent(TimetableActivity.this, MainActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            } else if (itemId == R.id.nav_notes) {
+                startActivity(new Intent(TimetableActivity.this, NotesActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            } else if (itemId == R.id.nav_attendance) {
+                startActivity(new Intent(TimetableActivity.this, AttendanceActivity.class));
+                overridePendingTransition(0,0);
+                return true;
+            }
+
+            return false;
+        });
+
+        bottomNavigationView.setSelectedItemId(R.id.nav_timetable);
+
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         ViewPager2 viewPager = findViewById(R.id.viewPager);
         TabPagerAdapter tabPagerAdapter = new TabPagerAdapter(this);
