@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace 'com.example.academease'
-    compileSdk 35
+    compileSdk 36
 
     defaultConfig {
         applicationId 'com.nithinbalan.academease'
         minSdk 29
-        targetSdk 34
+        targetSdk 36
         versionCode 17
         versionName "2.4.1"
 
